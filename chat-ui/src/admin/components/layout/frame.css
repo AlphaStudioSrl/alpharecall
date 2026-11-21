@@ -1,0 +1,410 @@
+/* ═══════════════════════════════════════════════════
+   App frame (admin-shell.tsx, top-bar.tsx, sub-nav.tsx)
+   Mockup: x / x-top / x-tabs / x-find / x-me / x-panels / x-p / x-sub / x-body
+   ═══════════════════════════════════════════════════
+
+   Breakpoints are container queries on the frame, not the viewport, because
+   the WordPress sidebar takes 36 to 160px of the window:
+     < 1080px the section tabs move to a second, scrolling row (seven tabs
+              with Addestramento and Personalizzazione need ~700px, plus
+              the workspace and the search/bell/account cluster)
+     < 760px  the sub nav turns into a pill row above the page, tighter gutters */
+
+#alpharecall-admin-app .ar-frame {
+  container: ar-frame / inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  background: var(--ar-canvas);
+  color: var(--ar-ink);
+  font-size: 13px;
+  line-height: 1.45;
+  min-width: 0;
+}
+
+/* ─── Top bar ─── */
+#alpharecall-admin-app .ar-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-areas: "ws tabs rt";
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 6px;
+  min-height: 44px;
+  padding: 4px 8px 0;
+  flex: none;
+}
+#alpharecall-admin-app .ar-top-ws { grid-area: ws; display: flex; min-width: 0; }
+#alpharecall-admin-app .ar-ws {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 4px 6px 4px 2px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ar-ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+#alpharecall-admin-app .ar-ws:hover { background: color-mix(in srgb, var(--ar-panel) 60%, transparent); }
+/* The mark is the workspace's logo, not an icon tile: a letter on the accent. */
+#alpharecall-admin-app .ar-ws-mark {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--ar-accent);
+  color: var(--ar-accent-ink);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex: none;
+}
+#alpharecall-admin-app .ar-ws-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#alpharecall-admin-app .ar-ws-chevron { width: 14px; height: 14px; color: var(--ar-ink-3); flex: none; }
+
+/* The plan chip (top-bar.tsx PlanChip) sits beside the workspace and reads
+   as the plan section (card jz1amohoh4xi): "Piano Business", the messages
+   used against the allowance and a meter. The left column is as wide as the
+   right one whatever it holds, so the chip asks the column itself, not the
+   frame, how much room there is (the tabs take more or less of the bar by
+   language). Column widths measured on wp-test with the sidebar expanded:
+   182px at a 1280px window, 262px at 1440, 502px at 1920; ~170px just above
+   the 1080px frame where the tabs move to their own row; 254px on a 390px
+   phone. Wider to narrower:
+     >= 440px  one line: icon, name, meter, numbers
+     >= 250px  the numbers and meter under the name (two lines)
+     >= 172px  the same, the workspace shows its mark alone (the name stays
+               in its menu button's label and in the WordPress bar)
+     >= 168px  no meter: "Piano Business" over the numbers
+     >= 128px  the name without the word "Piano", no numbers
+     <  128px  no chip
+   The steps hold the widest real content (Geist, measured on :5183): the
+   line "Piano Performance" 110px, the numbers "52.000/50.000" 79px, plus
+   the 28px meter and its 6px gap; around the chip 22px of padding, the 8px
+   gap and the 28px workspace mark. Meter line 113px + 58 = 171 -> 172; name
+   line 110px + 58 = 168. The numbers and the word "Piano" go at the same
+   step: the numbers sit under the name and are narrower than it, so taking
+   them away alone would free no room (the name line sets the width).
+   PLAN_NUMBERS_MIN_PX in top-bar.tsx is the 168px step. */
+#alpharecall-admin-app .ar-top-ws { container: ar-ws / inline-size; align-items: center; gap: 8px; }
+#alpharecall-admin-app a.ar-plan {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
+  min-height: 30px;
+  padding: 4px 11px;
+  border-radius: 10px;
+  background: var(--ar-panel);
+  box-shadow: var(--ar-sh-panel);
+  color: var(--ar-ink-2);
+  font-size: 12px;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  flex: none;
+}
+#alpharecall-admin-app a.ar-plan:hover { color: var(--ar-ink); }
+#alpharecall-admin-app .ar-plan svg,
+#alpharecall-admin-app .ar-plan .ar-aicon { display: none; width: 14px; height: 14px; color: var(--ar-ink-3); flex: none; }
+#alpharecall-admin-app .ar-plan-name { display: inline-flex; align-items: baseline; }
+#alpharecall-admin-app .ar-plan-word { display: none; white-space: pre; }
+#alpharecall-admin-app .ar-plan b { font-weight: 600; color: var(--ar-ink); }
+#alpharecall-admin-app .ar-plan-use { display: none; align-items: center; gap: 6px; align-self: stretch; font-size: 11px; }
+#alpharecall-admin-app .ar-plan-meter {
+  position: relative;
+  flex: 1 0 28px;
+  min-width: 28px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--ar-fill-2);
+  overflow: hidden;
+}
+#alpharecall-admin-app .ar-plan-meter > i { position: absolute; top: 0; bottom: 0; left: 0; border-radius: 4px; background: var(--ar-ink-2); }
+#alpharecall-admin-app .ar-plan-num { color: var(--ar-ink-3); font-variant-numeric: tabular-nums; }
+#alpharecall-admin-app .ar-plan[data-tone="warn"] .ar-plan-meter > i { background: var(--ar-warn); }
+#alpharecall-admin-app .ar-plan[data-tone="red"] .ar-plan-meter > i { background: var(--ar-red); }
+#alpharecall-admin-app .ar-plan[data-tone="red"] .ar-plan-num { color: var(--ar-red); }
+@container ar-ws (min-width: 128px) {
+  #alpharecall-admin-app a.ar-plan { display: inline-flex; }
+}
+@container ar-ws (max-width: 249.98px) {
+  #alpharecall-admin-app :is(.ar-ws-name, .ar-ws-chevron) { display: none; }
+  #alpharecall-admin-app .ar-ws { padding-right: 2px; }
+}
+@container ar-ws (min-width: 168px) {
+  #alpharecall-admin-app .ar-plan-word { display: inline; }
+  #alpharecall-admin-app .ar-plan-use { display: flex; }
+  #alpharecall-admin-app .ar-plan-meter { display: none; }
+}
+@container ar-ws (min-width: 172px) {
+  #alpharecall-admin-app .ar-plan-meter { display: block; }
+}
+@container ar-ws (min-width: 440px) {
+  #alpharecall-admin-app a.ar-plan { flex-direction: row; align-items: center; gap: 7px; height: 30px; padding: 0 11px; border-radius: 999px; font-size: 12.5px; }
+  #alpharecall-admin-app .ar-plan svg,
+  #alpharecall-admin-app .ar-plan .ar-aicon { display: block; }
+  #alpharecall-admin-app .ar-plan-use { align-self: auto; font-size: 12.5px; }
+  #alpharecall-admin-app .ar-plan-meter { flex: none; width: 36px; }
+}
+
+#alpharecall-admin-app .ar-top-tabs {
+  grid-area: tabs;
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  overflow-x: auto;
+}
+/* The section tabs and the phone sub nav scroll sideways with no scrollbar:
+   the edge that still hides entries fades out (top-bar.tsx, sub-nav.tsx),
+   the same mask as <ScrollRow>. */
+#alpharecall-admin-app :is(.ar-top-tabs, .ar-sub-list) { --ar-fade: 32px; }
+#alpharecall-admin-app :is(.ar-top-tabs, .ar-sub-list)[data-fade-end] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--ar-fade)), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - var(--ar-fade)), transparent);
+}
+#alpharecall-admin-app :is(.ar-top-tabs, .ar-sub-list)[data-fade-start] {
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - var(--ar-fade)), transparent);
+  mask-image: linear-gradient(to left, #000 calc(100% - var(--ar-fade)), transparent);
+}
+#alpharecall-admin-app :is(.ar-top-tabs, .ar-sub-list)[data-fade-start][data-fade-end] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--ar-fade), #000 calc(100% - var(--ar-fade)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--ar-fade), #000 calc(100% - var(--ar-fade)), transparent);
+}
+#alpharecall-admin-app .ar-top-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  color: var(--ar-ink-2);
+  text-decoration: none;
+  white-space: nowrap;
+  flex: none;
+}
+#alpharecall-admin-app .ar-top-tab:hover { color: var(--ar-ink); }
+#alpharecall-admin-app .ar-top-tab[aria-current="page"] {
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  font-weight: 500;
+  box-shadow: var(--ar-sh-panel);
+}
+#alpharecall-admin-app .ar-top-tab em {
+  font-style: normal;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ar-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+#alpharecall-admin-app .ar-top-rt {
+  grid-area: rt;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+#alpharecall-admin-app button.ar-find {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--ar-panel);
+  color: var(--ar-ink-3);
+  box-shadow: var(--ar-sh-panel) !important;
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  white-space: nowrap;
+  min-width: 0;
+}
+#alpharecall-admin-app button.ar-find:hover { color: var(--ar-ink-2); }
+#alpharecall-admin-app .ar-find svg,
+#alpharecall-admin-app .ar-find .ar-aicon { width: 14px; height: 14px; flex: none; }
+#alpharecall-admin-app .ar-find kbd {
+  font: 10.5px var(--ar-mono);
+  color: var(--ar-ink-3);
+  margin-left: 6px;
+  background: none;
+  padding: 0;
+}
+/* Initials keep their fill: an avatar is not an icon tile. */
+#alpharecall-admin-app button.ar-me {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--ar-accent-soft);
+  color: var(--ar-accent);
+  display: grid;
+  place-items: center;
+  font: inherit;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  flex: none;
+  margin-left: 2px;
+}
+
+#alpharecall-admin-app .ar-bell-count {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--ar-red);
+  color: var(--ar-panel);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Panel, sub nav, page ─── */
+#alpharecall-admin-app .ar-body {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  min-height: 0;
+  min-width: 0;
+}
+#alpharecall-admin-app .ar-body.ar-panel {
+  background: var(--ar-panel);
+  border-radius: var(--ar-r-panel);
+  box-shadow: var(--ar-sh-panel);
+  overflow: hidden;
+}
+#alpharecall-admin-app .ar-sub {
+  width: 216px;
+  flex: none;
+  padding: 22px 12px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+#alpharecall-admin-app .ar-sub-title {
+  margin: 0 10px 12px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ar-ink);
+}
+#alpharecall-admin-app .ar-sub-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+#alpharecall-admin-app .ar-sub-list > li { margin: 0; }
+#alpharecall-admin-app .ar-sub-gap { margin-top: 14px !important; }
+#alpharecall-admin-app .ar-sub-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  color: var(--ar-ink-2);
+  text-decoration: none;
+  white-space: nowrap;
+}
+#alpharecall-admin-app .ar-sub-item svg,
+#alpharecall-admin-app .ar-sub-item .ar-aicon { width: 16px; height: 16px; flex: none; }
+#alpharecall-admin-app .ar-sub-label { overflow: hidden; text-overflow: ellipsis; }
+#alpharecall-admin-app .ar-sub-item:hover:not([aria-current]) {
+  color: var(--ar-ink);
+  background: color-mix(in srgb, var(--ar-fill) 60%, transparent);
+}
+#alpharecall-admin-app .ar-sub-item[aria-current="page"] {
+  background: var(--ar-fill);
+  color: var(--ar-ink);
+  font-weight: 500;
+}
+#alpharecall-admin-app .ar-sub-item em {
+  margin-left: auto;
+  font-style: normal;
+  font-size: 11.5px;
+  color: var(--ar-ink-3);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+#alpharecall-admin-app .ar-main {
+  container: ar-page / inline-size;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 30px 40px 40px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  font-size: 14px;
+}
+#alpharecall-admin-app .ar-main-fill { overflow-y: hidden; }
+#alpharecall-admin-app .ar-main-fill > :not(.ar-default-head) { flex: 1 1 auto; min-height: 0; }
+#alpharecall-admin-app .ar-main-flush { padding: 0; gap: 0; }
+#alpharecall-admin-app .ar-main-panels {
+  flex-direction: row;
+  gap: 8px;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* ─── Account and workspace menus ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-menu [role="menuitem"] { gap: 10px; cursor: pointer; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-menu [role="menuitem"] svg,
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-menu [role="menuitem"] .ar-aicon { width: 16px; height: 16px; color: var(--ar-ink-2); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-menu-who { display: flex; flex-direction: column; gap: 1px; font-weight: 400; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-menu-who b { font-weight: 600; color: var(--ar-ink); overflow: hidden; text-overflow: ellipsis; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-menu-who small { color: var(--ar-ink-3); font-size: 12px; overflow: hidden; text-overflow: ellipsis; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-menu-hint { color: var(--ar-ink-3); font-size: 12px; }
+
+/* ─── Narrow frame: tabs on their own scrolling row ─── */
+@container ar-frame (max-width: 1179px) {
+  #alpharecall-admin-app .ar-find-label { display: none; }
+  #alpharecall-admin-app .ar-find kbd { margin-left: 0; }
+}
+@container ar-frame (max-width: 1079px) {
+  #alpharecall-admin-app .ar-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "ws rt" "tabs tabs";
+  }
+  #alpharecall-admin-app .ar-top-tabs { justify-content: safe center; padding-bottom: 2px; }
+}
+
+/* ─── Phone ─── */
+@container ar-frame (max-width: 759px) {
+  #alpharecall-admin-app .ar-frame { padding: 6px; gap: 6px; }
+  #alpharecall-admin-app .ar-top { padding: 2px 2px 0; column-gap: 8px; }
+  #alpharecall-admin-app .ar-top-tabs { justify-content: flex-start; }
+  #alpharecall-admin-app .ar-top-tab { padding: 6px 11px; }
+  #alpharecall-admin-app button.ar-find { width: 32px; padding: 0; justify-content: center; }
+  #alpharecall-admin-app .ar-find kbd { display: none; }
+  #alpharecall-admin-app .ar-body.ar-panel { flex-direction: column; }
+  #alpharecall-admin-app .ar-sub { width: auto; padding: 10px 10px 0; overflow: visible; }
+  #alpharecall-admin-app .ar-sub-title { display: none; }
+  #alpharecall-admin-app .ar-sub-list { flex-direction: row; overflow-x: auto; gap: 4px; }
+  #alpharecall-admin-app .ar-sub-gap { margin-top: 0 !important; }
+  #alpharecall-admin-app .ar-sub-item { padding: 6px 12px; border-radius: 999px; }
+  #alpharecall-admin-app .ar-sub-item em { margin-left: 2px; }
+  #alpharecall-admin-app .ar-main { padding: 16px 14px 28px; gap: 16px; }
+  #alpharecall-admin-app .ar-main-flush { padding: 0; }
+  #alpharecall-admin-app .ar-main-panels { flex-direction: column; overflow-y: auto; padding: 0; }
+}

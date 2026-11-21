@@ -1,0 +1,111 @@
+/* ═══════════════════════════════════════════════════
+   Ctrl K palette (command-palette.tsx), mockup "cerca" A:
+   a panel dropped from the top over the scrim, grouped rows,
+   the active row on a soft fill with an "Invio" key hint.
+   ═══════════════════════════════════════════════════ */
+
+[data-ar-portal] .ar-palette-scrim {
+  background: var(--ar-scrim) !important;
+}
+[data-ar-portal] .ar-palette {
+  position: fixed;
+  z-index: 50;
+  left: 50%;
+  top: min(110px, 12vh);
+  transform: translateX(-50%);
+  width: min(620px, calc(100vw - 24px));
+  max-height: min(560px, calc(100dvh - 24px - min(110px, 12vh)));
+  display: flex;
+  flex-direction: column;
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  border-radius: var(--ar-r-modal);
+  box-shadow: var(--ar-sh-float);
+  overflow: hidden;
+  font-family: var(--ar-font);
+  font-size: 13px;
+  line-height: 1.45;
+  outline: none;
+  animation: ar-palette-in 140ms ease-out;
+}
+@keyframes ar-palette-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(0.99); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+[data-ar-portal] .ar-palette-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  flex: none;
+}
+[data-ar-portal] .ar-palette-search > svg { width: 18px; height: 18px; color: var(--ar-ink-3); flex: none; }
+[data-ar-portal] .ar-palette-search input {
+  flex: 1;
+  min-width: 0;
+  appearance: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 16px;
+  color: var(--ar-ink);
+  background: transparent !important;
+}
+[data-ar-portal] .ar-palette-search input::placeholder { color: var(--ar-ink-3); }
+[data-ar-portal] button.ar-palette-esc {
+  font: 11px var(--ar-mono);
+  color: var(--ar-ink-3);
+  background: var(--ar-fill);
+  border-radius: 5px;
+  padding: 1px 6px;
+  cursor: pointer;
+  flex: none;
+}
+[data-ar-portal] .ar-palette-list {
+  overflow-y: auto;
+  padding: 4px 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overscroll-behavior: contain;
+}
+[data-ar-portal] .ar-palette-group { display: flex; flex-direction: column; gap: 2px; }
+[data-ar-portal] .ar-palette-label {
+  font-size: 12px;
+  color: var(--ar-ink-3);
+  padding: 8px 12px 4px;
+}
+[data-ar-portal] .ar-palette-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  min-width: 0;
+}
+[data-ar-portal] .ar-palette-item-on { background: var(--ar-fill); }
+[data-ar-portal] .ar-palette-icon,
+[data-ar-portal] .ar-palette-item .ar-aicon { width: 15px; height: 15px; color: var(--ar-ink-3); flex: none; }
+[data-ar-portal] .ar-palette-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-ar-portal] .ar-palette-detail { color: var(--ar-ink-3); }
+[data-ar-portal] .ar-palette-kbd {
+  font: 11px var(--ar-mono);
+  color: var(--ar-ink-3);
+  background: none;
+  flex: none;
+}
+[data-ar-portal] .ar-palette-note {
+  padding: 10px 12px;
+  color: var(--ar-ink-3);
+  font-size: 12.5px;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-ar-portal] .ar-palette { animation: none; }
+}

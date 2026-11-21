@@ -1,0 +1,548 @@
+/* ═══════════════════════════════════════════════════
+   Richieste (board, list, sheet) and Agenda.
+   Mockups: richieste B (board), richieste A (sheet), agenda B.
+   Borderless: separation by fill only; icons bare.
+   ═══════════════════════════════════════════════════ */
+
+/* ─── Page roots ─── */
+#alpharecall-admin-app .a3-req,
+#alpharecall-admin-app .a3-agenda {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+  min-height: 0;
+}
+/* Board: the page fills the panel (frame "fill"), the columns scroll. */
+#alpharecall-admin-app .a3-req[data-mode="board"] { overflow-y: auto; }
+#alpharecall-admin-app .a3-req[data-mode="board"] .a3-content { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#alpharecall-admin-app .a3-req[data-mode="board"] .a3-bones { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+#alpharecall-admin-app .a3-req[data-mode="board"] .a3-bones > * { flex: 1 1 auto; min-height: 0; }
+
+#alpharecall-admin-app .a3-sp { flex: 1; }
+#alpharecall-admin-app .a3-faint { color: var(--ar-ink-3); font-size: 12.5px; }
+#alpharecall-admin-app .a3-lbl { font-size: 12px; font-weight: 400; color: var(--ar-ink-3); }
+#alpharecall-admin-app .a3-spin svg { animation: spin 1s linear infinite; }
+
+/* Head actions: icon-only view switch (x-seg with list/board glyphs). */
+#alpharecall-admin-app .a3-mode > button { padding: 5px 10px; }
+#alpharecall-admin-app .a3-mode > button svg { width: 15px; height: 15px; }
+
+/* ─── Toolbar: type chips + search ─── */
+#alpharecall-admin-app .a3-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px 14px;
+  flex-wrap: wrap;
+  margin-top: -4px;
+}
+#alpharecall-admin-app .a3-chips-wrap { flex: 1 1 420px; min-width: 0; }
+#alpharecall-admin-app .a3-search { flex: 0 1 260px; min-width: 180px; }
+
+/* ─── Board ─── */
+#alpharecall-admin-app .a3-board-wrap { display: flex; flex-direction: column; gap: 10px; min-height: 0; height: 100%; }
+#alpharecall-admin-app .a3-board-wrap > .a3-board { flex: 1 1 auto; height: auto; }
+/* Leads: a strip above the columns, outside the workflow. */
+#alpharecall-admin-app .a3-leads {
+  display: flex;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 6px 6px 6px 16px;
+  border-radius: 14px;
+  background: var(--ar-fill);
+  min-width: 0;
+}
+#alpharecall-admin-app .a3-leads h2 { flex: none; font-size: 13px; font-weight: 500; color: var(--ar-ink); white-space: nowrap; }
+#alpharecall-admin-app .a3-leads h2 span { color: var(--ar-ink-3); font-weight: 400; font-variant-numeric: tabular-nums; margin-left: 4px; }
+/* Chips keep their size and the row scrolls: shrinking them let a button
+   overflow its item and slide under the next avatar ("Giulia Con"). */
+#alpharecall-admin-app .a3-leads ul {
+  display: flex;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  list-style: none;
+  margin: 0;
+  /* Room for a focused chip's ring inside the scroller. */
+  padding: 3px;
+}
+#alpharecall-admin-app .a3-leads ul::-webkit-scrollbar { display: none; }
+/* A fade on the side that still hides chips (useScrollEdges). */
+#alpharecall-admin-app .a3-leads ul[data-fade-end] { mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent); }
+#alpharecall-admin-app .a3-leads ul[data-fade-start] { mask-image: linear-gradient(to left, #000 calc(100% - 36px), transparent); }
+#alpharecall-admin-app .a3-leads ul[data-fade-start][data-fade-end] {
+  mask-image: linear-gradient(to right, transparent, #000 36px, #000 calc(100% - 36px), transparent);
+}
+#alpharecall-admin-app .a3-leads li { flex: none; }
+#alpharecall-admin-app .a3-leads li button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 180px;
+  padding: 3px 10px 3px 3px;
+  border-radius: 999px;
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  font-size: 12.5px;
+  cursor: pointer;
+}
+#alpharecall-admin-app .a3-leads li button:hover { background: var(--ar-fill-2); }
+#alpharecall-admin-app .a3-leads li button > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#alpharecall-admin-app .a3-leads-all { flex: none; }
+/* The Lead filter on the board: the leads as a grid of cards. */
+#alpharecall-admin-app .a3-lead-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  height: 100%;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--ar-fill);
+}
+#alpharecall-admin-app .a3-lead-grid-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  align-content: start;
+  gap: 8px;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0 -4px;
+  padding: 0 4px 4px;
+  scrollbar-width: thin;
+}
+#alpharecall-admin-app .a3-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  min-height: 420px;
+  height: 100%;
+}
+#alpharecall-admin-app .a3-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--ar-fill);
+  transition: background-color 0.15s ease;
+}
+#alpharecall-admin-app .a3-col-accepts { background: color-mix(in srgb, var(--ar-accent-soft) 55%, var(--ar-fill)); }
+#alpharecall-admin-app .a3-col-over { background: var(--ar-accent-soft); }
+#alpharecall-admin-app .a3-col-refuses { opacity: 0.55; }
+#alpharecall-admin-app .a3-col-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 4px 4px;
+}
+#alpharecall-admin-app .a3-col-head h2 { font-size: 13px; font-weight: 500; color: var(--ar-ink); }
+#alpharecall-admin-app .a3-col-head span { font-size: 13px; color: var(--ar-ink-3); font-variant-numeric: tabular-nums; }
+#alpharecall-admin-app .a3-col-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0 -4px;
+  padding: 0 4px 4px;
+  scrollbar-width: thin;
+}
+#alpharecall-admin-app .a3-col-empty {
+  padding: 18px 8px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ar-ink-3);
+}
+
+/* Card (x-card.w) */
+#alpharecall-admin-app .a3-card-slot { touch-action: manipulation; }
+#alpharecall-admin-app .a3-card-ghost { opacity: 0.35; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  font-size: 13px;
+  line-height: 1.45;
+  transition: box-shadow 0.15s ease, opacity 0.15s ease;
+}
+#alpharecall-admin-app .a3-card:hover { box-shadow: var(--ar-sh-panel); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-card-overlay {
+  box-shadow: var(--ar-sh-float);
+  transform: rotate(1.5deg);
+  cursor: grabbing;
+}
+#alpharecall-admin-app .a3-card-busy { opacity: 0.6; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-card-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-card-age {
+  font-size: 11.5px;
+  color: var(--ar-ink-3);
+  white-space: nowrap;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-card-name { font-size: 13px; font-weight: 500; margin: 0; min-width: 0; }
+#alpharecall-admin-app .a3-card-open {
+  all: unset;
+  cursor: pointer;
+  display: block;
+  /* The row's 24px (WCAG 2.5.8 counts the box, not the ::after below). */
+  line-height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* The name is the card's button: its hit area covers the whole card. */
+#alpharecall-admin-app .a3-card-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+}
+#alpharecall-admin-app .a3-card-open:focus-visible::after { box-shadow: 0 0 0 2px var(--ar-ink-3); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-card-detail {
+  margin: 0;
+  color: var(--ar-ink-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+#alpharecall-admin-app .a3-card-actions { display: flex; gap: 6px; position: relative; z-index: 1; }
+#alpharecall-admin-app .a3-card-actions .ar-ui-button { height: 28px; border-radius: 9px; padding: 0 12px; font-size: 12.5px; }
+/* The status menu: hidden until the card is hovered or focused, always there on touch. */
+#alpharecall-admin-app .a3-card-menu {
+  position: relative;
+  z-index: 1;
+  margin: -4px -6px -4px 0;
+  opacity: 0;
+}
+#alpharecall-admin-app .a3-card:hover .a3-card-menu,
+#alpharecall-admin-app .a3-card:focus-within .a3-card-menu,
+#alpharecall-admin-app .a3-card-menu[data-state="open"] { opacity: 1; }
+@media (hover: none) {
+  #alpharecall-admin-app .a3-card-menu { opacity: 1; }
+}
+
+/* Type tag: soft pill, bare icon (x-tag). */
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-kind > :is(svg, .ar-aicon) { width: 12px; height: 12px; flex: none; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-stars { color: var(--ar-warn); letter-spacing: 0.08em; font-size: 12.5px; }
+
+/* ─── List (x-tbl) ─── */
+#alpharecall-admin-app .a3-list { --a3-list-cols: minmax(118px, 0.9fr) minmax(150px, 1.2fr) minmax(0, 1.5fr) minmax(128px, 0.9fr) 56px 36px; min-width: 0; }
+#alpharecall-admin-app .a3-list .ark-td { align-self: center; }
+#alpharecall-admin-app .a3-list-detail { color: var(--ar-ink-2); }
+#alpharecall-admin-app .a3-av-none { width: 26px; height: 26px; border-radius: 50%; background: var(--ar-fill-2); flex: none; }
+#alpharecall-admin-app .a3-list-actions { display: flex; justify-content: flex-end; overflow: visible; }
+#alpharecall-admin-app .a3-row-busy { opacity: 0.6; }
+#alpharecall-admin-app .a3-status-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  margin-left: -8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+#alpharecall-admin-app .a3-status-btn:hover,
+#alpharecall-admin-app .a3-status-btn[data-state="open"] { background: var(--ar-fill-2); }
+#alpharecall-admin-app .a3-status-btn:focus-visible { background: var(--ar-fill-2); box-shadow: 0 0 0 2px var(--ar-ink-3); }
+#alpharecall-admin-app .a3-status-btn > :is(svg, .ar-aicon) { width: 13px; height: 13px; color: var(--ar-ink-3); }
+
+/* ─── Footer: pagination per collection ─── */
+#alpharecall-admin-app .a3-footer:empty { display: none; }
+#alpharecall-admin-app .a3-footer { display: flex; flex-direction: column; gap: 6px; }
+#alpharecall-admin-app .a3-more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 12px;
+  padding: 4px 0;
+  font-size: 12.5px;
+  color: var(--ar-ink-2);
+}
+#alpharecall-admin-app .a3-more b { font-weight: 500; color: var(--ar-ink); }
+
+/* ─── Menus (portal) ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-menu-label { font-size: 11.5px; font-weight: 450; color: var(--ar-ink-3); padding: 6px 8px 4px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-menu-item { display: flex; align-items: baseline; gap: 8px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-menu-item small { margin-left: auto; color: var(--ar-ink-3); font-size: 11.5px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-menu-count { margin-left: auto; padding-left: 12px; color: var(--ar-ink-3); font-variant-numeric: tabular-nums; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-danger { color: var(--ar-red); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-danger:focus { color: var(--ar-red); }
+
+/* ─── Confirm / move dialogs ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-confirm-actions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-move-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-move-fields > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-move-fields > div:first-child { grid-column: 1 / -1; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-move-fields input { background: hsl(var(--ar-control)); border-radius: var(--ar-r-control); }
+
+/* ─── Detail sheet (x-sheet) ─── */
+[data-ar-portal] .a3-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--ar-scrim, rgba(10, 12, 11, 0.28));
+  animation: a3-fade 0.16s ease;
+}
+[data-ar-portal] .a3-sheet {
+  position: fixed;
+  z-index: 50;
+  top: 8px;
+  right: 8px;
+  bottom: 8px;
+  width: min(400px, calc(100vw - 16px));
+  display: flex;
+  flex-direction: column;
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  border-radius: 16px;
+  box-shadow: var(--ar-sh-float);
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.45;
+  animation: a3-slide 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+[data-ar-portal] .a3-sheet:focus { outline: none; }
+[data-ar-portal] .a3-sheet-top { display: flex; align-items: center; gap: 8px; padding: 14px 14px 6px 18px; }
+[data-ar-portal] .a3-sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 6px 20px 20px;
+}
+[data-ar-portal] .a3-sheet-title { display: flex; flex-direction: column; gap: 2px; }
+[data-ar-portal] .a3-sheet-title h2 { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; overflow-wrap: anywhere; }
+[data-ar-portal] .a3-sheet-title p { color: var(--ar-ink-2); }
+[data-ar-portal] .a3-kv { grid-template-columns: 104px minmax(0, 1fr); }
+[data-ar-portal] .a3-kv a { color: var(--ar-ink); text-decoration: none; }
+[data-ar-portal] .a3-kv a:hover { text-decoration: underline; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-note {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--ar-fill);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-note span { font-size: 12px; color: var(--ar-ink-3); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-note p { white-space: pre-wrap; overflow-wrap: anywhere; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-note-panel { background: var(--ar-panel); }
+[data-ar-portal] .a3-chatlink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--ar-fill);
+  color: var(--ar-ink);
+  text-decoration: none;
+}
+[data-ar-portal] .a3-chatlink:hover { background: var(--ar-fill-2); }
+[data-ar-portal] .a3-chatlink span { flex: 1; }
+[data-ar-portal] .a3-chatlink > :is(svg, .ar-aicon) { width: 15px; height: 15px; color: var(--ar-ink-2); flex: none; }
+[data-ar-portal] .a3-chatlink > :is(svg, .ar-aicon):last-child { color: var(--ar-ink-3); }
+[data-ar-portal] .a3-sheet-status { display: flex; flex-direction: column; gap: 8px; }
+[data-ar-portal] .a3-sheet-status > span { font-size: 12px; color: var(--ar-ink-3); }
+[data-ar-portal] .a3-sheet-foot { display: flex; gap: 8px; padding: 14px 20px 20px; }
+[data-ar-portal] .a3-sheet-foot > * { flex: 1; }
+[data-ar-portal] .a3-faint { color: var(--ar-ink-3); font-size: 12.5px; }
+[data-ar-portal] .a3-sp { flex: 1; }
+
+@keyframes a3-fade { from { opacity: 0; } }
+@keyframes a3-slide { from { transform: translateX(24px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  [data-ar-portal] .a3-sheet, [data-ar-portal] .a3-scrim { animation: none; }
+}
+@media (max-width: 560px) {
+  [data-ar-portal] .a3-sheet { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 92dvh; border-radius: 20px 20px 0 0; animation-name: a3-rise; }
+}
+@keyframes a3-rise { from { transform: translateY(32px); opacity: 0; } }
+
+/* ─── Agenda (agenda B) ─── */
+#alpharecall-admin-app .a3-agenda-split { display: flex; gap: 28px; align-items: flex-start; min-width: 0; }
+#alpharecall-admin-app .a3-agenda-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+#alpharecall-admin-app .a3-agenda-list { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+#alpharecall-admin-app .a3-agenda-groups { display: flex; flex-direction: column; gap: 18px; }
+#alpharecall-admin-app .a3-agenda-group { display: flex; flex-direction: column; gap: 2px; }
+#alpharecall-admin-app .a3-agenda-group > .a3-lbl { padding: 0 12px 6px; }
+#alpharecall-admin-app .a3-agenda-rows { display: flex; flex-direction: column; gap: 2px; }
+#alpharecall-admin-app .a3-agenda-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 12px;
+}
+#alpharecall-admin-app .a3-agenda-row:hover:not(.a3-on) { background: color-mix(in srgb, var(--ar-fill) 60%, transparent); }
+#alpharecall-admin-app .a3-agenda-row.a3-on { background: var(--ar-fill); }
+#alpharecall-admin-app .a3-agenda-open {
+  all: unset;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+#alpharecall-admin-app .a3-agenda-open::after { content: ""; position: absolute; inset: 0; border-radius: 12px; }
+#alpharecall-admin-app .a3-agenda-open:focus-visible::after { box-shadow: 0 0 0 2px var(--ar-ink-3); }
+#alpharecall-admin-app .a3-agenda-time { width: 44px; flex: none; font-weight: 500; font-variant-numeric: tabular-nums; }
+#alpharecall-admin-app .a3-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+#alpharecall-admin-app .a3-agenda-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.35; }
+#alpharecall-admin-app .a3-agenda-text b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#alpharecall-admin-app .a3-agenda-text small { font-size: 13px; color: var(--ar-ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#alpharecall-admin-app .a3-cancelled .a3-agenda-text b { text-decoration: line-through; color: var(--ar-ink-3); }
+#alpharecall-admin-app .a3-agenda-confirm { position: relative; z-index: 1; flex: none; height: 32px; border-radius: 10px; padding: 0 13px; font-size: 12.5px; }
+#alpharecall-admin-app .a3-agenda-none { padding: 8px 12px; font-size: 12.5px; color: var(--ar-ink-3); }
+#alpharecall-admin-app .a3-agenda-past {
+  all: unset;
+  align-self: flex-start;
+  margin-left: 12px;
+  font-size: 12.5px;
+  color: var(--ar-ink-2);
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px 8px;
+}
+#alpharecall-admin-app .a3-agenda-past:hover,
+#alpharecall-admin-app .a3-agenda-past:focus-visible { background: var(--ar-fill); color: var(--ar-ink); }
+
+/* The "now" line inside today's group. */
+#alpharecall-admin-app .a3-now {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 18px;
+  margin: 2px 0 2px 12px;
+  color: var(--ar-red);
+  font-size: 11.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+#alpharecall-admin-app .a3-now span { flex: none; }
+#alpharecall-admin-app .a3-now::after { content: ""; flex: 1; height: 1.5px; border-radius: 2px; background: currentColor; opacity: 0.7; }
+
+/* Detail panel (x-box, 360px) */
+#alpharecall-admin-app .a3-agenda-detail {
+  position: sticky;
+  top: 0;
+  flex: none;
+  width: 360px;
+  min-height: min(680px, calc(100dvh - 140px));
+  display: flex;
+  border-radius: 20px;
+  background: var(--ar-fill);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+  min-width: 0;
+}
+[data-ar-portal] .a3-sheet-agenda { background: var(--ar-fill); }
+[data-ar-portal] .a3-sheet-agenda .a3-detail { overflow-y: auto; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-top { display: flex; align-items: center; gap: 8px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-title { display: flex; flex-direction: column; gap: 2px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-title h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; color: var(--ar-ink); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-title p { color: var(--ar-ink-2); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-who { display: flex; align-items: center; gap: 12px; min-width: 0; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-who > div { display: flex; flex-direction: column; min-width: 0; line-height: 1.4; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-who b { font-weight: 500; color: var(--ar-ink); }
+/* Each contact line is a 24px target (WCAG 2.5.8); stacked, they cannot overlap. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-who a { color: var(--ar-ink-2); text-decoration: none; overflow: hidden; text-overflow: ellipsis; line-height: 24px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-who a:hover { color: var(--ar-ink); text-decoration: underline; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-meta { display: flex; align-items: center; gap: 8px; color: var(--ar-ink-3); font-size: 12.5px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-meta > :is(svg, .ar-aicon) { width: 14px; height: 14px; flex: none; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail .a3-sp { flex: 1; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-actions { display: flex; flex-direction: column; gap: 8px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-primary { height: 40px; border-radius: 10px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-pair { display: flex; gap: 8px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .a3-detail-pair > * { flex: 1; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-button.ar-ui-surface.a3-red { color: var(--ar-red); }
+
+/* Calendar view */
+#alpharecall-admin-app .a3-agenda-cal { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; }
+#alpharecall-admin-app .a3-agenda-cal > .a3-agenda-group { flex: 1 1 260px; min-width: 0; }
+#alpharecall-admin-app .a3-agenda-calbox { padding: 8px; border-radius: 16px; background: var(--ar-fill); flex: none; }
+
+/* Google Calendar state in the head */
+#alpharecall-admin-app .a3-gcal {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+#alpharecall-admin-app .a3-gcal > :is(svg, .ar-aicon) { width: 13px; height: 13px; }
+#alpharecall-admin-app .a3-gcal-on { background: var(--ar-accent-soft); color: var(--ar-accent); }
+#alpharecall-admin-app .a3-gcal-warn { background: var(--ar-warn-soft); color: var(--ar-warn); }
+#alpharecall-admin-app .a3-gcal-connect { color: var(--ar-ink-2); }
+
+/* ─── Narrow pages ─── */
+@container ar-page (max-width: 1080px) {
+  #alpharecall-admin-app .a3-list { --a3-list-cols: minmax(110px, 0.9fr) minmax(140px, 1.3fr) minmax(120px, 0.9fr) 52px 36px; }
+  #alpharecall-admin-app .a3-list .a3-list-detail,
+  #alpharecall-admin-app .a3-list [role="columnheader"]:nth-child(3) { display: none; }
+}
+@container ar-page (max-width: 760px) {
+  /* Phone: the board scrolls sideways, a column at a time. */
+  #alpharecall-admin-app .a3-board {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0 0 4px;
+    gap: 8px;
+    min-height: 0;
+    height: auto;
+    scrollbar-width: none;
+  }
+  #alpharecall-admin-app .a3-col { flex: 0 0 84%; scroll-snap-align: center; max-height: none; }
+  #alpharecall-admin-app .a3-board-wrap { height: auto; }
+  #alpharecall-admin-app .a3-leads { flex-wrap: wrap; padding: 10px 6px 6px 14px; }
+  #alpharecall-admin-app .a3-leads h2 { flex: 1 1 auto; }
+  #alpharecall-admin-app .a3-leads ul { order: 3; flex: 1 1 100%; overflow-x: auto; scrollbar-width: none; }
+  #alpharecall-admin-app .a3-leads li { flex: none; }
+  #alpharecall-admin-app .a3-col-list { overflow: visible; }
+  #alpharecall-admin-app .a3-toolbar { flex-direction: column; align-items: stretch; }
+  /* One swipeable line (a <ScrollRow>: faded edges show there are more chips). */
+  #alpharecall-admin-app .a3-chips-wrap { flex: none; }
+  #alpharecall-admin-app .a3-chips-wrap .ark-chips { flex-wrap: nowrap; }
+  #alpharecall-admin-app .a3-search { flex: none; width: 100%; }
+  #alpharecall-admin-app .a3-list { --a3-list-cols: minmax(0, 1fr) minmax(104px, auto) 36px; }
+  #alpharecall-admin-app .a3-list [role="row"] > :nth-child(1),
+  #alpharecall-admin-app .a3-list [role="row"] > :nth-child(5) { display: none; }
+  /* Stacked: the list takes the full width (flex-start would shrink it to its content). */
+  #alpharecall-admin-app .a3-agenda-split { flex-direction: column; align-items: stretch; }
+  #alpharecall-admin-app .a3-agenda-row { padding: 10px 8px; gap: 10px; }
+  #alpharecall-admin-app .a3-agenda-open { gap: 10px; }
+  #alpharecall-admin-app .a3-agenda-group > .a3-lbl { padding-left: 8px; }
+  #alpharecall-admin-app .a3-now { margin-left: 8px; }
+}

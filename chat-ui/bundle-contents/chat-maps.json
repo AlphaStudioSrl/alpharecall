@@ -1,0 +1,78 @@
+{
+  "files": {
+    "js/chat-maps.js": {
+      "sources": [
+        "src/maps-runtime/flavors.ts",
+        "src/maps-runtime/leaflet-ref.ts",
+        "src/maps-runtime/main.ts"
+      ],
+      "packages": [
+        "@mapbox/point-geometry@1.1.0",
+        "@mapbox/vector-tile@2.0.5",
+        "@protomaps/basemaps@5.7.2",
+        "color2k@2.0.4",
+        "pbf@4.0.2",
+        "pmtiles@3.2.1",
+        "potpack@1.0.2",
+        "protomaps-leaflet@5.1.0",
+        "rbush@3.0.1"
+      ]
+    }
+  },
+  "packages": [
+    {
+      "name": "@mapbox/point-geometry",
+      "version": "1.1.0",
+      "license": "ISC",
+      "repository": "https://github.com/mapbox/point-geometry"
+    },
+    {
+      "name": "@mapbox/vector-tile",
+      "version": "2.0.5",
+      "license": "BSD-3-Clause",
+      "repository": "https://github.com/mapbox/vector-tile-js"
+    },
+    {
+      "name": "@protomaps/basemaps",
+      "version": "5.7.2",
+      "license": "BSD-3-Clause",
+      "repository": "https://github.com/protomaps/basemaps"
+    },
+    {
+      "name": "color2k",
+      "version": "2.0.4",
+      "license": "MIT",
+      "repository": "https://github.com/ricokahler/color2k"
+    },
+    {
+      "name": "pbf",
+      "version": "4.0.2",
+      "license": "BSD-3-Clause",
+      "repository": "https://github.com/mapbox/pbf"
+    },
+    {
+      "name": "pmtiles",
+      "version": "3.2.1",
+      "license": "BSD-3-Clause",
+      "repository": "https://github.com/protomaps/pmtiles"
+    },
+    {
+      "name": "potpack",
+      "version": "1.0.2",
+      "license": "ISC",
+      "repository": "https://github.com/mapbox/potpack"
+    },
+    {
+      "name": "protomaps-leaflet",
+      "version": "5.1.0",
+      "license": "BSD-3-Clause",
+      "repository": "https://github.com/protomaps/protomaps-leaflet"
+    },
+    {
+      "name": "rbush",
+      "version": "3.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/mourner/rbush"
+    }
+  ]
+}

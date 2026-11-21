@@ -1,0 +1,149 @@
+{
+  "generated": "2026-09-24",
+  "portraits": [
+    {
+      "file": "portrait-01.webp",
+      "gender": "woman",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d39f-d8b7-7c52-94b0-6dad89d21122",
+      "seed": 2026092401,
+      "prompt": "Professional photorealistic studio headshot of a fictional Italian woman, age 32, shoulder-length dark brown wavy hair, olive skin, ivory crew-neck top. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "ac506fd1e9dc7a4b6d7d0fed9cce05e6269bfa646065a879e4c800ccf4e7ed2d"
+    },
+    {
+      "file": "portrait-02.webp",
+      "gender": "woman",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d39f-d8bf-7070-8477-c8926db5e24a",
+      "seed": 2026092402,
+      "prompt": "Professional photorealistic studio headshot of a fictional Black woman, age 29, natural short curls, deep brown skin, sage green blouse. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "8d4ec5cd8f918f2e8f830a7cb33c892dd61295af1e4e8da81cbef26bcba8b6d7"
+    },
+    {
+      "file": "portrait-03.webp",
+      "gender": "woman",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d39f-d8a3-7560-84d0-6f57dbeecfb4",
+      "seed": 2026092403,
+      "prompt": "Professional photorealistic studio headshot of a fictional East Asian woman, age 36, straight black bob haircut, warm light skin, charcoal knit top. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "6749972b4bd207a4dbca02ba6b177a12dc2d09a10196131522aae262e701d748"
+    },
+    {
+      "file": "portrait-04.webp",
+      "gender": "woman",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d39f-f456-7611-af63-e93fcb3c149f",
+      "seed": 2026092404,
+      "prompt": "Professional photorealistic studio headshot of a fictional South Asian woman, age 30, long dark hair tucked behind her ears, warm brown skin, sand linen shirt. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "70b22678dfcfc666cea061685333f5dad1b26626ca8b55d578baf4789e537d04"
+    },
+    {
+      "file": "portrait-05.webp",
+      "gender": "woman",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d39f-f4fa-7b51-9d21-fd8ee9bf2d9d",
+      "seed": 2026092405,
+      "prompt": "Professional photorealistic studio headshot of a fictional European woman, age 45, short auburn hair, fair freckled skin, olive blouse. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "d1ab7092b2029a4ae153c50830b2a4ffb8f741b62bdd23cde10a4e5c9a1bdde0"
+    },
+    {
+      "file": "portrait-06.webp",
+      "gender": "woman",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d39f-f4e5-7fb3-85db-9b44de0f1eb9",
+      "seed": 2026092406,
+      "prompt": "Professional photorealistic studio headshot of a fictional Latina woman, age 38, shoulder-length chestnut curls, tan skin, off-white blouse. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "4b46cce3405c7a8ef4dcc6809bd1c1237b2d0cfdb7828a31882e4a596a5d3606"
+    },
+    {
+      "file": "portrait-07.webp",
+      "gender": "woman",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d3a0-0e24-7940-8ad6-8b7a0b2f5fa6",
+      "seed": 2026092407,
+      "prompt": "Professional photorealistic studio headshot of a fictional Middle Eastern woman, age 50, elegant salt-and-pepper shoulder-length hair, olive skin, navy shirt. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "ee96d51a6eb8f84b2167a11f137597b7427fa5c4fdcf3cc34087fe24559d932c"
+    },
+    {
+      "file": "portrait-08.webp",
+      "gender": "man",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d3a0-0e88-7591-88e8-bc11a89fd69e",
+      "seed": 2026092408,
+      "prompt": "Professional photorealistic studio headshot of a fictional Italian man, age 34, short dark brown hair, light stubble, olive skin, sage crew-neck top. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "416809b79cdd1382370dab9c4db640fd530bbbc2ee6a089968a5f8bc4c4ec7ea"
+    },
+    {
+      "file": "portrait-09.webp",
+      "gender": "man",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d3a0-0f6e-7fb2-8a2f-f9c429117a09",
+      "seed": 2026092409,
+      "prompt": "Professional photorealistic studio headshot of a fictional Black man, age 31, close-cropped hair, clean shaven, deep brown skin, cream knit top. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "fb9766c2aa8156dc0239291e4f6a307d11956e623494c7752b3b11c98d63aaa0"
+    },
+    {
+      "file": "portrait-10.webp",
+      "gender": "man",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d3a0-28f2-7040-8f32-86c7a88dfd8e",
+      "seed": 2026092410,
+      "prompt": "Professional photorealistic studio headshot of a fictional East Asian man, age 40, neat short black hair, clean shaven, warm light skin, muted navy shirt. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "e4399d7b2e0c6a4cd1b7dfdf541b42cc79e0377df33066d544460a94909127bf"
+    },
+    {
+      "file": "portrait-11.webp",
+      "gender": "man",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d3a0-2932-7122-b0de-41df98a68895",
+      "seed": 2026092411,
+      "prompt": "Professional photorealistic studio headshot of a fictional South Asian man, age 35, short wavy dark hair, neatly trimmed beard, brown skin, sand linen shirt. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "9d1d48b17a5f35f111a56708684f370f25f45944ed86e301ffa625c9ebd5a36d"
+    },
+    {
+      "file": "portrait-12.webp",
+      "gender": "man",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d3a0-2a0a-7350-b359-cfa6d560aca6",
+      "seed": 2026092412,
+      "prompt": "Professional photorealistic studio headshot of a fictional European man, age 48, short silver hair, clean shaven, light skin, charcoal crew-neck sweater. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "c07b1485f4bc2ede48fe2e3fd2eaface2bfb0322020703a3615df5d2edb8e61a"
+    },
+    {
+      "file": "portrait-13.webp",
+      "gender": "man",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d3a0-42d3-7501-af85-9db6c7368fdf",
+      "seed": 2026092413,
+      "prompt": "Professional photorealistic studio headshot of a fictional Latino man, age 28, short curly chestnut hair, clean shaven, tan skin, off-white polo. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "855b255c562926ad162e5b74d9d060a5b0af8ba3222714a2ad720e29a3cc978a"
+    },
+    {
+      "file": "portrait-14.webp",
+      "gender": "man",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d3a0-42d0-7f23-a5c1-13e3777ad26b",
+      "seed": 2026092414,
+      "prompt": "Professional photorealistic studio headshot of a fictional Middle Eastern man, age 43, short black hair, tidy beard, olive skin, forest green shirt. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "fefa19d1cb8260a0c0996b8913c31a88ce33b73bdbf319a9ad29c98a0a7dab5b"
+    },
+    {
+      "file": "portrait-15.webp",
+      "gender": "man",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d3a0-444b-7312-8572-16a36a55571a",
+      "seed": 2026092415,
+      "prompt": "Professional photorealistic studio headshot of a fictional European man, age 55, short salt-and-pepper hair, light beard, round thin-frame glasses, blue-grey shirt. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "79a642c0ea0315f3a687c1adbb2d178baba026173a3ca196fa2d8c2a0d29ad1d"
+    },
+    {
+      "file": "portrait-16.webp",
+      "gender": "woman",
+      "model": "fal-ai/z-image/turbo",
+      "request_id": "01a0d3a0-f8c4-72f0-a7a8-a49b24962f0f",
+      "seed": 2026092416,
+      "prompt": "Professional photorealistic studio headshot of a fictional European woman, age 33, shoulder-length blonde hair, light skin, round thin-frame glasses, sage linen shirt. One person only. Natural friendly gentle smile, relaxed confident expression, eyes looking directly at camera. Head and upper shoulders centered, complete hair visible with generous space around head, face filling about 55 percent of image height, ideal for a small circular avatar crop. Plain warm pale grey seamless background, soft broad window light, natural skin texture and believable features, 85mm portrait photography, premium editorial headshot, understated simple clothing, refined natural colors. Square composition. No text, no watermark, no logos, no headset, no hands, no illustration, no CGI.",
+      "sha256": "bbc896bedd6aa3417448f70f43b8ac80472938764374ee94ef52410df40630f9"
+    }
+  ]
+}

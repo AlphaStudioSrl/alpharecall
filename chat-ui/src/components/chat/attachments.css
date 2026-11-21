@@ -1,0 +1,31 @@
+.ar-attachment-add { display: grid; place-items: center; width: 36px; height: 44px; flex-shrink: 0; border: 0; border-radius: 10px; background: transparent; color: hsl(var(--muted-foreground)); cursor: pointer; }
+.ar-attachment-add:hover { background: hsl(var(--muted)); color: hsl(var(--foreground)); }
+.ar-attachment-add:disabled { opacity: .45; cursor: not-allowed; }
+.ar-attachment-list, .ar-message-attachments { display: grid; gap: 6px; list-style: none; padding: 0; margin: 0 0 8px; max-width: 100%; }
+.ar-attachment-list li, .ar-message-attachments button { display: flex; gap: 10px; align-items: center; min-width: 0; max-width: 100%; border: 0; border-radius: 10px; padding: 10px; background: hsl(var(--muted)); color: hsl(var(--foreground)); font-size: 12px; text-align: left; }
+.ar-attachment-list li > svg, .ar-message-attachments svg { flex: 0 0 auto; }
+.ar-attachment-list li > span, .ar-message-attachments span { display: block; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.ar-attachment-list strong { display: block; font-weight: 500; }
+.ar-attachment-list small, .ar-message-attachments small { display: block; margin-top: 3px; color: hsl(var(--muted-foreground)); font-size: 11px; }
+.ar-attachment-list button, .ar-attachment-modal header button { display: grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; border: 0; background: transparent; color: inherit; cursor: pointer; border-radius: 6px; }
+.ar-message-attachments button { width: 100%; cursor: pointer; }
+.ar-attachment-hint { font-size: 10px; color: hsl(var(--muted-foreground)); line-height: 1.5; margin: 4px 0 8px; }
+.ar-attachment-error { color: hsl(var(--destructive)); font-size: 12px; margin: 8px 0; white-space: pre-line; }
+/* The preview is portaled to <body>; pointer-events and visibility are reset anyway so no host or panel rule
+   (a closed panel is pointer-events: none) can leave a modal that ignores clicks (card jwtf934w01te). */
+.ar-attachment-modal[open] { pointer-events: auto; visibility: visible; }
+.ar-attachment-modal { width: min(640px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow: auto; margin: auto; padding: 20px; border: 0; border-radius: 20px; background: hsl(var(--background)); box-shadow: 0 24px 60px -20px rgb(0 0 0 / 45%); color: hsl(var(--foreground)); font: inherit; }
+.ar-attachment-modal::backdrop { background: rgb(0 0 0 / 55%); }
+.ar-attachment-modal header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; overflow-wrap: anywhere; }
+.ar-attachment-modal img { display: block; max-width: 100%; max-height: 65dvh; object-fit: contain; margin: auto; }
+.ar-attachment-modal pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.6 ui-monospace, monospace; }
+.ar-attachment-modal a { display: flex; align-items: center; gap: 8px; width: fit-content; margin-top: 20px; color: inherit; text-decoration: underline; }
+/* A file past its date (card 6831gtx4dop2): no longer a control, still legible.
+   The id in :is() outranks the generic disabled-control rule in ui-surfaces.css. */
+:is(#alpharecall-admin-app, #alpharecall-chat-root, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-message-attachments button[data-expired] {
+  cursor: not-allowed;
+  background: transparent;
+  color: var(--ar-ink-2, hsl(var(--muted-foreground)));
+  outline: 1px dashed var(--ar-fill-2, hsl(var(--border)));
+  outline-offset: -1px;
+}

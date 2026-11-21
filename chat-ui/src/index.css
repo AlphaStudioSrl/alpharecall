@@ -1,0 +1,738 @@
+@import "./ui-surfaces.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Animated icons (lucide-animated): the vendored components wrap a fixed-size
+   <svg> in a <div class="ar-aicon ...">. These rules let the wrapper be sized
+   by the same Tailwind classes used on plain lucide icons (h-4 w-4 / size-4),
+   while the inner svg fills the box. Declared in @layer components so the
+   utilities layer (h-, w-, size- classes) always wins over the 1em default. */
+@layer components {
+  .ar-aicon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 1em;
+    height: 1em;
+    line-height: 0;
+  }
+  .ar-aicon > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Hide scrollbar but keep scrollable (cross-browser + iOS) */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+:where(#alpharecall-chat-root, .lp-root, [data-ar-portal]) {
+  --radius: 18px;
+  --background: 0 0% 100%;
+  --foreground: 0 0% 7%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 7%;
+  --primary: 165 82% 35%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 220 14% 96%;
+  --muted-foreground: 220 8% 46%;
+  --accent: 220 14% 96%;
+  --accent-foreground: 0 0% 7%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: var(--ar-focus);
+}
+
+.ar-chat-shell[data-theme="dark"] {
+  --background: 0 0% 8%;
+  --foreground: 0 0% 96%;
+  --card: 0 0% 10%;
+  --card-foreground: 0 0% 96%;
+  --muted: 0 0% 14%;
+  --muted-foreground: 0 0% 65%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+}
+
+.ar-chat-shell {
+  --color-background: hsl(var(--background));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+}
+
+/* FAQ accordion animations */
+@keyframes ar-accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes ar-accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+@keyframes ar-faq-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ar-faq-scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes ar-faq-slide-in {
+  from { opacity: 0; transform: translateX(18px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes ar-faq-slide-back {
+  from { opacity: 0; transform: translateX(-18px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.ar-chat-shell [role="region"][data-state="open"][data-orientation] {
+  animation: ar-accordion-down 0.35s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  overflow: hidden;
+}
+.ar-chat-shell [role="region"][data-state="closed"][data-orientation] {
+  animation: ar-accordion-up 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  overflow: hidden;
+}
+
+/* FAQ item micro-interactions — no hover color */
+.ar-chat-shell [data-radix-collection-item] {
+  transition: none;
+}
+.ar-chat-shell [data-radix-collection-item]:hover {
+  background-color: transparent;
+}
+.ar-chat-shell [data-radix-collection-item][data-state="open"] {
+  background-color: transparent;
+}
+
+/* Stagger fade-in for FAQ items */
+.ar-faq-fade-in {
+  animation: ar-faq-fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ar-faq-scale-in {
+  animation: ar-faq-scale-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ar-faq-slide-in {
+  animation: ar-faq-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ar-faq-slide-back {
+  animation: ar-faq-slide-back 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+body.ar-chat-host {
+  --ar-chat-panel-width: 0px;
+  transition: padding var(--ar-page-duration, 260ms) cubic-bezier(0.22, 1, 0.36, 1);
+  box-sizing: border-box;
+}
+
+body.ar-chat-host.ar-chat-no-transition {
+  transition: none !important;
+}
+
+body.ar-chat-host.ar-chat-open-right {
+  padding-right: var(--ar-chat-panel-width);
+}
+
+body.ar-chat-host.ar-chat-open-left {
+  padding-left: var(--ar-chat-panel-width);
+}
+
+.ar-chat-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 9998;
+}
+
+.ar-chat-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Launcher Animations ── */
+@keyframes ar-pulse {
+  0%   { box-shadow: 0 18px 40px rgba(15,23,42,0.25), 0 0 0 0 var(--ar-pulse-color, rgba(24,119,242,0.5)); }
+  70%  { box-shadow: 0 18px 40px rgba(15,23,42,0.25), 0 0 0 14px var(--ar-pulse-color, rgba(24,119,242,0)); }
+  100% { box-shadow: 0 18px 40px rgba(15,23,42,0.25), 0 0 0 0 var(--ar-pulse-color, rgba(24,119,242,0)); }
+}
+@keyframes ar-bounce {
+  0%, 100% { transform: translateY(0); }
+  25%      { transform: translateY(-8px); }
+  50%      { transform: translateY(0); }
+  75%      { transform: translateY(-4px); }
+}
+@keyframes ar-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  15%      { transform: rotate(-12deg); }
+  30%      { transform: rotate(10deg); }
+  45%      { transform: rotate(-8deg); }
+  60%      { transform: rotate(5deg); }
+  75%      { transform: rotate(-3deg); }
+}
+@keyframes ar-breathe {
+  0%, 100% { box-shadow: 0 18px 40px rgba(15,23,42,0.25); }
+  50%      { box-shadow: 0 24px 50px rgba(15,23,42,0.40); }
+}
+@keyframes ar-rubberBand {
+  0%   { transform: scaleX(1) scaleY(1); }
+  30%  { transform: scaleX(1.15) scaleY(0.8); }
+  40%  { transform: scaleX(0.85) scaleY(1.15); }
+  50%  { transform: scaleX(1.05) scaleY(0.92); }
+  65%  { transform: scaleX(0.98) scaleY(1.02); }
+  100% { transform: scaleX(1) scaleY(1); }
+}
+@keyframes ar-teaser-in {
+  0%   { transform: translateY(8px) scale(0.9); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes ar-scale-in {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Animation classes applied to .ar-chat-launcher */
+.ar-chat-launcher[data-animation="pulse"] {
+  animation: ar-pulse 2s ease-in-out infinite;
+}
+.ar-chat-launcher[data-animation="bounce"] {
+  animation: ar-bounce 1.2s ease-in-out infinite;
+}
+.ar-chat-launcher[data-animation="wiggle"] {
+  animation: ar-wiggle 0.7s ease-in-out;
+  animation-iteration-count: 3;
+}
+.ar-chat-launcher[data-animation="breathe"] {
+  animation: ar-breathe 3s ease-in-out infinite;
+}
+.ar-chat-launcher[data-animation="rubberBand"] {
+  animation: ar-rubberBand 0.9s ease;
+  animation-iteration-count: 2;
+}
+.ar-chat-launcher[data-animation="none"] {
+  animation: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ar-chat-panel {
+  /* Reset theme styles that may leak from WordPress themes */
+  margin: 0 !important;
+  padding: 0 !important;
+  outline: none !important;
+  box-shadow: none;
+  border: none;
+  background: hsl(var(--background));
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Sidepanel: slide in from edge */
+.ar-chat-panel[data-widget-style="sidepanel"] {
+  transform: translate3d(120%, 0, 0);
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+.ar-chat-panel[data-widget-style="sidepanel"][data-position="left"] {
+  transform: translate3d(-120%, 0, 0);
+}
+
+.ar-chat-panel[data-widget-style="sidepanel"][data-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+/* When restoring state from a previous session (page navigation),
+   skip all slide/fade animations so the panel appears instantly. */
+.ar-chat-panel[data-restoring="true"] {
+  transition: none !important;
+}
+
+.ar-chat-panel[data-open="true"] .ar-chat-animate {
+  animation: ar-chat-fade-slide 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ar-chat-panel[data-restoring="true"] .ar-chat-animate {
+  animation: none !important;
+}
+
+.ar-chat-panel[data-open="true"] .ar-chat-animate:nth-child(2) {
+  animation-delay: 0.06s;
+}
+
+.ar-chat-panel[data-open="true"] .ar-chat-animate:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+@keyframes ar-chat-fade-slide {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Keep the widget controls below WordPress's fixed admin toolbar. Logged-in
+   editors are legitimate front-end widget users too, especially while they
+   preview configuration changes. WordPress uses a taller bar below 783px. */
+body.admin-bar .ar-chat-panel[data-widget-style="sidepanel"]:not([data-docked]) {
+  top: 32px !important;
+  height: calc(100dvh - 32px) !important;
+}
+
+@media screen and (max-width: 782px) {
+  body.admin-bar .ar-chat-panel[data-widget-style="sidepanel"]:not([data-docked]) {
+    top: 46px !important;
+    bottom: 0 !important;
+    height: auto !important;
+  }
+  /* The open panel owns the screen on phones: the page behind must not
+     scroll under it (see the overscroll note in widget-design.css). */
+  html.ar-chat-open,
+  html.ar-chat-open body {
+    overflow: hidden !important;
+    overscroll-behavior: none;
+  }
+}
+
+.ar-ai-tool-stack {
+  display: grid;
+  gap: 12px;
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.ar-ai-tool {
+  border: 0;
+  border-radius: 16px;
+  padding: 14px;
+  background: hsl(var(--muted));
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.ar-ai-tool-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ar-ai-tool-pill {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 0;
+  background: hsl(var(--ar-control));
+  color: hsl(var(--muted-foreground));
+}
+
+.ar-ai-tool-state {
+  font-size: 11px;
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+}
+
+.ar-ai-tool-state-error {
+  color: hsl(var(--destructive));
+}
+
+.ar-ai-tool-badge {
+  align-self: flex-start;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+
+.ar-ai-tool-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ar-ai-tool-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.ar-ai-tool-note {
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  border-radius: 12px;
+  background: hsl(var(--muted) / 0.6);
+  padding: 10px 12px;
+  color: hsl(var(--foreground));
+}
+
+.ar-ai-tool-note-label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+.ar-ai-tool-note-body {
+  font-size: 13px;
+  color: hsl(var(--foreground));
+}
+
+.ar-ai-tool-subtle {
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+}
+
+.ar-ai-tool-lines {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: hsl(var(--muted) / 0.5);
+}
+
+.ar-ai-tool-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.ar-ai-tool-line-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: hsl(var(--muted-foreground));
+}
+
+.ar-ai-tool-line-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+.ar-ai-tool-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.ar-ai-tool-action-btn {
+  border-radius: 999px;
+  font-size: 12px;
+  height: 30px;
+  padding: 0 12px;
+}
+
+.ar-ai-tool-action-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.ar-ai-tool-input-field {
+  height: 32px;
+  border-radius: 999px;
+  border: 0;
+  background: hsl(var(--ar-control));
+  padding: 0 12px;
+  font-size: 12px;
+  min-width: 160px;
+  pointer-events: auto;
+}
+
+.ar-ai-tool-input pre {
+  background: hsl(var(--muted));
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
+.ar-ai-tool-output {
+  font-size: 13px;
+}
+
+.ar-ai-tool-error {
+  color: hsl(var(--destructive));
+  font-size: 12px;
+}
+
+.ar-ai-tool-empty {
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+.ar-chat-tools-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.ar-chat-tool-card {
+  border: 0;
+  border-radius: 16px;
+  padding: 12px;
+  background: hsl(var(--muted));
+}
+
+.ar-chat-tool-card a {
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
+
+.ar-chat-product-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.ar-chat-product-card {
+  border-radius: 16px;
+  border: 0;
+  padding: 12px;
+  background: hsl(var(--muted));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 8%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ar-chat-product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgb(0 0 0 / 12%);
+}
+
+.ar-chat-product-card img {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.ar-chat-product-card .ar-chat-product-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+}
+
+.ar-chat-helpdesk-item {
+  border: 0;
+  background: hsl(var(--ar-control));
+  border-radius: 16px;
+  padding: 12px;
+  text-align: left;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.ar-chat-helpdesk-item:hover {
+  background: hsl(var(--ar-control-hover));
+  transform: translateY(-1px);
+}
+
+
+
+@layer base {
+  :where(#alpharecall-chat-root, .lp-root, [data-ar-portal]) {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  :is(#alpharecall-chat-root, .ar-chat-shell, .lp-root, [data-ar-portal]).dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+
+
+/* ── Popup widget style ── */
+.ar-chat-panel[data-widget-style="popup"] {
+  /* Scale-up animation instead of slide-in */
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.92) translateY(12px);
+  transform-origin: bottom right;
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.35s ease;
+}
+
+.ar-chat-panel[data-widget-style="popup"][data-position="left"] {
+  transform-origin: bottom left;
+}
+
+.ar-chat-panel[data-widget-style="popup"][data-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
+}
+
+/* Override the sidepanel slide transform for popup */
+.ar-chat-panel[data-widget-style="popup"][data-open="false"] {
+  transform: scale(0.92) translateY(12px);
+}
+
+/* Skip restoring transition override for popup (no slide to skip) */
+.ar-chat-panel[data-widget-style="popup"][data-restoring="true"] {
+  transition: none;
+}
+
+/* Invisible overlay for popup desktop (just captures outside clicks) */
+.ar-chat-overlay--popup {
+  background: transparent !important;
+}
+
+@layer base {
+  .ar-chat-shell *,
+  .ar-chat-shell *::before,
+  .ar-chat-shell *::after {
+    @apply border-border;
+  }
+}
+
+.ar-ai-tool,
+.ar-chat-tool-card,
+.ar-chat-product-card,
+.ar-chat-helpdesk-item {
+  border: none;
+  background: color-mix(in srgb, hsl(var(--muted)) 55%, hsl(var(--background)));
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+}
+
+.ar-chat-helpdesk-item:hover {
+  background: color-mix(in srgb, hsl(var(--primary)) 8%, hsl(var(--background)));
+  transform: translateY(-1px);
+}
+
+.ar-ai-tool-pill {
+  border: none;
+  background: hsl(var(--muted) / 0.7);
+}
+
+.ar-ai-tool-input-field {
+  border: none;
+  background: hsl(var(--muted) / 0.7);
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .ar-status-dot,
+  .ar-starter-chip,
+  .ar-chat-launcher {
+    animation: none !important;
+  }
+  .ar-chat-panel,
+  .ar-starter-chip,
+  .ar-chat-launcher {
+    transition-duration: 0.01ms !important;
+  }
+}

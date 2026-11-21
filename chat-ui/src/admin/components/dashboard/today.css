@@ -1,0 +1,219 @@
+/* Oggi (dashboard-page.tsx). Mockup: oggi A "Today" (.x-hello, .x-d, .x-box, .x-feed). */
+
+#alpharecall-admin-app .ar-today {
+  padding: 14px 16px 8px;
+}
+#alpharecall-admin-app .ar-today-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+}
+#alpharecall-admin-app .ar-today-main { min-width: 0; }
+#alpharecall-admin-app .ar-today-hello { margin-bottom: 26px; }
+#alpharecall-admin-app .ar-today-hello .ark-head-text { gap: 4px; }
+#alpharecall-admin-app .ar-today-stale {
+  margin: -14px 0 16px;
+  font-size: 12.5px;
+  color: var(--ar-ink-3);
+}
+#alpharecall-admin-app .ar-today-stale button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ar-ink-2);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+/* ─── Decisions (x-d) ─── */
+#alpharecall-admin-app .ar-today-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#alpharecall-admin-app .ar-today-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  margin: 0;
+  border-radius: 16px;
+}
+#alpharecall-admin-app .ar-today-item.is-on { background: var(--ar-fill); }
+#alpharecall-admin-app .ar-today-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin: 0 2px;
+}
+#alpharecall-admin-app .ar-today-item.is-setup .ar-today-icon { color: var(--ar-ink-3); }
+#alpharecall-admin-app .ar-today-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+#alpharecall-admin-app .ar-today-text b {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--ar-ink);
+}
+#alpharecall-admin-app .ar-today-text small {
+  color: var(--ar-ink-2);
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#alpharecall-admin-app .ar-today-act {
+  flex: none;
+  height: 32px;
+  padding: 0 13px;
+  font-size: 12.5px;
+}
+#alpharecall-admin-app .ar-today-item.is-setup .ar-today-act {
+  background: var(--ar-fill);
+  color: var(--ar-ink-2);
+}
+#alpharecall-admin-app .ar-today-item.is-setup .ar-today-act:hover { color: var(--ar-ink); background: var(--ar-fill-2); }
+#alpharecall-admin-app .ar-today-empty {
+  align-items: flex-start;
+  text-align: left;
+  padding: 18px 14px;
+}
+#alpharecall-admin-app .ar-today-empty .ark-empty-icon { color: var(--ar-accent); }
+#alpharecall-admin-app .ar-today-error {
+  display: block;
+  margin-top: 6px;
+  color: var(--ar-red);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+/* ─── Right column ─── */
+#alpharecall-admin-app .ar-today-side {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+}
+#alpharecall-admin-app .ar-today-week {
+  background: var(--ar-fill);
+  border-radius: 20px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+#alpharecall-admin-app .ar-today-week-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+#alpharecall-admin-app .ar-today-week-head h2 {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ar-ink);
+  letter-spacing: -0.01em;
+}
+/* x-mini: a small track on fill-2, the chosen segment white. */
+#alpharecall-admin-app .ar-today-mini.ark-seg {
+  background: var(--ar-fill-2);
+  border-radius: 8px;
+  padding: 2px;
+}
+#alpharecall-admin-app .ar-today-mini.ark-seg > button {
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+#alpharecall-admin-app .ark-on-fill .ar-today-mini.ark-seg > button[data-on] {
+  background: var(--ar-panel);
+  box-shadow: var(--ar-sh-selected) !important;
+}
+#alpharecall-admin-app .ar-today-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 12px;
+  margin: 0;
+}
+#alpharecall-admin-app .ar-today-kpis > div {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  min-width: 0;
+}
+#alpharecall-admin-app .ar-today-kpis dd {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  color: var(--ar-ink);
+}
+#alpharecall-admin-app .ar-today-kpis dt {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--ar-ink-2);
+}
+#alpharecall-admin-app .ar-spark { width: 100%; line-height: 0; }
+#alpharecall-admin-app .ar-spark svg { display: block; overflow: visible; }
+#alpharecall-admin-app .ar-spark-area { fill: var(--ar-accent-soft); }
+#alpharecall-admin-app .ar-spark-line { fill: none; stroke: var(--ar-accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+#alpharecall-admin-app .ar-spark-dot { fill: var(--ar-accent); }
+
+#alpharecall-admin-app .ar-today-usage {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 4px;
+  font-size: 12.5px;
+  color: var(--ar-ink-2);
+}
+#alpharecall-admin-app .ar-today-usage-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+#alpharecall-admin-app .ar-today-usage-row > span { flex: 1; min-width: 0; }
+#alpharecall-admin-app .ar-today-usage-link {
+  color: var(--ar-ink-2);
+  text-decoration: none;
+  font-weight: 500;
+}
+#alpharecall-admin-app .ar-today-usage-link:hover { color: var(--ar-ink); text-decoration: underline; text-underline-offset: 3px; }
+
+#alpharecall-admin-app .ar-today-recent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 4px;
+}
+#alpharecall-admin-app .ar-today-recent .ark-lbl { font-weight: 400; }
+#alpharecall-admin-app .ar-today-quiet { font-size: 12.5px; color: var(--ar-ink-3); }
+
+/* ─── Narrow ─── */
+@container ar-page (max-width: 900px) {
+  #alpharecall-admin-app .ar-today-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+}
+@container ar-page (max-width: 560px) {
+  #alpharecall-admin-app .ar-today { padding: 4px 0 0; }
+  #alpharecall-admin-app .ar-today-hello { margin-bottom: 18px; }
+  #alpharecall-admin-app .ar-today-hello .ark-head-title { font-size: 27px; }
+  #alpharecall-admin-app .ar-today-item { padding: 12px 10px; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+  #alpharecall-admin-app .ar-today-icon { margin-top: 1px; }
+  #alpharecall-admin-app .ar-today-text { flex-basis: calc(100% - 44px); }
+  #alpharecall-admin-app .ar-today-text small { white-space: normal; }
+  #alpharecall-admin-app .ar-today-act { margin-left: 32px; }
+  #alpharecall-admin-app .ar-today-week { padding: 18px; border-radius: 18px; }
+}

@@ -1,0 +1,309 @@
+/* ═══════════════════════════════════════════════════
+   Widget editor (chat-customizer.tsx)
+   Settings rows on the left in their own scroll, the live preview stage on
+   the right at full height. Below ~860px the two stack: the preview first,
+   then the rows, and the whole page scrolls.
+   ═══════════════════════════════════════════════════ */
+
+#alpharecall-admin-app .we-page {
+  display: grid;
+  grid-template-columns: minmax(340px, 440px) minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+#alpharecall-admin-app .we-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: 28px 30px 40px;
+}
+#alpharecall-admin-app .we-settings > .ark-head { margin-bottom: -4px; }
+#alpharecall-admin-app .we-preview { margin: 8px; min-height: 0; }
+
+@container ar-page (max-width: 860px) {
+  #alpharecall-admin-app .we-page {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+  #alpharecall-admin-app .we-settings { overflow: visible; padding: 22px 18px 96px; }
+  #alpharecall-admin-app .we-preview { order: -1; flex: none; height: 600px; margin: 8px 8px 0; }
+}
+@container ar-page (max-width: 520px) {
+  #alpharecall-admin-app .we-settings { padding: 18px 12px 96px; }
+  #alpharecall-admin-app .we-preview { height: 540px; margin: 6px 6px 0; }
+}
+
+/* ─── Group action ("Riprendi dal sito") ─── */
+#alpharecall-admin-app .we-group-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  /* 24px tall to tap (WCAG 2.5.8), laid out as the 20px it looks. */
+  min-height: 24px;
+  padding: 2px 4px;
+  margin-block: -2px;
+  border-radius: 6px;
+  color: var(--ar-ink-2);
+  font-size: 12px;
+  background: transparent;
+  cursor: pointer;
+}
+#alpharecall-admin-app .we-group-link:hover:not(:disabled) { color: var(--ar-ink); }
+#alpharecall-admin-app .we-group-link:disabled { opacity: .6; cursor: default; }
+#alpharecall-admin-app .we-group-link svg { width: 13px; height: 13px; }
+
+/* ─── Rows ─── */
+#alpharecall-admin-app .we-row-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+#alpharecall-admin-app .we-row-control {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: none;
+  max-width: 100%;
+  margin-left: auto;
+}
+/* The label gives way to the control: it wraps, the control stays on one line. */
+#alpharecall-admin-app .we-settings .ark-row { flex-wrap: wrap; }
+#alpharecall-admin-app .we-settings .ark-row:not(.we-row-stack) > .ark-row-text { flex: 1 1 0; min-width: 84px; }
+#alpharecall-admin-app .we-row-control .ark-seg { flex-wrap: nowrap; }
+#alpharecall-admin-app .ark-row.we-row-stack {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+#alpharecall-admin-app .ark-row.we-row-stack > .ark-row-text { flex: none; }
+#alpharecall-admin-app .ark-row.we-row-stack > .ark-seg { align-self: flex-start; }
+#alpharecall-admin-app .we-row-disabled .ark-row-text { opacity: .55; }
+#alpharecall-admin-app .ark-row .ark-row-desc { margin-top: 1px; }
+#alpharecall-admin-app .ark-row :is(input:not([type="range"]):not([type="checkbox"]), textarea) {
+  background: var(--ar-panel);
+}
+#alpharecall-admin-app .we-row-actions { flex-wrap: wrap; gap: 8px; }
+#alpharecall-admin-app .we-note {
+  margin: -14px 4px 0;
+  color: var(--ar-ink-3);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* ─── Image fields ─── */
+#alpharecall-admin-app .we-image-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+/* Only a picture gets a round frame; with none the icon sits bare on the row. */
+#alpharecall-admin-app .we-image-row .ar-image-preview:not([data-empty]) { background: var(--ar-panel); }
+#alpharecall-admin-app .we-image-row .ar-image-preview[data-empty] { background: transparent; color: var(--ar-ink-3); }
+
+/* ─── Brand color ─── */
+/* The picker first, then the recently used colors (brand-color-choices.tsx).
+   Up to 1 + 8 swatches: they wrap on a phone instead of pushing the row wider. */
+#alpharecall-admin-app .we-swatches,
+#alpharecall-admin-app .we-swatch-list { display: flex; flex-wrap: wrap; gap: 6px; }
+#alpharecall-admin-app button.we-swatch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform .15s ease;
+}
+#alpharecall-admin-app button.we-swatch:hover { transform: scale(1.08); }
+#alpharecall-admin-app button.we-swatch svg { width: 13px; height: 13px; stroke-width: 3; }
+/* The picker's swatch: a hue wheel until a color of its own is chosen. The
+   wheel is a layer under the icon, so the focus tint (a background-image on
+   every control) does not wipe it out. */
+#alpharecall-admin-app button.we-swatch-custom { position: relative; isolation: isolate; }
+#alpharecall-admin-app button.we-swatch-custom:not([aria-pressed="true"]) { color: #fff; }
+#alpharecall-admin-app button.we-swatch-custom:not([aria-pressed="true"])::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(#f44, #fd3, #4c4, #3cf, #46f, #c4f, #f44);
+}
+#alpharecall-admin-app button.we-swatch-custom:not([aria-pressed="true"]):focus-visible::before {
+  background: linear-gradient(rgb(0 0 0 / 22%), rgb(0 0 0 / 22%)), conic-gradient(#f44, #fd3, #4c4, #3cf, #46f, #c4f, #f44);
+}
+#alpharecall-admin-app button.we-swatch-custom:not([aria-pressed="true"]) svg { filter: drop-shadow(0 0 1px rgb(0 0 0 / 60%)); }
+#alpharecall-admin-app .we-color { min-width: 0; }
+#alpharecall-admin-app .we-color > button { background: var(--ar-panel); }
+
+/* ─── Margins ─── */
+#alpharecall-admin-app .we-margins { display: inline-flex; gap: 8px; }
+#alpharecall-admin-app .we-margin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ar-ink-3);
+  font-size: 12px;
+}
+#alpharecall-admin-app .we-margin input { width: 68px; height: 32px; }
+
+/* ─── Launcher shapes ─── */
+#alpharecall-admin-app .we-shapes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+#alpharecall-admin-app button.we-shape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px 4px 9px;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--ar-ink-2);
+  font-size: 12px;
+  cursor: pointer;
+}
+#alpharecall-admin-app button.we-shape:hover { background: color-mix(in srgb, var(--ar-panel) 60%, transparent); }
+#alpharecall-admin-app button.we-shape[aria-pressed="true"] {
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  box-shadow: var(--ar-sh-panel);
+}
+#alpharecall-admin-app button.we-shape > div { max-width: 100%; overflow: hidden; white-space: nowrap; }
+@container ar-page (max-width: 400px) {
+  #alpharecall-admin-app .we-shapes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ─── Volume ─── */
+#alpharecall-admin-app .we-range { display: inline-flex; align-items: center; gap: 10px; }
+#alpharecall-admin-app .we-range input { width: 140px; height: 24px; accent-color: var(--ar-ink); }
+#alpharecall-admin-app .we-range output {
+  min-width: 3.2em;
+  text-align: right;
+  color: var(--ar-ink-2);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Visibility ─── */
+#alpharecall-admin-app .we-settings .ark-row.we-visibility > .ark-row-text { flex-basis: 100%; }
+#alpharecall-admin-app .we-visibility-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ar-ink-2);
+}
+#alpharecall-admin-app .we-legend {
+  padding: 0;
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--ar-ink);
+}
+#alpharecall-admin-app .we-checks { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+#alpharecall-admin-app .we-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--ar-ink);
+  cursor: pointer;
+}
+#alpharecall-admin-app .we-check input { accent-color: var(--ar-ink); width: 15px; height: 15px; }
+
+/* ─── Save bar (on the preview stage) ─── */
+/* Away from the widget's corner, and from the toasts at the bottom right. */
+#alpharecall-admin-app .we-savebar {
+  position: absolute;
+  z-index: 6;
+  left: 16px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: calc(100% - 24px);
+  padding: 6px 6px 6px 16px;
+  border-radius: 999px;
+  background: var(--ar-ink);
+  color: var(--ar-panel);
+  box-shadow: var(--ar-sh-float);
+  font-size: 13px;
+  white-space: nowrap;
+  animation: we-savebar-in .2s ease;
+}
+#alpharecall-admin-app .we-savebar > span { overflow: hidden; text-overflow: ellipsis; margin-right: 8px; }
+#alpharecall-admin-app .we-savebar button {
+  flex: none;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+}
+#alpharecall-admin-app .we-savebar button:disabled { opacity: .55; cursor: default; }
+#alpharecall-admin-app .we-savebar-ghost { background: transparent; color: color-mix(in srgb, var(--ar-panel) 75%, transparent); }
+#alpharecall-admin-app .we-savebar-ghost:hover:not(:disabled) { color: var(--ar-panel); }
+#alpharecall-admin-app .we-savebar-main { background: var(--ar-panel); color: var(--ar-ink); font-weight: 500; }
+#alpharecall-admin-app .we-stage[data-side="left"] .we-savebar { left: 50%; transform: translateX(-50%); }
+#alpharecall-admin-app .we-stage:has(.we-savebar) .we-stage-note { display: none; }
+@keyframes we-savebar-in { from { opacity: 0; translate: 0 8px; } }
+@container ar-page (max-width: 860px) {
+  /* The stage scrolls away on a narrow page; keep the bar on screen. */
+  #alpharecall-admin-app .we-savebar,
+  #alpharecall-admin-app .we-stage[data-side="left"] .we-savebar {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #alpharecall-admin-app .we-savebar { animation: none; }
+}
+
+/* ─── Suggested questions dialog (portal) ─── */
+/* Each question is its own soft tile; space, not a rule, sets them apart. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .we-starters {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .we-starters li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 12px;
+  border-radius: 11px;
+  background: var(--ar-fill);
+  font-size: 13.5px;
+  color: var(--ar-ink);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .we-starters li > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .we-starter-add { display: flex; gap: 8px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .we-starter-add input { flex: 1; min-width: 0; }
+
+/* Counter under a capped text field, with the reason an edit is held back. */
+#alpharecall-admin-app .we-text-limit { display: flex; align-items: baseline; justify-content: flex-end; gap: 10px; color: var(--ar-ink-3); font-size: 12px; line-height: 1.4; }
+#alpharecall-admin-app .we-text-limit small { font-size: 12px; flex: none; }
+#alpharecall-admin-app .we-text-limit[data-invalid] small,
+#alpharecall-admin-app .we-text-error { color: var(--ar-red); }
+#alpharecall-admin-app .we-text-error { flex: 1; text-align: left; }

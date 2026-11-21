@@ -1,0 +1,440 @@
+/* Messenger cards inside the Concierge thread: booking, request draft,
+   guided questions, price list, hand-off, feedback, ratings and the other
+   tool results. Built on the card kit in widget-design.css (.ar-card,
+   .ar-btn, .ar-field, sheets).
+
+   This file loads before widget-design.css, and ui-surfaces.css styles every
+   button/input with an ID-level selector, so every rule here is prefixed with
+   :is(#alpharecall-chat-root, .lp-root) (ID specificity, also for the admin
+   preview). Borderless: surfaces separate by fills. Icons sit bare. Inside a
+   thread card (--ar-fill) controls use --ar-panel; inside a sheet (--ar-panel)
+   they use --ar-fill; in dark mode both use --ar-fill-2. */
+
+/* ── Small shared pieces ───────────────────────────────────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+:is(#alpharecall-chat-root, .lp-root) .ar-card-text { margin: 0; color: var(--ar-ink-2); font-size: calc(13.5px * var(--ar-font-scale, 1)); line-height: 1.45; }
+:is(#alpharecall-chat-root, .lp-root) .ar-card-icon--ok { color: var(--ar-ok); }
+:is(#alpharecall-chat-root, .lp-root) .ar-card-icon--bad { color: var(--ar-red); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-card-icon--ok { color: var(--ar-ok); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-card-icon--bad { color: var(--ar-red); }
+:is(#alpharecall-chat-root, .lp-root) .ar-note {
+  margin: 0;
+  color: var(--ar-ink-3);
+  font-size: calc(12px * var(--ar-font-scale, 1));
+  line-height: 1.45;
+  text-align: center;
+}
+:is(#alpharecall-chat-root, .lp-root) .ar-note--start { text-align: left; }
+:is(#alpharecall-chat-root, .lp-root) .ar-live-dot {
+  width: 8px; height: 8px; flex: none; margin: 0 6px; border-radius: 50%;
+  background: var(--ar-live);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ar-live) 20%, transparent) !important;
+}
+
+/* Quiet text button ("Leggi tutto", "Salta e scrivi a Sofia", "Ricontattatemi"). */
+:is(#alpharecall-chat-root, .lp-root) button.ar-text-btn {
+  align-self: flex-start;
+  min-height: 32px;
+  margin: 0;
+  padding: 0 2px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ar-ink-2);
+  font: inherit;
+  font-size: calc(13px * var(--ar-font-scale, 1));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) button.ar-text-btn:hover:not(:disabled) { color: var(--ar-ink); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-text-btn--center { align-self: center; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-text-btn--brand { color: var(--ar-brand); font-weight: 500; text-decoration: none; }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-text-btn--brand { color: color-mix(in srgb, var(--ar-brand) 55%, #fff); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-text-btn:disabled { background: transparent; color: var(--ar-ink-3); }
+
+/* Bare icon button (pencil, chevrons, done). */
+:is(#alpharecall-chat-root, .lp-root) button.ar-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ar-ink-3);
+  cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) button.ar-icon-btn svg { width: 16px; height: 16px; stroke-width: 1.8; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-icon-btn:hover:not(:disabled) { color: var(--ar-ink); background: color-mix(in srgb, var(--ar-ink) 6%, transparent); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-icon-btn:disabled { background: transparent; color: var(--ar-ink-3); opacity: 0.35; }
+
+/* Round header button inside a full sheet (back), same as the sheet close. */
+:is(#alpharecall-chat-root, .lp-root) button.ar-round-btn {
+  display: grid; place-items: center; width: 34px; height: 34px; flex: none; margin: 0; padding: 0;
+  border: 0; border-radius: 50%; background: var(--ar-fill); color: var(--ar-ink-2); cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) button.ar-round-btn svg { width: 18px; height: 18px; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-round-btn:hover { color: var(--ar-ink); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-round-btn { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-round-btn-space { width: 34px; height: 34px; flex: none; }
+
+/* Buttons: sizes the kit does not have. */
+:is(#alpharecall-chat-root, .lp-root) .ar-btn.ar-btn--xl { min-height: 50px; border-radius: 16px; font-size: calc(15px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-btn.ar-btn--sm { min-height: 36px; padding: 0 12px; border-radius: 12px; font-size: calc(13px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-btn-row--main > :first-child:not(:last-child) { flex: 0 0 auto; }
+:is(#alpharecall-chat-root, .lp-root) .ar-btn-row--main > :last-child { flex: 1 1 auto; }
+/* A waiting primary explains itself ("Scrivi un commento per inviare"): muted, not the tenant color. */
+:is(#alpharecall-chat-root, .lp-root) :is(.ar-booking-sheet, .ar-flow-sheet, .ar-feedback-sheet) button.ar-btn--primary:disabled {
+  background: var(--ar-fill-2);
+  color: var(--ar-ink-3);
+  opacity: 1;
+  cursor: not-allowed;
+  filter: none;
+}
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) :is(.ar-booking-sheet, .ar-flow-sheet, .ar-feedback-sheet) button.ar-btn--primary:disabled { background: var(--ar-fill-2); }
+
+/* Tinted pill action on a card ("Chiedi", "Vedi"). A button, so it keeps its fill. */
+:is(#alpharecall-chat-root, .lp-root) .ar-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ar-brand-soft);
+  color: var(--ar-brand);
+  font: inherit;
+  font-size: calc(12.5px * var(--ar-font-scale, 1));
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) .ar-chip:hover { background: color-mix(in srgb, var(--ar-brand) 18%, var(--ar-panel)); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-chip {
+  background: color-mix(in srgb, var(--ar-brand) 22%, var(--ar-fill-2));
+  color: color-mix(in srgb, var(--ar-brand) 45%, #fff);
+}
+
+/* Fields: a taller comment box and a hint line. */
+:is(#alpharecall-chat-root, .lp-root) .ar-field.ar-field--tall { min-height: 92px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-field textarea { resize: none; field-sizing: content; min-height: 44px; max-height: 160px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-field-hint { color: var(--ar-ink-3); font-size: calc(12px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-card .ar-field { background: var(--ar-fill-2); }
+/* Those fields already rest on fill-2, so focus lifts them one more step. */
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) :is(.ar-card, .ar-sheet) .ar-field:has(:focus) { background: color-mix(in srgb, var(--ar-ink) 5%, var(--ar-fill-2)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-field select { appearance: auto; }
+
+/* Sheet extras. */
+:is(#alpharecall-chat-root, .lp-root) .ar-sheet-title.ar-sheet-title--sm { font-size: calc(17px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-sheet-head.ar-sheet-head--center { align-items: center; padding: 6px 36px 0; text-align: center; gap: 4px; }
+
+/* ── Booking (w-booking B) ─────────────────────────────────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-days { display: flex; gap: 6px; min-width: 0; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-day {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  margin: 0;
+  padding: 7px 0;
+  border: 0;
+  border-radius: 14px;
+  background: var(--ar-panel);
+  color: var(--ar-ink-2);
+  font: inherit;
+  font-size: calc(11.5px * var(--ar-font-scale, 1));
+  font-weight: 400;
+  line-height: 1.3;
+  cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) button.ar-day b { color: var(--ar-ink); font-size: calc(16px * var(--ar-font-scale, 1)); font-weight: 500; font-variant-numeric: tabular-nums; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-day:hover { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-sheet button.ar-day { background: var(--ar-fill); }
+:is(#alpharecall-chat-root, .lp-root) .ar-sheet button.ar-day:hover { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-day[aria-checked="true"],
+:is(#alpharecall-chat-root, .lp-root) .ar-sheet button.ar-day[aria-checked="true"] { background: var(--ar-ink); color: var(--ar-panel); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-day[aria-checked="true"] b { color: var(--ar-panel); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-day { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-day[aria-checked="true"] { background: var(--ar-ink); color: var(--ar-fill); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-day[aria-checked="true"] b { color: var(--ar-fill); }
+
+:is(#alpharecall-chat-root, .lp-root) .ar-booking-month { display: flex; align-items: center; justify-content: space-between; min-height: 32px; font-size: calc(13.5px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-booking-month b { font-weight: 500; }
+:is(#alpharecall-chat-root, .lp-root) .ar-booking-pager { display: flex; gap: 2px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-booking-day { margin: 0; color: var(--ar-ink-3); font-size: calc(12.5px * var(--ar-font-scale, 1)); }
+
+:is(#alpharecall-chat-root, .lp-root) .ar-slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-slot {
+  margin: 0;
+  padding: 10px 0;
+  border: 0;
+  border-radius: 12px;
+  background: var(--ar-fill);
+  color: var(--ar-ink);
+  font: inherit;
+  font-size: calc(14px * var(--ar-font-scale, 1));
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) button.ar-slot:hover { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-slot[aria-checked="true"] { background: var(--ar-brand); color: var(--ar-brand-ink); font-weight: 500; }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-slot:not([aria-checked="true"]) { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-booking-sheet { gap: 12px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-booking-sheet .ar-btn--lg { margin-top: 2px; }
+
+/* ── Request draft (w-draft B) ─────────────────────────────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-card.ar-draft-card { gap: 4px; padding: 6px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-card > .ar-card-head { padding: 10px 10px 4px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-rows { display: flex; flex-direction: column; gap: 2px; margin: 0; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-row { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 7px 6px 7px 10px; border-radius: 12px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-row[data-editing] { padding: 2px 6px 2px 0; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-text { display: flex; flex: 1 1 auto; flex-direction: column; gap: 1px; min-width: 0; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-text dd { display: flex; flex-direction: column; align-items: flex-start; margin: 0; min-width: 0; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-value { color: var(--ar-ink); font-size: calc(14.5px * var(--ar-font-scale, 1)); line-height: 1.4; overflow-wrap: anywhere; white-space: pre-wrap; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-value[data-clamped] { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-edit { flex: 1 1 auto; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-actions { display: flex; flex-direction: column; gap: 8px; padding: 6px 6px 6px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-sending {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 6px 6px 6px 10px; color: var(--ar-ink-2); font-size: calc(13.5px * var(--ar-font-scale, 1)); font-variant-numeric: tabular-nums;
+}
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-card[data-state="sent"] .ar-draft-row { padding-top: 5px; padding-bottom: 5px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-draft-card .ar-draft-error { margin: 0; padding: 4px 10px 0; color: var(--ar-red); }
+
+/* ── Guided questions (w-flow B) ───────────────────────────────────────── */
+/* The step sheet takes the whole panel body; the chat header stays above it. */
+:is(#alpharecall-chat-root, .lp-root) .ar-sheet.ar-sheet--full { height: 100%; gap: 0; padding: 12px 18px 16px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-sheet.ar-sheet--full > .ar-sheet-handle { display: none; }
+:is(#alpharecall-chat-root, .lp-root) .ar-flow-top { display: flex; align-items: center; gap: 10px; min-height: 34px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-flow-heading { display: flex; flex: 1 1 auto; flex-direction: column; align-items: center; min-width: 0; line-height: 1.3; text-align: center; }
+:is(#alpharecall-chat-root, .lp-root) .ar-flow-heading b { font-size: calc(14px * var(--ar-font-scale, 1)); font-weight: 600; }
+:is(#alpharecall-chat-root, .lp-root) .ar-flow-heading small { color: var(--ar-ink-3); font-size: calc(12.5px * var(--ar-font-scale, 1)); font-variant-numeric: tabular-nums; }
+:is(#alpharecall-chat-root, .lp-root) .ar-progress { display: flex; gap: 4px; margin-top: 12px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-progress i { flex: 1 1 0; height: 4px; border-radius: 4px; background: var(--ar-fill-2); transition: background-color var(--ar-duration, 260ms) ease; }
+:is(#alpharecall-chat-root, .lp-root) .ar-progress i[data-on] { background: var(--ar-brand); }
+:is(#alpharecall-chat-root, .lp-root) .ar-flow-body {
+  display: flex; flex: 1 1 auto; flex-direction: column; gap: 14px; min-height: 0; padding: 26px 0 14px;
+  animation: ar-message-enter var(--ar-duration, 260ms) var(--ar-ease, ease) both;
+}
+:is(#alpharecall-chat-root, .lp-root) .ar-flow-question { margin: 0 0 4px; font-size: calc(24px * var(--ar-font-scale, 1)); font-weight: 600; line-height: 1.15; letter-spacing: -0.035em; }
+:is(#alpharecall-chat-root, .lp-root) .ar-options { display: flex; flex-direction: column; gap: 8px; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  margin: 0;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--ar-fill);
+  color: var(--ar-ink);
+  font: inherit;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) button.ar-option:hover:not(:disabled) { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-option[aria-checked="true"] { background: var(--ar-brand-soft); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-option { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-option[aria-checked="true"] { background: color-mix(in srgb, var(--ar-brand) 26%, var(--ar-fill-2)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-option-text { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; line-height: 1.35; }
+:is(#alpharecall-chat-root, .lp-root) .ar-option-text b { font-size: calc(15px * var(--ar-font-scale, 1)); font-weight: 500; overflow-wrap: anywhere; }
+:is(#alpharecall-chat-root, .lp-root) .ar-option-text small { color: var(--ar-ink-3); font-size: calc(12.5px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-option-check { width: 18px; height: 18px; flex: none; color: var(--ar-brand); stroke-width: 2.2; }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-option-check { color: color-mix(in srgb, var(--ar-brand) 50%, #fff); }
+:is(#alpharecall-chat-root, .lp-root) .ar-option-icon { display: grid; place-items: center; color: var(--ar-ink-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-flow-actions { display: flex; flex-direction: column; gap: 6px; padding-top: 6px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-flow-sheet .ar-flow-actions .ar-text-btn { text-decoration: none; color: var(--ar-ink-3); }
+
+/* ── Price list and carousels (w-prices B) ─────────────────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-prices { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+:is(#alpharecall-chat-root, .lp-root) .ar-prices-title { margin: 0; color: var(--ar-ink-2); font-size: calc(13px * var(--ar-font-scale, 1)); font-weight: 500; }
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+/* The row bleeds to the panel edge so the next card peeks in. */
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel-track {
+  display: flex;
+  gap: 8px;
+  margin: 0 -18px;
+  padding: 0 18px;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 18px;
+  scrollbar-width: none;
+}
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel-track::-webkit-scrollbar { display: none; }
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel-card {
+  display: flex;
+  flex: 0 0 170px;
+  flex-direction: column;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--ar-fill);
+  scroll-snap-align: start;
+}
+/* A product card is one link to the product page (the chip only labels it). */
+:is(#alpharecall-chat-root, .lp-root) a.ar-carousel-link {
+  display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0;
+  color: inherit; text-decoration: none; border-radius: inherit; cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) a.ar-carousel-link:hover .ar-carousel-title { text-decoration: underline; text-underline-offset: 2px; }
+:is(#alpharecall-chat-root, .lp-root) a.ar-carousel-link:focus-visible { outline: 2px solid var(--ar-brand); outline-offset: -2px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel-img { display: block; width: 100%; height: 100px; max-width: none; margin: 0; object-fit: cover; border-radius: 0; background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel-body { display: flex; flex: 1 1 auto; flex-direction: column; gap: 2px; padding: 11px 12px 12px; line-height: 1.3; }
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel-badge { align-self: flex-start; margin-bottom: 4px; color: var(--ar-ok); font-size: calc(11.5px * var(--ar-font-scale, 1)); font-weight: 500; }
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: calc(14px * var(--ar-font-scale, 1)); font-weight: 500; }
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel-sub { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--ar-ink-3); font-size: calc(12px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 10px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-carousel-price { font-size: calc(14px * var(--ar-font-scale, 1)); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+:is(#alpharecall-chat-root, .lp-root) .ar-dots { display: flex; justify-content: center; gap: 0; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-dot {
+  display: grid; place-items: center; width: 15px; height: 15px; margin: 0; padding: 0; border: 0; border-radius: 6px;
+  background: transparent; cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) button.ar-dot::before { content: ""; display: block; width: 5px; height: 5px; border-radius: 5px; background: var(--ar-fill-2); transition: width 200ms ease, background-color 200ms ease; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-dot[data-on] { width: 24px; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-dot[data-on]::before { width: 16px; background: var(--ar-brand); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-carousel-card { background: var(--ar-fill); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-dot::before { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-dot[data-on]::before { background: color-mix(in srgb, var(--ar-brand) 55%, #fff); }
+@media (max-width: 768px) {
+  #alpharecall-chat-root .ar-chat-shell .ar-carousel-track { margin: 0 -16px; padding: 0 16px; scroll-padding-inline: 16px; }
+}
+
+/* Plain tables: two columns, six rows, on the card fill. */
+:is(#alpharecall-chat-root, .lp-root) .ar-card.ar-table-card { gap: 10px; padding: 12px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-table-card > .ar-card-heading { padding: 2px 4px 0; }
+:is(#alpharecall-chat-root, .lp-root) .ar-rows { display: flex; flex-direction: column; margin: 0; padding: 4px; list-style: none; border-radius: 14px; background: var(--ar-panel); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-rows { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-row { display: flex; justify-content: space-between; gap: 12px; margin: 0; padding: 8px 10px; border-radius: 10px; font-size: calc(13.5px * var(--ar-font-scale, 1)); line-height: 1.4; }
+:is(#alpharecall-chat-root, .lp-root) .ar-row:nth-child(even) { background: var(--ar-fill); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-row:nth-child(even) { background: color-mix(in srgb, var(--ar-ink) 4%, transparent); }
+:is(#alpharecall-chat-root, .lp-root) .ar-row-label { min-width: 0; overflow-wrap: anywhere; }
+:is(#alpharecall-chat-root, .lp-root) .ar-row-value { flex: none; max-width: 55%; color: var(--ar-ink-2); font-variant-numeric: tabular-nums; text-align: right; overflow-wrap: anywhere; }
+:is(#alpharecall-chat-root, .lp-root) .ar-row--stack { flex-direction: column; gap: 3px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-row--stack .ar-row-label { font-weight: 500; }
+:is(#alpharecall-chat-root, .lp-root) .ar-row-details { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 0; color: var(--ar-ink-2); font-size: calc(12.5px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-row-details > div { display: flex; gap: 4px; min-width: 0; }
+:is(#alpharecall-chat-root, .lp-root) .ar-row-details dt { color: var(--ar-ink-3); }
+:is(#alpharecall-chat-root, .lp-root) .ar-row-details dt::after { content: ":"; }
+:is(#alpharecall-chat-root, .lp-root) .ar-row-details dd { margin: 0; font-variant-numeric: tabular-nums; }
+:is(#alpharecall-chat-root, .lp-root) .ar-table-card > .ar-text-btn { margin-left: 4px; }
+
+/* ── Hand-off (w-handoff B) ────────────────────────────────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-card.ar-handoff-card { gap: 10px; }
+@keyframes ar-wait-slide { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+:is(#alpharecall-chat-root, .lp-root) .ar-wait-bar { height: 4px; overflow: hidden; border-radius: 4px; background: var(--ar-panel); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-wait-bar { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-wait-bar i { display: block; width: 35%; height: 100%; border-radius: 4px; background: var(--ar-brand); animation: ar-wait-slide 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+:is(#alpharecall-chat-root, .lp-root) .ar-handoff-alt { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--ar-ink-2); font-size: calc(13px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-handoff-alt .ar-text-btn { align-self: center; }
+:is(#alpharecall-chat-root, .lp-root) .ar-handoff-form { display: grid; gap: 8px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-handoff-form .ar-note { margin: 0; text-align: left; }
+:is(#alpharecall-chat-root, .lp-root) .ar-handoff-form .ar-btn { justify-self: start; }
+:is(#alpharecall-chat-root, .lp-root) .ar-handoff-error { margin: 0; color: var(--ar-danger, #b42318); font-size: calc(12.5px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-handoff-new { justify-self: start; align-self: flex-start; }
+
+/* ── Feedback (w-feedback B) ───────────────────────────────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-stars { display: flex; justify-content: center; gap: 6px; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-star {
+  display: grid; place-items: center; width: 44px; height: 44px; margin: 0; padding: 0; border: 0; border-radius: 12px;
+  background: transparent; color: var(--ar-fill-2); cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) button.ar-star svg { width: 34px; height: 34px; fill: currentColor; stroke-width: 1; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-star[data-on] { color: var(--ar-brand); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-star:hover:not([data-on]) { color: color-mix(in srgb, var(--ar-brand) 30%, var(--ar-fill-2)); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-star { color: var(--ar-fill-2); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) button.ar-star[data-on] { color: color-mix(in srgb, var(--ar-brand) 55%, #fff); }
+:is(#alpharecall-chat-root, .lp-root) .ar-feedback-sheet .ar-feedback-done-icon { width: 32px; height: 32px; margin: 0 auto 6px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-feedback-sheet .ar-sheet-head .ar-stars--static { justify-content: center; margin-top: 10px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-feedback-sheet .ar-note[data-error] { color: var(--ar-red); margin: 0; }
+:is(#alpharecall-chat-root, .lp-root) .ar-stars--static { justify-content: flex-start; gap: 3px; color: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-stars--static svg { width: 18px; height: 18px; fill: currentColor; stroke-width: 1; }
+:is(#alpharecall-chat-root, .lp-root) .ar-stars--static svg[data-on] { color: var(--ar-brand); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-stars--static svg[data-on] { color: color-mix(in srgb, var(--ar-brand) 55%, #fff); }
+:is(#alpharecall-chat-root, .lp-root) .ar-card.ar-feedback-card { gap: 8px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-feedback-sheet .ar-sheet-form { gap: 12px; }
+
+/* ── Business details without a map ────────────────────────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-info-status,
+:is(#alpharecall-chat-root, .lp-root) .ar-info-line {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0 2px;
+  font-size: calc(13.5px * var(--ar-font-scale, 1)); line-height: 1.4;
+}
+:is(#alpharecall-chat-root, .lp-root) .ar-info-status b { font-weight: 500; }
+:is(#alpharecall-chat-root, .lp-root) .ar-info-status > span:last-child { color: var(--ar-ink-3); }
+:is(#alpharecall-chat-root, .lp-root) .ar-info-status .ar-live-dot { margin: 0 2px; }
+:is(#alpharecall-chat-root, .lp-root) :is(.ar-info-status, .ar-info-line) svg { width: 16px; height: 16px; flex: none; color: var(--ar-ink-3); }
+:is(#alpharecall-chat-root, .lp-root) .ar-info-card .ar-map-hours { padding: 0 2px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-info-card .ar-btn--secondary { background: var(--ar-panel); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-info-card .ar-btn--secondary { background: var(--ar-fill-2); }
+
+/* ── Events ────────────────────────────────────────────────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-events { min-width: 0; }
+:is(#alpharecall-chat-root, .lp-root) .ar-event-card { flex-basis: 200px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-event-card .ar-carousel-body { gap: 4px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-event-date { display: flex; align-items: center; gap: 6px; color: var(--ar-ink-2); font-size: calc(12px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) :is(.ar-event-date, .ar-event-place) svg { width: 14px; height: 14px; flex: none; color: var(--ar-ink-3); }
+:is(#alpharecall-chat-root, .lp-root) .ar-event-place { display: flex; align-items: center; gap: 5px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-event-seats { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; color: var(--ar-ink-3); font-size: calc(11.5px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-meter { display: block; height: 4px; overflow: hidden; border-radius: 4px; background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-meter i { display: block; height: 100%; border-radius: 4px; background: var(--ar-brand); }
+:is(#alpharecall-chat-root, .lp-root) .ar-spacer { flex: 1 1 auto; min-height: 8px; }
+
+/* ── Coupon ────────────────────────────────────────────────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-coupon-code { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--ar-panel); }
+:is(#alpharecall-chat-root .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"]) .ar-coupon-code { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-coupon-code code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: calc(14px * var(--ar-font-scale, 1)); font-weight: 600; letter-spacing: 0.06em; background: transparent; padding: 0; }
+:is(#alpharecall-chat-root, .lp-root) .ar-coupon-code b { color: var(--ar-ok); font-weight: 600; }
+
+/* ── Quick answers (clarify without a question flow) ───────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-choice-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-choice-chip {
+  min-height: 36px; margin: 0; padding: 0 14px; border: 0; border-radius: 999px;
+  background: var(--ar-fill); color: var(--ar-ink); font: inherit; font-size: calc(13.5px * var(--ar-font-scale, 1)); font-weight: 400; cursor: pointer;
+}
+:is(#alpharecall-chat-root, .lp-root) button.ar-choice-chip:hover:not(:disabled) { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-choice-chip:disabled { background: var(--ar-fill); color: var(--ar-ink-3); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-choice-chip[data-picked]:disabled { background: var(--ar-brand); color: var(--ar-brand-ink); font-weight: 500; }
+
+/* ── Forms on a card (search refinement, quick checkout) ───────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-card.ar-form-card { gap: 8px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-form-card > .ar-card-head { margin-bottom: 4px; }
+:is(#alpharecall-chat-root, .lp-root) .ar-form-card > .ar-btn { margin-top: 4px; }
+
+/* ── Answer ratings (thumbs next to copy and retry) ────────────────────── */
+:is(#alpharecall-chat-root, .lp-root) .ar-msg-actions button.ar-chat-action-icon.ar-rate[aria-pressed="true"][data-rate] {
+  background: transparent;
+  color: var(--ar-ink);
+  font-weight: inherit;
+}
+:is(#alpharecall-chat-root, .lp-root) .ar-msg-actions button.ar-chat-action-icon.ar-rate[aria-pressed="true"][data-rate] svg { fill: currentColor; fill-opacity: 1; }
+/* A tap leaves :hover stuck on touch screens; the pressed fill already says it was chosen. */
+@media (hover: none) {
+  :is(#alpharecall-chat-root, .lp-root) .ar-msg-actions button.ar-chat-action-icon.ar-rate[data-rate]:hover { background: transparent; }
+}
+:is(#alpharecall-chat-root, .lp-root) .ar-rate-note { align-self: center; margin-left: 6px; color: var(--ar-ink-3); font-size: calc(12px * var(--ar-font-scale, 1)); }
+:is(#alpharecall-chat-root, .lp-root) .ar-rate-note[data-error] { color: var(--ar-red); }
+
+@media (prefers-reduced-motion: reduce) {
+  :is(#alpharecall-chat-root, .lp-root) .ar-wait-bar i { animation: none; width: 100%; opacity: 0.35; }
+}

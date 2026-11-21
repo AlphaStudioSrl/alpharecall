@@ -1,0 +1,1764 @@
+{
+  "files": {
+    "js/admin-chunks/app-BJjbRkDI.js": {
+      "sources": [
+        "src/admin/app.tsx",
+        "src/admin/bones/content-documents.bones.json",
+        "src/admin/bones/conversions-agenda.bones.json",
+        "src/admin/bones/conversions-list.bones.json",
+        "src/admin/bones/dashboard-side.bones.json",
+        "src/admin/bones/dashboard.bones.json",
+        "src/admin/bones/helpdesk-list.bones.json",
+        "src/admin/bones/registry.ts",
+        "src/admin/bones/stats.bones.json",
+        "src/admin/bones/tools-appointments.bones.json",
+        "src/admin/bones/tools-escalations.bones.json",
+        "src/admin/bones/tools-leads.bones.json",
+        "src/admin/bones/tools-products.bones.json",
+        "src/admin/components/assistant/shared.tsx",
+        "src/admin/components/command-palette/command-palette.tsx",
+        "src/admin/components/conversations/inbox-format.ts",
+        "src/admin/components/conversions/collections.ts",
+        "src/admin/components/conversions/request-model.ts",
+        "src/admin/components/dashboard/dashboard-page.tsx",
+        "src/admin/components/dashboard/metrics.ts",
+        "src/admin/components/dashboard/questions.ts",
+        "src/admin/components/dashboard/sparkline.tsx",
+        "src/admin/components/dashboard/text.tsx",
+        "src/admin/components/dashboard/use-period-report.ts",
+        "src/admin/components/layout/admin-shell.tsx",
+        "src/admin/components/layout/background-jobs-indicator.tsx",
+        "src/admin/components/layout/frame-context.tsx",
+        "src/admin/components/layout/frame-events.ts",
+        "src/admin/components/layout/notification-bell.tsx",
+        "src/admin/components/layout/sub-nav.tsx",
+        "src/admin/components/layout/top-bar.tsx",
+        "src/admin/components/layout/use-inbox-count.ts",
+        "src/admin/components/layout/user-menu.tsx",
+        "src/admin/components/onboarding/onboarding-modal.tsx",
+        "src/admin/components/settings/live-widget-preview.tsx",
+        "src/admin/components/settings/widget-colors.ts",
+        "src/admin/components/shared/admin-toaster.tsx",
+        "src/admin/components/shared/bones.tsx",
+        "src/admin/components/shared/kit.tsx",
+        "src/admin/components/shared/loading-skeleton.tsx",
+        "src/admin/components/shared/scroll-row.tsx",
+        "src/admin/components/tutorial/tour-engine.ts",
+        "src/admin/components/tutorial/tour-steps.ts",
+        "src/admin/components/tutorial/tutorial-manager.tsx",
+        "src/admin/components/tutorial/use-tour.ts",
+        "src/admin/hooks/use-app-viewport.ts",
+        "src/admin/hooks/use-background-jobs.tsx",
+        "src/admin/hooks/use-conversations.ts",
+        "src/admin/hooks/use-conversions-data.ts",
+        "src/admin/hooks/use-dashboard.ts",
+        "src/admin/hooks/use-notifications.ts",
+        "src/admin/lib/chat-inbox.ts",
+        "src/admin/lib/format.ts",
+        "src/admin/lib/leave-guard.ts",
+        "src/admin/lib/nav-context.tsx",
+        "src/admin/lib/nav.ts",
+        "src/admin/lib/notification-preferences.ts",
+        "src/admin/lib/paging.ts",
+        "src/admin/lib/plan-usage.ts",
+        "src/admin/lib/poll.ts",
+        "src/admin/lib/record-fields.ts",
+        "src/admin/lib/site-theme.ts",
+        "src/admin/lib/wp-nav.ts",
+        "src/admin/main.tsx",
+        "src/components/ai-elements/shimmer.tsx",
+        "src/components/chat-tab-nav.tsx",
+        "src/components/chat/ai-disclosure.tsx",
+        "src/components/chat/attachments.tsx",
+        "src/components/chat/header-menu.tsx",
+        "src/components/chat/presentation.tsx",
+        "src/components/faq-tab.tsx",
+        "src/components/ui/button.tsx",
+        "src/components/ui/dialog.tsx",
+        "src/components/ui/dropdown-menu.tsx",
+        "src/components/ui/input.tsx",
+        "src/components/ui/popover.tsx",
+        "src/components/ui/select.tsx",
+        "src/components/ui/skeleton.tsx",
+        "src/components/ui/switch.tsx",
+        "src/components/ui/textarea.tsx",
+        "src/lib/active-tab-color.ts",
+        "src/lib/brand-color.ts",
+        "src/lib/chat-attachments.ts",
+        "src/lib/header-identity.ts",
+        "src/lib/host-theme.ts",
+        "src/lib/message-limit.ts",
+        "src/lib/widget-images.ts",
+        "src/lib/widget-limits.ts",
+        "src/sounds.ts",
+        "src/strings.ts",
+        "src/widget-design.css",
+        "src/widget-motion.ts"
+      ],
+      "packages": [
+        "@radix-ui/number@1.1.1",
+        "@radix-ui/react-context@1.1.2",
+        "@radix-ui/react-dialog@1.1.15",
+        "@radix-ui/react-dropdown-menu@2.1.16",
+        "@radix-ui/react-menu@2.1.16",
+        "@radix-ui/react-popover@1.1.15",
+        "@radix-ui/react-presence@1.1.5",
+        "@radix-ui/react-primitive@2.1.3",
+        "@radix-ui/react-roving-focus@1.1.11",
+        "@radix-ui/react-select@2.2.6",
+        "@radix-ui/react-slot@1.2.3",
+        "@radix-ui/react-slot@1.2.4",
+        "@radix-ui/react-switch@1.2.6",
+        "@radix-ui/react-use-previous@1.1.1",
+        "@radix-ui/react-visually-hidden@1.2.3",
+        "boneyard-js@1.9.0",
+        "class-variance-authority@0.7.1",
+        "lucide-react@0.469.0",
+        "react-dom@19.2.4",
+        "scheduler@0.27.0",
+        "sonner@2.0.7"
+      ]
+    },
+    "js/admin-chunks/building-CI2BsZ1j.js": {
+      "sources": [],
+      "packages": [
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/bundle-mjs-Wdbt-Exa.js": {
+      "sources": [],
+      "packages": [
+        "clsx@2.1.1",
+        "react@19.2.4",
+        "tailwind-merge@3.4.0"
+      ]
+    },
+    "js/admin-chunks/card-D4yEucHA.js": {
+      "sources": [
+        "src/components/ui/card.tsx"
+      ],
+      "packages": []
+    },
+    "js/admin-chunks/character-page-CDyUrzv9.js": {
+      "sources": [
+        "src/admin/components/assistant/character-page.tsx"
+      ],
+      "packages": []
+    },
+    "js/admin-chunks/chart-DKqUgOK2.js": {
+      "sources": [
+        "src/components/ui/chart.tsx"
+      ],
+      "packages": [
+        "d3-array@3.2.4",
+        "d3-color@3.1.0",
+        "d3-format@3.1.2",
+        "d3-interpolate@3.0.1",
+        "d3-path@3.1.0",
+        "d3-scale@4.0.2",
+        "d3-shape@3.2.0",
+        "d3-time-format@4.1.0",
+        "d3-time@3.1.0",
+        "decimal.js-light@2.5.1",
+        "eventemitter3@4.0.7",
+        "fast-equals@5.4.0",
+        "internmap@2.0.3",
+        "lodash@4.18.1",
+        "prop-types@15.8.1",
+        "react-is@18.3.1",
+        "react-smooth@4.0.4",
+        "recharts-scale@0.4.5",
+        "recharts@2.15.4",
+        "tiny-invariant@1.3.3",
+        "victory-vendor@36.9.2"
+      ]
+    },
+    "js/admin-chunks/circle-x-CN_XtYFn.js": {
+      "sources": [],
+      "packages": [
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/code-block-37QAKDTI-sFEzZU-C.js": {
+      "sources": [],
+      "packages": [
+        "streamdown@2.1.0"
+      ]
+    },
+    "js/admin-chunks/content-page-CV-u0v2g.js": {
+      "sources": [
+        "src/admin/components/content/business-info-section.tsx",
+        "src/admin/components/content/content-page.tsx",
+        "src/admin/components/content/sync-error-details.tsx",
+        "src/admin/hooks/use-documents.ts",
+        "src/admin/hooks/use-ingestion.ts",
+        "src/admin/lib/timezones.ts"
+      ],
+      "packages": [
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/conversations-page-BVejrVH8.js": {
+      "sources": [
+        "src/admin/components/conversations/contact-signals.ts",
+        "src/admin/components/conversations/conversation-detail.tsx",
+        "src/admin/components/conversations/conversation-list.tsx",
+        "src/admin/components/conversations/conversations-page.tsx",
+        "src/admin/components/conversations/message-bubble.tsx",
+        "src/admin/components/conversations/visitor-context.tsx",
+        "src/admin/components/conversations/visitor-list.tsx",
+        "src/admin/hooks/use-agent-profile.ts",
+        "src/admin/hooks/use-blacklist.ts",
+        "src/admin/hooks/use-visitors.ts",
+        "src/admin/lib/platform.ts",
+        "src/components/ui/sheet.tsx"
+      ],
+      "packages": [
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/conversions-page-CHzYhY66.js": {
+      "sources": [
+        "src/admin/components/conversions/agenda-logic.ts",
+        "src/admin/components/conversions/agenda-page.tsx",
+        "src/admin/components/conversions/conversions-page.tsx",
+        "src/admin/components/conversions/request-board.tsx",
+        "src/admin/components/conversions/request-list.tsx",
+        "src/admin/components/conversions/request-sheet.tsx",
+        "src/admin/components/conversions/results-state.tsx",
+        "src/components/ui/calendar.tsx"
+      ],
+      "packages": [
+        "@date-fns/tz@1.4.1",
+        "date-fns@4.1.0",
+        "lucide-react@0.469.0",
+        "react-day-picker@9.14.0"
+      ]
+    },
+    "js/admin-chunks/core.esm-BxuYg7dt.js": {
+      "sources": [],
+      "packages": [
+        "@dnd-kit/accessibility@3.1.1",
+        "@dnd-kit/core@6.3.1",
+        "@dnd-kit/utilities@3.2.2"
+      ]
+    },
+    "js/admin-chunks/dist-Cs7gv5rv.js": {
+      "sources": [
+        "src/components/ui/surface-portal.tsx"
+      ],
+      "packages": [
+        "@floating-ui/core@1.7.4",
+        "@floating-ui/dom@1.7.5",
+        "@floating-ui/react-dom@2.1.7",
+        "@floating-ui/utils@0.2.10",
+        "@radix-ui/react-arrow@1.1.7",
+        "@radix-ui/react-context@1.1.2",
+        "@radix-ui/react-dismissable-layer@1.1.11",
+        "@radix-ui/react-focus-guards@1.1.3",
+        "@radix-ui/react-focus-scope@1.1.7",
+        "@radix-ui/react-popper@1.2.8",
+        "@radix-ui/react-portal@1.1.9",
+        "@radix-ui/react-primitive@2.1.3",
+        "@radix-ui/react-slot@1.2.3",
+        "@radix-ui/react-use-escape-keydown@1.1.1",
+        "@radix-ui/react-use-size@1.1.1",
+        "aria-hidden@1.2.6",
+        "get-nonce@1.0.1",
+        "lucide-react@0.469.0",
+        "react-remove-scroll-bar@2.3.8",
+        "react-remove-scroll@2.7.2",
+        "react-style-singleton@2.2.3",
+        "tslib@2.8.1",
+        "use-callback-ref@1.3.3",
+        "use-sidecar@1.1.3"
+      ]
+    },
+    "js/admin-chunks/dist-hi1ENn3a.js": {
+      "sources": [
+        "src/admin/app-context.tsx",
+        "src/admin/hooks/use-lang.ts",
+        "src/admin/hooks/use-theme.ts",
+        "src/admin/i18n/en.json",
+        "src/admin/i18n/it.json",
+        "src/admin/lib/api.ts",
+        "src/admin/lib/config.ts",
+        "src/admin/lib/datetime.ts",
+        "src/admin/lib/i18n.ts",
+        "src/admin/lib/rate-limit.ts",
+        "src/admin/lib/support-team.ts",
+        "src/components/icons/animated/arrow-left.tsx",
+        "src/components/icons/animated/arrow-right.tsx",
+        "src/components/icons/animated/arrow-up.tsx",
+        "src/components/icons/animated/at-sign.tsx",
+        "src/components/icons/animated/bell.tsx",
+        "src/components/icons/animated/bot.tsx",
+        "src/components/icons/animated/brain.tsx",
+        "src/components/icons/animated/calendar-days.tsx",
+        "src/components/icons/animated/chart-pie.tsx",
+        "src/components/icons/animated/check-check.tsx",
+        "src/components/icons/animated/check.tsx",
+        "src/components/icons/animated/chevron-down.tsx",
+        "src/components/icons/animated/chevron-left.tsx",
+        "src/components/icons/animated/chevron-right.tsx",
+        "src/components/icons/animated/chevron-up.tsx",
+        "src/components/icons/animated/clock.tsx",
+        "src/components/icons/animated/contrast.tsx",
+        "src/components/icons/animated/copy.tsx",
+        "src/components/icons/animated/credit-card.tsx",
+        "src/components/icons/animated/download.tsx",
+        "src/components/icons/animated/eye-off.tsx",
+        "src/components/icons/animated/eye.tsx",
+        "src/components/icons/animated/file-text.tsx",
+        "src/components/icons/animated/flame.tsx",
+        "src/components/icons/animated/folder-minus.tsx",
+        "src/components/icons/animated/folder-open.tsx",
+        "src/components/icons/animated/folder-plus.tsx",
+        "src/components/icons/animated/folder-sync.tsx",
+        "src/components/icons/animated/grip-vertical.tsx",
+        "src/components/icons/animated/hand-metal.tsx",
+        "src/components/icons/animated/languages.tsx",
+        "src/components/icons/animated/layout-grid.tsx",
+        "src/components/icons/animated/layout-panel-top.tsx",
+        "src/components/icons/animated/linkedin.tsx",
+        "src/components/icons/animated/lock.tsx",
+        "src/components/icons/animated/map-pin.tsx",
+        "src/components/icons/animated/message-circle.tsx",
+        "src/components/icons/animated/message-square.tsx",
+        "src/components/icons/animated/mic.tsx",
+        "src/components/icons/animated/moon.tsx",
+        "src/components/icons/animated/phone.tsx",
+        "src/components/icons/animated/plus.tsx",
+        "src/components/icons/animated/receipt-text.tsx",
+        "src/components/icons/animated/refresh-cw.tsx",
+        "src/components/icons/animated/rotate-ccw.tsx",
+        "src/components/icons/animated/scan-text.tsx",
+        "src/components/icons/animated/search.tsx",
+        "src/components/icons/animated/send.tsx",
+        "src/components/icons/animated/settings.tsx",
+        "src/components/icons/animated/shield-check.tsx",
+        "src/components/icons/animated/sparkles.tsx",
+        "src/components/icons/animated/sun.tsx",
+        "src/components/icons/animated/trending-down.tsx",
+        "src/components/icons/animated/trending-up.tsx",
+        "src/components/icons/animated/twitter.tsx",
+        "src/components/icons/animated/upload.tsx",
+        "src/components/icons/animated/user.tsx",
+        "src/components/icons/animated/users.tsx",
+        "src/components/icons/animated/wifi.tsx",
+        "src/components/icons/animated/wrench.tsx",
+        "src/components/icons/animated/x.tsx",
+        "src/components/icons/animated/zap.tsx",
+        "src/components/icons/index.ts",
+        "src/lib/rest-url.ts",
+        "src/lib/utils.ts"
+      ],
+      "packages": [
+        "@radix-ui/primitive@1.1.3",
+        "@radix-ui/react-collection@1.1.7",
+        "@radix-ui/react-compose-refs@1.1.2",
+        "@radix-ui/react-context@1.1.2",
+        "@radix-ui/react-direction@1.1.1",
+        "@radix-ui/react-id@1.1.1",
+        "@radix-ui/react-slot@1.2.3",
+        "@radix-ui/react-use-callback-ref@1.1.1",
+        "@radix-ui/react-use-controllable-state@1.2.2",
+        "@radix-ui/react-use-layout-effect@1.1.1",
+        "framer-motion@12.38.0",
+        "lucide-react@0.469.0",
+        "motion-dom@12.38.0",
+        "motion-utils@12.36.0",
+        "react-dom@19.2.4"
+      ]
+    },
+    "js/admin-chunks/exports-BbVf70K9.js": {
+      "sources": [
+        "src/admin/components/conversions/exports.ts",
+        "src/admin/components/conversions/parts.tsx"
+      ],
+      "packages": []
+    },
+    "js/admin-chunks/globe-DACEBuE1.js": {
+      "sources": [],
+      "packages": [
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/headset-dKvucaXj.js": {
+      "sources": [],
+      "packages": [
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/helpdesk-page-CiRtx4y2.js": {
+      "sources": [
+        "src/admin/components/helpdesk/faq-errors.ts",
+        "src/admin/components/helpdesk/helpdesk-page.tsx",
+        "src/admin/hooks/use-helpdesk-categories.ts",
+        "src/admin/hooks/use-helpdesk.ts"
+      ],
+      "packages": [
+        "@dnd-kit/sortable@10.0.0"
+      ]
+    },
+    "js/admin-chunks/inline-select-BwLBKCpW.js": {
+      "sources": [
+        "src/admin/components/shared/inline-select.tsx"
+      ],
+      "packages": []
+    },
+    "js/admin-chunks/label-C8-4UMvQ.js": {
+      "sources": [
+        "src/components/ui/label.tsx"
+      ],
+      "packages": [
+        "@radix-ui/react-label@2.1.8",
+        "@radix-ui/react-primitive@2.1.4"
+      ]
+    },
+    "js/admin-chunks/markdown-components-DHORbGeR.js": {
+      "sources": [
+        "src/components/safe-markdown.tsx",
+        "src/components/tambo/markdown-components.tsx",
+        "src/components/tool-ui/shared/media/sanitize-href.ts",
+        "src/lib/widget-copy.ts"
+      ],
+      "packages": [
+        "@ungap/structured-clone@1.3.0",
+        "bail@2.0.2",
+        "ccount@2.0.1",
+        "comma-separated-tokens@2.0.3",
+        "decode-named-character-reference@1.3.0",
+        "devlop@1.1.0",
+        "entities@6.0.1",
+        "escape-string-regexp@5.0.0",
+        "estree-util-is-identifier-name@3.0.0",
+        "extend@3.0.2",
+        "hast-util-from-parse5@8.0.3",
+        "hast-util-parse-selector@4.0.0",
+        "hast-util-raw@9.1.0",
+        "hast-util-sanitize@5.0.2",
+        "hast-util-to-jsx-runtime@2.3.6",
+        "hast-util-to-parse5@8.0.1",
+        "hast-util-whitespace@3.0.0",
+        "hastscript@9.0.1",
+        "highlight.js@11.11.1",
+        "html-void-elements@3.0.0",
+        "inline-style-parser@0.2.7",
+        "is-plain-obj@4.1.0",
+        "longest-streak@3.1.0",
+        "markdown-table@3.0.4",
+        "marked@17.0.1",
+        "mdast-util-find-and-replace@3.0.2",
+        "mdast-util-from-markdown@2.0.2",
+        "mdast-util-gfm-autolink-literal@2.0.1",
+        "mdast-util-gfm-footnote@2.1.0",
+        "mdast-util-gfm-strikethrough@2.0.0",
+        "mdast-util-gfm-table@2.0.0",
+        "mdast-util-gfm-task-list-item@2.0.0",
+        "mdast-util-gfm@3.1.0",
+        "mdast-util-phrasing@4.1.0",
+        "mdast-util-to-hast@13.2.1",
+        "mdast-util-to-markdown@2.1.2",
+        "mdast-util-to-string@4.0.0",
+        "micromark-core-commonmark@2.0.3",
+        "micromark-extension-gfm-autolink-literal@2.1.0",
+        "micromark-extension-gfm-footnote@2.1.0",
+        "micromark-extension-gfm-strikethrough@2.1.0",
+        "micromark-extension-gfm-table@2.1.1",
+        "micromark-extension-gfm-task-list-item@2.1.0",
+        "micromark-extension-gfm@3.0.0",
+        "micromark-factory-destination@2.0.1",
+        "micromark-factory-label@2.0.1",
+        "micromark-factory-space@2.0.1",
+        "micromark-factory-title@2.0.1",
+        "micromark-factory-whitespace@2.0.1",
+        "micromark-util-character@2.1.1",
+        "micromark-util-chunked@2.0.1",
+        "micromark-util-classify-character@2.0.1",
+        "micromark-util-combine-extensions@2.0.1",
+        "micromark-util-decode-numeric-character-reference@2.0.2",
+        "micromark-util-decode-string@2.0.1",
+        "micromark-util-html-tag-name@2.0.1",
+        "micromark-util-normalize-identifier@2.0.1",
+        "micromark-util-resolve-all@2.0.1",
+        "micromark-util-sanitize-uri@2.0.1",
+        "micromark-util-subtokenize@2.1.0",
+        "micromark@4.0.2",
+        "parse5@7.3.0",
+        "property-information@7.1.0",
+        "rehype-harden@1.1.7",
+        "rehype-raw@7.0.0",
+        "rehype-sanitize@6.0.0",
+        "remark-gfm@4.0.1",
+        "remark-parse@11.0.0",
+        "remark-rehype@11.1.2",
+        "remend@1.1.0",
+        "space-separated-tokens@2.0.2",
+        "streamdown@2.1.0",
+        "style-to-js@1.1.21",
+        "style-to-object@1.0.14",
+        "trim-lines@3.0.1",
+        "trough@2.2.0",
+        "unified@11.0.5",
+        "unist-util-is@6.0.1",
+        "unist-util-position@5.0.0",
+        "unist-util-stringify-position@4.0.0",
+        "unist-util-visit-parents@6.0.2",
+        "unist-util-visit@5.1.0",
+        "vfile-location@5.0.3",
+        "vfile-message@4.0.3",
+        "vfile@6.0.3",
+        "web-namespaces@2.0.1",
+        "zwitch@2.0.4"
+      ]
+    },
+    "js/admin-chunks/mermaid-4DMBBIKO-C9YSrna_.js": {
+      "sources": [],
+      "packages": []
+    },
+    "js/admin-chunks/pencil-CHezSetv.js": {
+      "sources": [],
+      "packages": [
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/plus-Cb0iPZE5.js": {
+      "sources": [],
+      "packages": [
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/prova-page-BwLSPJtm.js": {
+      "sources": [
+        "src/admin/components/assistant/prova-client.ts",
+        "src/admin/components/assistant/prova-components.tsx",
+        "src/admin/components/assistant/prova-page.tsx",
+        "src/components/chat/tool-slot.tsx",
+        "src/components/generative-ui/card-carousel.tsx",
+        "src/components/generative-ui/table-card.tsx",
+        "src/components/tool-ui/chart/chart.tsx",
+        "src/components/tool-ui/stats-display/sparkline.tsx",
+        "src/components/tool-ui/stats-display/stats-display.tsx",
+        "src/lib/card-copy.ts",
+        "src/lib/pow-fetch.ts",
+        "src/lib/product-format.ts",
+        "src/lib/proof-of-work.ts",
+        "src/lib/turn-cancel.ts",
+        "src/widget-cards.css"
+      ],
+      "packages": [
+        "recharts@2.15.4"
+      ]
+    },
+    "js/admin-chunks/purify.es-yeT1JqXB.js": {
+      "sources": [],
+      "packages": [
+        "dompurify@3.4.11"
+      ]
+    },
+    "js/admin-chunks/settings-page-DQrgstIl.js": {
+      "sources": [
+        "src/admin/components/integrations/woocommerce-setup.tsx",
+        "src/admin/components/settings/advanced-section.tsx",
+        "src/admin/components/settings/avatar-picker.tsx",
+        "src/admin/components/settings/brand-color-choices.tsx",
+        "src/admin/components/settings/chat-customizer.tsx",
+        "src/admin/components/settings/contact-social-section.tsx",
+        "src/admin/components/settings/gdpr-settings-section.tsx",
+        "src/admin/components/settings/image-field.tsx",
+        "src/admin/components/settings/legacy-access-section.tsx",
+        "src/admin/components/settings/notifications-section.tsx",
+        "src/admin/components/settings/preview-focus.ts",
+        "src/admin/components/settings/settings-page.tsx",
+        "src/admin/components/settings/support-team-section.tsx",
+        "src/admin/components/settings/team-section.tsx",
+        "src/admin/components/settings/widget-editor-rows.tsx",
+        "src/admin/components/settings/widget-experience-controls.tsx",
+        "src/admin/components/settings/widget-number-field.tsx",
+        "src/admin/components/settings/widget-visibility-controls.tsx",
+        "src/admin/components/settings/woocommerce-row.tsx",
+        "src/admin/components/shared/collapsible-section.tsx",
+        "src/admin/components/shared/color-picker.tsx",
+        "src/admin/components/shared/help-tooltip.tsx",
+        "src/admin/hooks/use-checked-field.ts",
+        "src/admin/lib/color.ts",
+        "src/admin/lib/wp-media.ts",
+        "src/components/ui/collapsible.tsx",
+        "src/lib/widget-numbers.ts"
+      ],
+      "packages": [
+        "@radix-ui/react-collapsible@1.1.12",
+        "@radix-ui/react-context@1.1.2",
+        "@radix-ui/react-primitive@2.1.3",
+        "@radix-ui/react-slot@1.2.3",
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/stats-page-Dv5I1SMw.js": {
+      "sources": [
+        "src/admin/components/dashboard/conversation-types-chart.tsx",
+        "src/admin/components/dashboard/daily-conversations-chart.tsx",
+        "src/admin/components/dashboard/indexed-content-chart.tsx",
+        "src/admin/components/dashboard/ingestion-bar-chart.tsx",
+        "src/admin/components/dashboard/kpi-cards.tsx",
+        "src/admin/components/dashboard/metric-chart.tsx",
+        "src/admin/components/dashboard/recent-conversations.tsx",
+        "src/admin/components/dashboard/share-report-card.tsx",
+        "src/admin/components/dashboard/stats-data.tsx",
+        "src/admin/components/dashboard/stats-page.tsx",
+        "src/admin/components/dashboard/tool-usage-widget.tsx",
+        "src/admin/components/dashboard/trend-chart.tsx",
+        "src/admin/components/dashboard/usage-donut.tsx",
+        "src/admin/hooks/use-report-share.ts",
+        "src/admin/lib/tool-labels.ts"
+      ],
+      "packages": [
+        "lodash@4.18.1",
+        "recharts@2.15.4"
+      ]
+    },
+    "js/admin-chunks/support-chat-popup-ISWmAZQY.js": {
+      "sources": [
+        "src/admin/components/support/support-chat-popup.tsx",
+        "src/admin/components/support/support-chat.tsx",
+        "src/admin/components/support/support-panel.tsx",
+        "src/admin/hooks/use-support-chat.ts",
+        "src/hooks/use-mobile.tsx"
+      ],
+      "packages": [
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/tabs-DErgNU3P.js": {
+      "sources": [
+        "src/components/ui/tabs.tsx"
+      ],
+      "packages": [
+        "@radix-ui/react-context@1.1.2",
+        "@radix-ui/react-primitive@2.1.3",
+        "@radix-ui/react-slot@1.2.3",
+        "@radix-ui/react-tabs@1.1.13"
+      ]
+    },
+    "js/admin-chunks/tool-settings-section-ClLqo4Mo.js": {
+      "sources": [
+        "src/admin/components/integrations/google-calendar-setup.tsx",
+        "src/admin/components/settings/ai-persona-section.tsx",
+        "src/admin/components/settings/google-calendar-appointment-card.tsx",
+        "src/admin/components/settings/tool-settings-section.tsx"
+      ],
+      "packages": [
+        "lucide-react@0.469.0"
+      ]
+    },
+    "js/admin-chunks/tools-page-Bj7rudIB.js": {
+      "sources": [
+        "src/admin/components/tools/data-table.tsx",
+        "src/admin/components/tools/tools-page.tsx",
+        "src/admin/hooks/use-tools.ts",
+        "src/components/ui/badge.tsx",
+        "src/components/ui/table.tsx"
+      ],
+      "packages": []
+    },
+    "js/admin-chunks/unanswered-questions-BZkUZVnJ.js": {
+      "sources": [
+        "src/admin/components/assistant/unanswered-questions.tsx",
+        "src/admin/components/assistant/use-knowledge-gaps.ts"
+      ],
+      "packages": []
+    },
+    "js/admin-chunks/upgrade-page-B75i4KVS.js": {
+      "sources": [
+        "src/admin/components/upgrade/pricing-copy.ts",
+        "src/admin/components/upgrade/upgrade-page.tsx"
+      ],
+      "packages": []
+    },
+    "js/admin-chunks/use-google-calendar-connect-D-U6xWSx.js": {
+      "sources": [
+        "src/admin/components/integrations/use-google-calendar-connect.ts"
+      ],
+      "packages": []
+    },
+    "js/admin-chunks/use-settings-DTw08moK.js": {
+      "sources": [
+        "src/admin/hooks/use-settings.ts"
+      ],
+      "packages": [
+        "use-debounce@10.1.0"
+      ]
+    },
+    "js/admin-chunks/use-support-profiles-DtPpkNlq.js": {
+      "sources": [
+        "src/admin/hooks/use-support-profiles.ts"
+      ],
+      "packages": []
+    },
+    "js/admin-chunks/validate-OfFSIc0y.js": {
+      "sources": [
+        "src/admin/lib/validate.ts"
+      ],
+      "packages": []
+    }
+  },
+  "packages": [
+    {
+      "name": "@date-fns/tz",
+      "version": "1.4.1",
+      "license": "MIT",
+      "repository": "https://github.com/date-fns/tz"
+    },
+    {
+      "name": "@dnd-kit/accessibility",
+      "version": "3.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/clauderic/dnd-kit"
+    },
+    {
+      "name": "@dnd-kit/core",
+      "version": "6.3.1",
+      "license": "MIT",
+      "repository": "https://github.com/clauderic/dnd-kit"
+    },
+    {
+      "name": "@dnd-kit/sortable",
+      "version": "10.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/clauderic/dnd-kit"
+    },
+    {
+      "name": "@dnd-kit/utilities",
+      "version": "3.2.2",
+      "license": "MIT",
+      "repository": "https://github.com/clauderic/dnd-kit"
+    },
+    {
+      "name": "@floating-ui/core",
+      "version": "1.7.4",
+      "license": "MIT",
+      "repository": "https://github.com/floating-ui/floating-ui"
+    },
+    {
+      "name": "@floating-ui/dom",
+      "version": "1.7.5",
+      "license": "MIT",
+      "repository": "https://github.com/floating-ui/floating-ui"
+    },
+    {
+      "name": "@floating-ui/react-dom",
+      "version": "2.1.7",
+      "license": "MIT",
+      "repository": "https://github.com/floating-ui/floating-ui"
+    },
+    {
+      "name": "@floating-ui/utils",
+      "version": "0.2.10",
+      "license": "MIT",
+      "repository": "https://github.com/floating-ui/floating-ui"
+    },
+    {
+      "name": "@radix-ui/number",
+      "version": "1.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/primitive",
+      "version": "1.1.3",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-arrow",
+      "version": "1.1.7",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-collapsible",
+      "version": "1.1.12",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-collection",
+      "version": "1.1.7",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-compose-refs",
+      "version": "1.1.2",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-context",
+      "version": "1.1.2",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-dialog",
+      "version": "1.1.15",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-direction",
+      "version": "1.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-dismissable-layer",
+      "version": "1.1.11",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-dropdown-menu",
+      "version": "2.1.16",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-focus-guards",
+      "version": "1.1.3",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-focus-scope",
+      "version": "1.1.7",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-id",
+      "version": "1.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-label",
+      "version": "2.1.8",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-menu",
+      "version": "2.1.16",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-popover",
+      "version": "1.1.15",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-popper",
+      "version": "1.2.8",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-portal",
+      "version": "1.1.9",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-presence",
+      "version": "1.1.5",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-primitive",
+      "version": "2.1.3",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-primitive",
+      "version": "2.1.4",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-roving-focus",
+      "version": "1.1.11",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-select",
+      "version": "2.2.6",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "version": "1.2.3",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "version": "1.2.4",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-switch",
+      "version": "1.2.6",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-tabs",
+      "version": "1.1.13",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-callback-ref",
+      "version": "1.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-controllable-state",
+      "version": "1.2.2",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-escape-keydown",
+      "version": "1.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-layout-effect",
+      "version": "1.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-previous",
+      "version": "1.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-size",
+      "version": "1.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@radix-ui/react-visually-hidden",
+      "version": "1.2.3",
+      "license": "MIT",
+      "repository": "https://github.com/radix-ui/primitives"
+    },
+    {
+      "name": "@ungap/structured-clone",
+      "version": "1.3.0",
+      "license": "ISC",
+      "repository": "https://github.com/ungap/structured-clone"
+    },
+    {
+      "name": "aria-hidden",
+      "version": "1.2.6",
+      "license": "MIT",
+      "repository": "https://github.com/theKashey/aria-hidden"
+    },
+    {
+      "name": "bail",
+      "version": "2.0.2",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/bail"
+    },
+    {
+      "name": "boneyard-js",
+      "version": "1.9.0",
+      "license": "MIT",
+      "repository": "https://github.com/0xGF/boneyard"
+    },
+    {
+      "name": "ccount",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/ccount"
+    },
+    {
+      "name": "class-variance-authority",
+      "version": "0.7.1",
+      "license": "Apache-2.0",
+      "repository": "https://github.com/joe-bell/cva"
+    },
+    {
+      "name": "clsx",
+      "version": "2.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/lukeed/clsx"
+    },
+    {
+      "name": "comma-separated-tokens",
+      "version": "2.0.3",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/comma-separated-tokens"
+    },
+    {
+      "name": "d3-array",
+      "version": "3.2.4",
+      "license": "ISC",
+      "repository": "https://github.com/d3/d3-array"
+    },
+    {
+      "name": "d3-color",
+      "version": "3.1.0",
+      "license": "ISC",
+      "repository": "https://github.com/d3/d3-color"
+    },
+    {
+      "name": "d3-format",
+      "version": "3.1.2",
+      "license": "ISC",
+      "repository": "https://github.com/d3/d3-format"
+    },
+    {
+      "name": "d3-interpolate",
+      "version": "3.0.1",
+      "license": "ISC",
+      "repository": "https://github.com/d3/d3-interpolate"
+    },
+    {
+      "name": "d3-path",
+      "version": "3.1.0",
+      "license": "ISC",
+      "repository": "https://github.com/d3/d3-path"
+    },
+    {
+      "name": "d3-scale",
+      "version": "4.0.2",
+      "license": "ISC",
+      "repository": "https://github.com/d3/d3-scale"
+    },
+    {
+      "name": "d3-shape",
+      "version": "3.2.0",
+      "license": "ISC",
+      "repository": "https://github.com/d3/d3-shape"
+    },
+    {
+      "name": "d3-time-format",
+      "version": "4.1.0",
+      "license": "ISC",
+      "repository": "https://github.com/d3/d3-time-format"
+    },
+    {
+      "name": "d3-time",
+      "version": "3.1.0",
+      "license": "ISC",
+      "repository": "https://github.com/d3/d3-time"
+    },
+    {
+      "name": "date-fns",
+      "version": "4.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/date-fns/date-fns"
+    },
+    {
+      "name": "decimal.js-light",
+      "version": "2.5.1",
+      "license": "MIT",
+      "repository": "https://github.com/MikeMcl/decimal.js-light"
+    },
+    {
+      "name": "decode-named-character-reference",
+      "version": "1.3.0",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/decode-named-character-reference"
+    },
+    {
+      "name": "devlop",
+      "version": "1.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/devlop"
+    },
+    {
+      "name": "dompurify",
+      "version": "3.4.11",
+      "license": "(MPL-2.0 OR Apache-2.0)",
+      "repository": "https://github.com/cure53/DOMPurify"
+    },
+    {
+      "name": "entities",
+      "version": "6.0.1",
+      "license": "BSD-2-Clause",
+      "repository": "https://github.com/fb55/entities"
+    },
+    {
+      "name": "escape-string-regexp",
+      "version": "5.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/sindresorhus/escape-string-regexp"
+    },
+    {
+      "name": "estree-util-is-identifier-name",
+      "version": "3.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/estree-util-is-identifier-name"
+    },
+    {
+      "name": "eventemitter3",
+      "version": "4.0.7",
+      "license": "MIT",
+      "repository": "https://github.com/primus/eventemitter3"
+    },
+    {
+      "name": "extend",
+      "version": "3.0.2",
+      "license": "MIT",
+      "repository": "https://github.com/justmoon/node-extend"
+    },
+    {
+      "name": "fast-equals",
+      "version": "5.4.0",
+      "license": "MIT",
+      "repository": "https://github.com/planttheidea/fast-equals"
+    },
+    {
+      "name": "framer-motion",
+      "version": "12.38.0",
+      "license": "MIT",
+      "repository": "https://github.com/motiondivision/motion/"
+    },
+    {
+      "name": "get-nonce",
+      "version": "1.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/theKashey/get-nonce"
+    },
+    {
+      "name": "hast-util-from-parse5",
+      "version": "8.0.3",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/hast-util-from-parse5"
+    },
+    {
+      "name": "hast-util-parse-selector",
+      "version": "4.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/hast-util-parse-selector"
+    },
+    {
+      "name": "hast-util-raw",
+      "version": "9.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/hast-util-raw"
+    },
+    {
+      "name": "hast-util-sanitize",
+      "version": "5.0.2",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/hast-util-sanitize"
+    },
+    {
+      "name": "hast-util-to-jsx-runtime",
+      "version": "2.3.6",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/hast-util-to-jsx-runtime"
+    },
+    {
+      "name": "hast-util-to-parse5",
+      "version": "8.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/hast-util-to-parse5"
+    },
+    {
+      "name": "hast-util-whitespace",
+      "version": "3.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/hast-util-whitespace"
+    },
+    {
+      "name": "hastscript",
+      "version": "9.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/hastscript"
+    },
+    {
+      "name": "highlight.js",
+      "version": "11.11.1",
+      "license": "BSD-3-Clause",
+      "repository": "https://github.com/highlightjs/highlight.js"
+    },
+    {
+      "name": "html-void-elements",
+      "version": "3.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/html-void-elements"
+    },
+    {
+      "name": "inline-style-parser",
+      "version": "0.2.7",
+      "license": "MIT",
+      "repository": "https://github.com/remarkablemark/inline-style-parser"
+    },
+    {
+      "name": "internmap",
+      "version": "2.0.3",
+      "license": "ISC",
+      "repository": "https://github.com/mbostock/internmap"
+    },
+    {
+      "name": "is-plain-obj",
+      "version": "4.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/sindresorhus/is-plain-obj"
+    },
+    {
+      "name": "lodash",
+      "version": "4.18.1",
+      "license": "MIT",
+      "repository": "https://github.com/lodash/lodash"
+    },
+    {
+      "name": "longest-streak",
+      "version": "3.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/longest-streak"
+    },
+    {
+      "name": "lucide-react",
+      "version": "0.469.0",
+      "license": "ISC",
+      "repository": "https://github.com/lucide-icons/lucide"
+    },
+    {
+      "name": "markdown-table",
+      "version": "3.0.4",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/markdown-table"
+    },
+    {
+      "name": "marked",
+      "version": "17.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/markedjs/marked"
+    },
+    {
+      "name": "mdast-util-find-and-replace",
+      "version": "3.0.2",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-find-and-replace"
+    },
+    {
+      "name": "mdast-util-from-markdown",
+      "version": "2.0.2",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-from-markdown"
+    },
+    {
+      "name": "mdast-util-gfm-autolink-literal",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-gfm-autolink-literal"
+    },
+    {
+      "name": "mdast-util-gfm-footnote",
+      "version": "2.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-gfm-footnote"
+    },
+    {
+      "name": "mdast-util-gfm-strikethrough",
+      "version": "2.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-gfm-strikethrough"
+    },
+    {
+      "name": "mdast-util-gfm-table",
+      "version": "2.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-gfm-table"
+    },
+    {
+      "name": "mdast-util-gfm-task-list-item",
+      "version": "2.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-gfm-task-list-item"
+    },
+    {
+      "name": "mdast-util-gfm",
+      "version": "3.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-gfm"
+    },
+    {
+      "name": "mdast-util-phrasing",
+      "version": "4.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-phrasing"
+    },
+    {
+      "name": "mdast-util-to-hast",
+      "version": "13.2.1",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-to-hast"
+    },
+    {
+      "name": "mdast-util-to-markdown",
+      "version": "2.1.2",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-to-markdown"
+    },
+    {
+      "name": "mdast-util-to-string",
+      "version": "4.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/mdast-util-to-string"
+    },
+    {
+      "name": "micromark-core-commonmark",
+      "version": "2.0.3",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-core-commonmark"
+    },
+    {
+      "name": "micromark-extension-gfm-autolink-literal",
+      "version": "2.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark-extension-gfm-autolink-literal"
+    },
+    {
+      "name": "micromark-extension-gfm-footnote",
+      "version": "2.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark-extension-gfm-footnote"
+    },
+    {
+      "name": "micromark-extension-gfm-strikethrough",
+      "version": "2.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark-extension-gfm-strikethrough"
+    },
+    {
+      "name": "micromark-extension-gfm-table",
+      "version": "2.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark-extension-gfm-table"
+    },
+    {
+      "name": "micromark-extension-gfm-task-list-item",
+      "version": "2.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark-extension-gfm-task-list-item"
+    },
+    {
+      "name": "micromark-extension-gfm",
+      "version": "3.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark-extension-gfm"
+    },
+    {
+      "name": "micromark-factory-destination",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-factory-destination"
+    },
+    {
+      "name": "micromark-factory-label",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-factory-label"
+    },
+    {
+      "name": "micromark-factory-space",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-factory-space"
+    },
+    {
+      "name": "micromark-factory-title",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-factory-title"
+    },
+    {
+      "name": "micromark-factory-whitespace",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-factory-whitespace"
+    },
+    {
+      "name": "micromark-util-character",
+      "version": "2.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-character"
+    },
+    {
+      "name": "micromark-util-chunked",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-chunked"
+    },
+    {
+      "name": "micromark-util-classify-character",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-classify-character"
+    },
+    {
+      "name": "micromark-util-combine-extensions",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-combine-extensions"
+    },
+    {
+      "name": "micromark-util-decode-numeric-character-reference",
+      "version": "2.0.2",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-decode-numeric-character-reference"
+    },
+    {
+      "name": "micromark-util-decode-string",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-decode-string"
+    },
+    {
+      "name": "micromark-util-html-tag-name",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-html-tag-name"
+    },
+    {
+      "name": "micromark-util-normalize-identifier",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-normalize-identifier"
+    },
+    {
+      "name": "micromark-util-resolve-all",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-resolve-all"
+    },
+    {
+      "name": "micromark-util-sanitize-uri",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-sanitize-uri"
+    },
+    {
+      "name": "micromark-util-subtokenize",
+      "version": "2.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark-util-subtokenize"
+    },
+    {
+      "name": "micromark",
+      "version": "4.0.2",
+      "license": "MIT",
+      "repository": "https://github.com/micromark/micromark/tree/main/packages/micromark"
+    },
+    {
+      "name": "motion-dom",
+      "version": "12.38.0",
+      "license": "MIT",
+      "repository": "https://github.com/motiondivision/motion"
+    },
+    {
+      "name": "motion-utils",
+      "version": "12.36.0",
+      "license": "MIT",
+      "repository": "https://github.com/motiondivision/motion"
+    },
+    {
+      "name": "parse5",
+      "version": "7.3.0",
+      "license": "MIT",
+      "repository": "https://github.com/inikulin/parse5"
+    },
+    {
+      "name": "prop-types",
+      "version": "15.8.1",
+      "license": "MIT",
+      "repository": "https://github.com/facebook/prop-types"
+    },
+    {
+      "name": "property-information",
+      "version": "7.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/property-information"
+    },
+    {
+      "name": "react-day-picker",
+      "version": "9.14.0",
+      "license": "MIT",
+      "repository": "https://github.com/gpbl/react-day-picker"
+    },
+    {
+      "name": "react-dom",
+      "version": "19.2.4",
+      "license": "MIT",
+      "repository": "https://github.com/facebook/react"
+    },
+    {
+      "name": "react-is",
+      "version": "18.3.1",
+      "license": "MIT",
+      "repository": "https://github.com/facebook/react"
+    },
+    {
+      "name": "react-remove-scroll-bar",
+      "version": "2.3.8",
+      "license": "MIT",
+      "repository": "https://github.com/theKashey/react-remove-scroll-bar"
+    },
+    {
+      "name": "react-remove-scroll",
+      "version": "2.7.2",
+      "license": "MIT",
+      "repository": "https://github.com/theKashey/react-remove-scroll"
+    },
+    {
+      "name": "react-smooth",
+      "version": "4.0.4",
+      "license": "MIT",
+      "repository": "https://github.com/recharts/react-smooth"
+    },
+    {
+      "name": "react-style-singleton",
+      "version": "2.2.3",
+      "license": "MIT",
+      "repository": "https://github.com/theKashey/react-style-singleton"
+    },
+    {
+      "name": "react",
+      "version": "19.2.4",
+      "license": "MIT",
+      "repository": "https://github.com/facebook/react"
+    },
+    {
+      "name": "recharts-scale",
+      "version": "0.4.5",
+      "license": "MIT",
+      "repository": "https://github.com/recharts/recharts-scale"
+    },
+    {
+      "name": "recharts",
+      "version": "2.15.4",
+      "license": "MIT",
+      "repository": "https://github.com/recharts/recharts"
+    },
+    {
+      "name": "rehype-harden",
+      "version": "1.1.7",
+      "license": "MIT",
+      "repository": "https://github.com/vercel-labs/markdown-sanitizers"
+    },
+    {
+      "name": "rehype-raw",
+      "version": "7.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/rehypejs/rehype-raw"
+    },
+    {
+      "name": "rehype-sanitize",
+      "version": "6.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/rehypejs/rehype-sanitize"
+    },
+    {
+      "name": "remark-gfm",
+      "version": "4.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/remarkjs/remark-gfm"
+    },
+    {
+      "name": "remark-parse",
+      "version": "11.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/remarkjs/remark/tree/main/packages/remark-parse"
+    },
+    {
+      "name": "remark-rehype",
+      "version": "11.1.2",
+      "license": "MIT",
+      "repository": "https://github.com/remarkjs/remark-rehype"
+    },
+    {
+      "name": "remend",
+      "version": "1.1.0",
+      "license": "Apache-2.0",
+      "repository": "https://github.com/vercel/streamdown"
+    },
+    {
+      "name": "scheduler",
+      "version": "0.27.0",
+      "license": "MIT",
+      "repository": "https://github.com/facebook/react"
+    },
+    {
+      "name": "sonner",
+      "version": "2.0.7",
+      "license": "MIT",
+      "repository": "https://github.com/emilkowalski/sonner"
+    },
+    {
+      "name": "space-separated-tokens",
+      "version": "2.0.2",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/space-separated-tokens"
+    },
+    {
+      "name": "streamdown",
+      "version": "2.1.0",
+      "license": "Apache-2.0",
+      "repository": "https://github.com/vercel/streamdown"
+    },
+    {
+      "name": "style-to-js",
+      "version": "1.1.21",
+      "license": "MIT",
+      "repository": "https://github.com/remarkablemark/style-to-js"
+    },
+    {
+      "name": "style-to-object",
+      "version": "1.0.14",
+      "license": "MIT",
+      "repository": "https://github.com/remarkablemark/style-to-object"
+    },
+    {
+      "name": "tailwind-merge",
+      "version": "3.4.0",
+      "license": "MIT",
+      "repository": "https://github.com/dcastil/tailwind-merge"
+    },
+    {
+      "name": "tiny-invariant",
+      "version": "1.3.3",
+      "license": "MIT",
+      "repository": "https://github.com/alexreardon/tiny-invariant"
+    },
+    {
+      "name": "trim-lines",
+      "version": "3.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/trim-lines"
+    },
+    {
+      "name": "trough",
+      "version": "2.2.0",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/trough"
+    },
+    {
+      "name": "tslib",
+      "version": "2.8.1",
+      "license": "0BSD",
+      "repository": "https://github.com/Microsoft/tslib"
+    },
+    {
+      "name": "unified",
+      "version": "11.0.5",
+      "license": "MIT",
+      "repository": "https://github.com/unifiedjs/unified"
+    },
+    {
+      "name": "unist-util-is",
+      "version": "6.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/unist-util-is"
+    },
+    {
+      "name": "unist-util-position",
+      "version": "5.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/unist-util-position"
+    },
+    {
+      "name": "unist-util-stringify-position",
+      "version": "4.0.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/unist-util-stringify-position"
+    },
+    {
+      "name": "unist-util-visit-parents",
+      "version": "6.0.2",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/unist-util-visit-parents"
+    },
+    {
+      "name": "unist-util-visit",
+      "version": "5.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/syntax-tree/unist-util-visit"
+    },
+    {
+      "name": "use-callback-ref",
+      "version": "1.3.3",
+      "license": "MIT",
+      "repository": "https://github.com/theKashey/use-callback-ref/"
+    },
+    {
+      "name": "use-debounce",
+      "version": "10.1.0",
+      "license": "MIT",
+      "repository": "https://github.com/xnimorz/use-debounce"
+    },
+    {
+      "name": "use-sidecar",
+      "version": "1.1.3",
+      "license": "MIT",
+      "repository": "https://github.com/theKashey/use-sidecar"
+    },
+    {
+      "name": "vfile-location",
+      "version": "5.0.3",
+      "license": "MIT",
+      "repository": "https://github.com/vfile/vfile-location"
+    },
+    {
+      "name": "vfile-message",
+      "version": "4.0.3",
+      "license": "MIT",
+      "repository": "https://github.com/vfile/vfile-message"
+    },
+    {
+      "name": "vfile",
+      "version": "6.0.3",
+      "license": "MIT",
+      "repository": "https://github.com/vfile/vfile"
+    },
+    {
+      "name": "victory-vendor",
+      "version": "36.9.2",
+      "license": "MIT AND ISC",
+      "repository": "https://github.com/FormidableLabs/victory"
+    },
+    {
+      "name": "web-namespaces",
+      "version": "2.0.1",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/web-namespaces"
+    },
+    {
+      "name": "zwitch",
+      "version": "2.0.4",
+      "license": "MIT",
+      "repository": "https://github.com/wooorm/zwitch"
+    }
+  ]
+}

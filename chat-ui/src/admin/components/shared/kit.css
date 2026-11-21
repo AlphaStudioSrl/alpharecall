@@ -1,0 +1,558 @@
+/* ═══════════════════════════════════════════════════
+   Page kit (kit.tsx). Values from the tokens in admin.css.
+   Scope is :is(#alpharecall-admin-app, [data-ar-portal]) so kit pieces also
+   work in sheets and dialogs (SurfacePortal), with the specificity of the
+   #id. Rules are #id-scoped so they outrank ui-surfaces.css resets, and equal a
+   Tailwind utility, which comes later and therefore still wins: a page can
+   adjust any kit piece with className.
+   ═══════════════════════════════════════════════════ */
+
+/* ─── Page head (x-head) ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px 16px;
+  flex-wrap: wrap;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-head-text {
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-head-title {
+  font-size: 24px;
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  color: var(--ar-ink);
+  text-wrap: balance;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-head-lg .ark-head-title {
+  font-size: 32px;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-head-sub {
+  color: var(--ar-ink-2);
+  font-size: 13.5px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-head-eyebrow {
+  color: var(--ar-ink-3);
+  font-size: 12px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ─── Panels and boxes ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-panel {
+  background: var(--ar-panel);
+  border-radius: var(--ar-r-panel);
+  box-shadow: var(--ar-sh-panel);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-panel-grow { flex: 1; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-box {
+  background: var(--ar-fill);
+  border-radius: 16px;
+  padding: 18px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-box-panel { background: var(--ar-panel); }
+
+/* ─── Groups and rows (x-group, x-rows, x-r) ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-inline: 4px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-lbl {
+  font-size: 12px;
+  font-weight: 450;
+  color: var(--ar-ink-3);
+  letter-spacing: 0;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-rows {
+  background: var(--ar-fill);
+  border-radius: var(--ar-r-group);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-row {
+  display: flex;
+  align-items: center;
+  gap: 12px 16px;
+  padding: 12px 14px;
+  border-radius: 11px;
+  min-width: 0;
+  width: 100%;
+  text-align: left;
+  color: var(--ar-ink);
+  background: transparent;
+  font: inherit;
+}
+/* Rows are told apart by a seam of canvas between them, not a rule. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-row + .ark-row {
+  box-shadow: 0 -1px 0 0 var(--ar-canvas);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-row-button {
+  cursor: pointer;
+  box-shadow: none !important;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-row + button.ark-row-button,
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-row-button + .ark-row {
+  box-shadow: 0 -1px 0 0 var(--ar-canvas) !important;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-row-button:hover {
+  background: color-mix(in srgb, var(--ar-fill-2) 60%, transparent);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-row-text {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-row-label {
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--ar-ink);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-row-desc {
+  color: var(--ar-ink-3);
+  font-size: 12px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-row-value {
+  color: var(--ar-ink-2);
+  font-size: 13px;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-row-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--ar-ink-3);
+  flex: none;
+}
+@container ar-page (max-width: 560px) {
+  :is(#alpharecall-admin-app, [data-ar-portal]) .ark-row:not(.ark-row-button) { flex-wrap: wrap; }
+}
+
+/* ─── Toggle (x-tg): 32 x 19 track, 32 x 24 target ───
+   The track stays 19px; the Switch's ::before (components/ui/switch.tsx) is a
+   24px tall hit area centred on it (WCAG 2.2 2.5.8, card n78ganetk9op), so
+   rows keep their height. A transparent border is not an option:
+   ui-surfaces.css zeroes every control's border with !important. */
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-toggle {
+  width: 32px;
+  height: 19px;
+  padding: 2.5px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-toggle > span {
+  width: 14px;
+  height: 14px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-toggle[data-state="checked"] > span {
+  transform: translateX(13px);
+}
+
+/* ─── Select pill (x-sel) ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-select {
+  width: auto;
+  height: 32px;
+  gap: 8px;
+  padding: 0 10px 0 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  color: var(--ar-ink);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-select svg {
+  width: 14px;
+  height: 14px;
+  color: var(--ar-ink-3);
+  opacity: 1;
+}
+
+/* ─── Segmented (x-seg) and chips (x-chips) ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+  background: hsl(var(--ar-control));
+  border-radius: var(--ar-r-control);
+  padding: 3px;
+  gap: 2px;
+  max-width: 100%;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-seg > button,
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-chips > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--ar-ink-2);
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-seg-sm > button { padding: 5px 10px; font-size: 12.5px; }
+/* Segments 24px tall (WCAG 2.5.8) in the same 28px pill. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-seg.ark-seg-sm { padding-block: 2px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-seg > button svg,
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-chips > button svg { width: 14px; height: 14px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-seg > button:hover:not([data-on]) { color: var(--ar-ink); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-seg > button[data-on] {
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  font-weight: 500;
+  box-shadow: var(--ar-sh-selected) !important;
+}
+/* On a fill the track is white and the chosen segment takes the fill. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-on-fill .ark-seg > button[data-on] {
+  background: var(--ar-fill-2);
+  box-shadow: none !important;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-seg em,
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-chips em {
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+}
+/* Counts are quieter than the label but must stay readable (4.5:1): ink-3
+   holds that on every track, where the old 60% opacity gave 2.5:1. A chosen
+   chip sits on ink, so its count keeps the chip's own colour. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-seg em,
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-chips > button:not([data-on]) em {
+  color: var(--ar-ink-3);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+/* <ScrollRow>: a sideways row with its scrollbar hidden. The edge that still
+   has content fades out, so a phone shows there is more to swipe to. */
+#alpharecall-admin-app .ark-scroll-row {
+  --ark-fade: 28px;
+  min-width: 0;
+  max-width: 100%;
+  /* Room for the chips' focus ring, which any overflow would clip. */
+  padding: 3px;
+  margin: -3px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+#alpharecall-admin-app .ark-scroll-row::-webkit-scrollbar { display: none; }
+#alpharecall-admin-app .ark-scroll-row[data-fade-end] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--ark-fade)), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - var(--ark-fade)), transparent);
+}
+#alpharecall-admin-app .ark-scroll-row[data-fade-start] {
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - var(--ark-fade)), transparent);
+  mask-image: linear-gradient(to left, #000 calc(100% - var(--ark-fade)), transparent);
+}
+#alpharecall-admin-app .ark-scroll-row[data-fade-start][data-fade-end] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--ark-fade), #000 calc(100% - var(--ark-fade)), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 var(--ark-fade), #000 calc(100% - var(--ark-fade)), transparent);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-chips > button {
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: hsl(var(--ar-control));
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-chips > button:hover:not([data-on]) {
+  background: hsl(var(--ar-control-hover));
+  color: var(--ar-ink);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-chips > button[data-on] {
+  background: var(--ar-ink);
+  color: var(--ar-on-ink);
+  font-weight: 500;
+}
+
+/* ─── Search pill ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: hsl(var(--ar-control));
+  color: var(--ar-ink-3);
+  min-width: 0;
+  cursor: text;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-search:focus-within { background: hsl(var(--ar-control-hover)); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-search svg { width: 14px; height: 14px; flex: none; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-search input {
+  /* The whole pill's height is the field's target, not the 19px line. */
+  align-self: stretch;
+  appearance: none;
+  background: transparent !important;
+  border: 0;
+  padding: 0;
+  min-width: 0;
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+  color: var(--ar-ink);
+}
+/* The native clear × sits right after the text: keep a gap so it never touches the last letter. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-search input::-webkit-search-cancel-button { opacity: 0.6; margin-left: 8px; }
+
+/* ─── Icon button (x-ib): bare icon, a fill only as interaction feedback ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-ib {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  color: var(--ar-ink-2);
+  background: transparent;
+  cursor: pointer;
+  flex: none;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-ib-sm { width: 28px; height: 28px; border-radius: 8px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-ib svg,
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-ib .ar-aicon { width: 16px; height: 16px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-ib:hover:not(:disabled) {
+  background: hsl(var(--ar-control));
+  color: var(--ar-ink);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-ib-filled { background: hsl(var(--ar-control)); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-ib-filled:hover:not(:disabled) { background: hsl(var(--ar-control-hover)); }
+
+/* ─── Tone pairs: b- = soft fill + ink (tags, avatars), c- = ink only ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-b-accent { background: var(--ar-accent-soft); color: var(--ar-accent); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-b-warn { background: var(--ar-warn-soft); color: var(--ar-warn); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-b-info { background: var(--ar-info-soft); color: var(--ar-info); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-b-violet { background: var(--ar-violet-soft); color: var(--ar-violet); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-b-red { background: var(--ar-red-soft); color: var(--ar-red); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-b-mute { background: var(--ar-fill-2); color: var(--ar-ink-2); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-b-ink { background: var(--ar-ink); color: var(--ar-on-ink); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-c-accent { color: var(--ar-accent); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-c-warn { color: var(--ar-warn); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-c-info { color: var(--ar-info); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-c-violet { color: var(--ar-violet); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-c-red { color: var(--ar-red); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-c-mute { color: var(--ar-ink-3); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-c-ink { color: var(--ar-ink); }
+
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-tag-dot::before,
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-kbd {
+  font: 11px var(--ar-mono);
+  color: var(--ar-ink-3);
+  background: var(--ar-fill);
+  border-radius: 5px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+/* ─── Avatars (x-av): initials keep their fill, they are not icons ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-av {
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  font-weight: 600;
+  flex: none;
+  object-fit: cover;
+  line-height: 1;
+  letter-spacing: 0;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-av-s { width: 26px; height: 26px; font-size: 10.5px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-av-m { width: 32px; height: 32px; font-size: 11.5px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-av-l { width: 44px; height: 44px; font-size: 14px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-av-stack { display: inline-flex; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-av-stack > * + * { margin-left: -6px; box-shadow: 0 0 0 2px var(--ar-fill); }
+
+/* ─── Numbers ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-big {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-mid {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-stat-label { font-size: 12px; color: var(--ar-ink-2); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-stat-hint { font-size: 12px; color: var(--ar-ink-3); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-bar {
+  height: 5px;
+  border-radius: 9px;
+  background: var(--ar-fill-2);
+  overflow: hidden;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-bar > i { display: block; height: 100%; border-radius: 9px; background: var(--ar-ink); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-bar-accent > i { background: var(--ar-accent); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-kv {
+  display: grid;
+  grid-template-columns: minmax(70px, auto) 1fr;
+  gap: 9px 16px;
+  font-size: 12.5px;
+  margin: 0;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-kv dt { color: var(--ar-ink-3); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-kv dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-feed { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-feed li { display: flex; gap: 14px; font-size: 12.5px; color: var(--ar-ink-2); margin: 0; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-feed small { width: 38px; flex: none; color: var(--ar-ink-3); font-size: 12px; font-variant-numeric: tabular-nums; padding-top: 1px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-feed b { color: var(--ar-ink); font-weight: 500; }
+
+/* ─── List item (x-li) ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-li {
+  display: flex;
+  gap: 11px;
+  padding: 10px;
+  border-radius: 12px;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+  font: inherit;
+  color: var(--ar-ink);
+  background: transparent;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-li { cursor: pointer; }
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-li:hover:not(.ark-li-on) { background: color-mix(in srgb, var(--ar-fill) 70%, transparent); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-li-on { background: var(--ar-fill); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-li-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-li-top { display: flex; justify-content: space-between; gap: 8px; min-width: 0; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-li-top b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-li-top small { color: var(--ar-ink-3); font-size: 11.5px; font-variant-numeric: tabular-nums; flex: none; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-li-preview {
+  color: var(--ar-ink-2);
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── Soft table (x-tbl) ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-tbl { display: flex; flex-direction: column; min-width: 0; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-tr {
+  display: grid;
+  grid-template-columns: var(--ark-cols);
+  gap: 14px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 11px;
+  font-size: 12.5px;
+  min-width: 0;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-tr:not(.ark-th):nth-child(odd) { background: color-mix(in srgb, var(--ar-fill) 55%, transparent); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-tr-click { cursor: pointer; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-tr-click:hover:not(.ark-tr-on) { background: var(--ar-fill) !important; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-tr-on { background: var(--ar-fill-2) !important; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-th { font-size: 11.5px; color: var(--ar-ink-3); padding-block: 6px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-td { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-who { display: flex; align-items: center; gap: 10px; }
+/* The text column. Hand-built cells use a bare <span>; the avatar (and any
+   placeholder) is a span too, so skip the decorative aria-hidden ones. */
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.ark-who-text, .ark-who > span:not([aria-hidden="true"])) { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-who b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-who small { color: var(--ar-ink-3); font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; }
+
+/* ─── Empty state ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 48px 20px;
+  color: var(--ar-ink-2);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-empty-icon { width: 22px; height: 22px; color: var(--ar-ink-3); margin-bottom: 6px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-empty-title { color: var(--ar-ink); font-weight: 500; font-size: 14.5px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-empty-desc { font-size: 13px; max-width: 46ch; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-empty-action { margin-top: 10px; }
+
+/* ─── Keyboard focus: a fill shift, never a border ───
+   ui-surfaces.css already lays a faint currentColor layer over every focused
+   control. Kit controls also take their hover fill (background-color only,
+   so that layer stays), so the stop reads at a
+   glance on white panels and on fills. Page elements get the same with:
+     .ark-focus         a control of your own (row, list button, card button)
+     .ark-focus-within  the box around a text field (a composer, an inline
+                        search): it tints while the field has focus. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-tr-click:not(.ark-tr-on):focus-visible { background-color: var(--ar-fill) !important; }
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-li:not(.ark-li-on):focus-visible { background-color: var(--ar-fill); }
+:is(#alpharecall-admin-app, [data-ar-portal]) button.ark-row-button:focus-visible { background-color: color-mix(in srgb, var(--ar-fill-2) 60%, transparent); }
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.ark-chips, .ark-seg) > button:not([data-on]):focus-visible,
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(button.ark-select, .ark-ib-filled):focus-visible {
+  background-color: hsl(var(--ar-control-hover));
+  color: var(--ar-ink);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-ib:not(.ark-ib-filled):focus-visible {
+  background-color: hsl(var(--ar-control));
+  color: var(--ar-ink);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-focus:focus-visible { background-color: hsl(var(--ar-control-hover)); }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ark-focus-within:has(:is(input, textarea, select, [contenteditable="true"]):focus) {
+  background-color: hsl(var(--ar-control-hover));
+}
+/* The selected chip or segment already wears the strongest fill: an underline
+   under its label marks the stop instead. Filled buttons dim a little. */
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.ark-chips, .ark-seg) > button[data-on]:focus-visible {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(button, a).bg-primary:not(.ar-chat-shell *):focus-visible { opacity: 0.86; }

@@ -1,0 +1,699 @@
+@import "../ui-surfaces.css";
+@import "./styles/components.css";
+@import "./components/layout/frame.css";
+@import "./components/shared/kit.css";
+@import "./components/command-palette/command-palette.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Animated icons (lucide-animated): the vendored components wrap a fixed-size
+   <svg> in a <div class="ar-aicon ...">. These rules let the wrapper be sized
+   by the same Tailwind classes used on plain lucide icons (h-4 w-4 / size-4),
+   while the inner svg fills the box. Declared in @layer components so the
+   utilities layer (h-, w-, size- classes) always wins over the 1em default. */
+@layer components {
+  .ar-aicon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 1em;
+    height: 1em;
+    line-height: 0;
+  }
+  .ar-aicon > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   AlphaRecall Admin: tone-on-tone design tokens
+   ═══════════════════════════════════════════════════
+
+   The page sits on a gray canvas inside one big white panel. Inside the
+   panel, groups are soft fills (--ar-fill) and controls on a fill are white
+   again. Nothing is separated by a border: only by a step in fill.
+
+   Two layers of tokens:
+
+   1. --ar-* (hex, use as var(--ar-fill)): the design system. Tailwind
+      exposes them as bg-canvas / bg-panel / bg-fill / bg-fill-2, text-ink /
+      text-ink-2 / text-ink-3, bg-on-ink / text-on-ink, and the tone pairs
+      text-tone-<accent|warn|info|violet|red> with bg-tone-<name>-soft.
+      Shadows: shadow-panel, shadow-float. Radii: rounded-panel (14px),
+      rounded-group (14px), rounded-control (10px), rounded-modal (22px).
+
+   2. The shadcn HSL triplets (--background, --card, --muted ...), mapped onto
+      layer 1 so every existing component inherits the look:
+        --background  = panel (the page surface)
+        --card        = fill  (a Card is a soft group on the panel)
+        --muted       = fill-2, --secondary / --accent = fill-2 (hover)
+        --primary     = accent (logo teal); default Buttons are re-inked in
+                        components.css to match the mockup's ink buttons
+        --popover     = panel (floats with --ar-sh-float)
+
+   The theme is stamped as data-theme on #alpharecall-admin-app (use-theme.ts)
+   and copied to portals by SurfacePortal, which also copies every custom
+   property declared here. */
+
+#alpharecall-admin-app {
+  --radius: 10px;
+
+  --ar-canvas: #EEEEEB;
+  --ar-panel: #FFFFFF;
+  --ar-fill: #F4F4F2;
+  --ar-fill-2: #EAEAE7;
+  --ar-ink: #111312;
+  --ar-ink-2: #5B605D;
+  /* Faint text still reads at 4.5:1 on panel, canvas, fill and fill-2. */
+  --ar-ink-3: #656A67;
+  --ar-on-ink: #FFFFFF;
+  --ar-accent: #2F6B55;
+  --ar-accent-soft: #E7F0EC;
+  --ar-accent-ink: #FFFFFF;
+  --ar-warn: #93560F;
+  --ar-warn-soft: #F8EEE0;
+  --ar-info: #2C4E89;
+  --ar-info-soft: #EAF0F9;
+  --ar-violet: #683C88;
+  --ar-violet-soft: #F2EBF7;
+  --ar-red: #A3322B;
+  --ar-red-soft: #FBEAE8;
+  --ar-sh-panel: 0 1px 2px rgba(17, 19, 18, 0.035);
+  --ar-sh-float: 0 12px 32px -10px rgba(17, 19, 18, 0.22), 0 2px 6px rgba(17, 19, 18, 0.05);
+  --ar-sh-selected: 0 1px 2px rgba(0, 0, 0, 0.07);
+  --ar-scrim: rgba(17, 19, 18, 0.28);
+  --ar-r-panel: 14px;
+  --ar-r-group: 14px;
+  --ar-r-control: 10px;
+  --ar-r-modal: 22px;
+  --ar-font: "Geist Variable", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ar-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* shadcn mapping (light) */
+  --background: 0 0% 100%;
+  --foreground: 150 5.6% 7.1%;
+  --card: 60 8.3% 95.3%;
+  --card-foreground: 150 5.6% 7.1%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 150 5.6% 7.1%;
+  --primary: 158 39% 30.2%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 60 6.7% 91.2%;
+  --secondary-foreground: 150 5.6% 7.1%;
+  --muted: 60 6.7% 91.2%;
+  --muted-foreground: 144 2.7% 36.7%;
+  --accent: 60 6.7% 91.2%;
+  --accent-foreground: 150 5.6% 7.1%;
+  --destructive: 3 58.3% 40.4%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 60 6.7% 91.2%;
+  --input: 60 6.7% 91.2%;
+  --ring: var(--ar-focus);
+
+  --chart-1: 158 39% 34%;
+  --chart-2: 218 51% 44%;
+  --chart-3: 32 70% 42%;
+  --chart-4: 275 39% 46%;
+  --chart-5: 3 58% 48%;
+
+  --sidebar-background: 60 8.1% 92.7%;
+  --sidebar-foreground: 150 5.6% 7.1%;
+  --sidebar-primary: 158 39% 30.2%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 60 8.3% 95.3%;
+  --sidebar-accent-foreground: 150 5.6% 7.1%;
+  --sidebar-border: 60 6.7% 91.2%;
+  --sidebar-ring: var(--ar-focus);
+
+  /* ui-surfaces.css control tokens, re-pointed at the fills. On the panel a
+     field is a soft fill; inside a fill (Card, Group) it turns white, see
+     "Surface levels" below. */
+  --ar-control: 60 8.3% 95.3%;
+  --ar-control-hover: 60 6.7% 91.2%;
+  --ar-selected: 60 5% 86%;
+  --ar-control-text: 150 5.6% 7.1%;
+  --ar-placeholder: 140 2% 40%; /* 4.5:1 on the focused field fill */
+  --ar-focus: 150 5.6% 7.1%;
+  --ar-check: 100 3% 72%;
+  /* Kept for the few components that still draw a hairline. */
+  --ar-surface-edge: 60 6.7% 91.2%;
+
+  color: var(--ar-ink);
+  font-family: var(--ar-font);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--ar-canvas);
+  color-scheme: light;
+}
+
+/* Dark: the same structure one step apart, accent lifted for dark surfaces.
+   Applies before React stamps data-theme too (anything but explicit light),
+   so the PHP early styles and the first paint agree. */
+#alpharecall-admin-app:not([data-theme="light"]) {
+  --ar-canvas: #0B0C0C;
+  --ar-panel: #151716;
+  --ar-fill: #1C1F1E;
+  --ar-fill-2: #262A29;
+  --ar-ink: #EDEEEC;
+  --ar-ink-2: #A2A7A4;
+  --ar-ink-3: #939895;
+  --ar-on-ink: #0B0C0C;
+  --ar-accent: #6CC2A0;
+  --ar-accent-soft: #18281F;
+  --ar-accent-ink: #06120C;
+  --ar-warn: #EDB877;
+  --ar-warn-soft: #2A2116;
+  --ar-info: #A4BFF3;
+  --ar-info-soft: #18213A;
+  --ar-violet: #D7AEEB;
+  --ar-violet-soft: #261C2E;
+  --ar-red: #F0A29C;
+  --ar-red-soft: #2C1917;
+  --ar-sh-panel: none;
+  --ar-sh-float: 0 16px 40px -12px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --ar-sh-selected: none;
+  --ar-scrim: rgba(0, 0, 0, 0.55);
+
+  --background: 150 4.5% 8.6%;
+  --foreground: 90 5.6% 92.9%;
+  --card: 160 5.1% 11.6%;
+  --card-foreground: 90 5.6% 92.9%;
+  --popover: 160 5% 13%;
+  --popover-foreground: 90 5.6% 92.9%;
+  --primary: 156 41.3% 59.2%;
+  --primary-foreground: 150 50% 4.7%;
+  --secondary: 165 5% 15.7%;
+  --secondary-foreground: 90 5.6% 92.9%;
+  --muted: 165 5% 15.7%;
+  --muted-foreground: 144 2.8% 64.5%;
+  --accent: 165 5% 18.5%;
+  --accent-foreground: 90 5.6% 92.9%;
+  --destructive: 3 52% 46%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 165 5% 15.7%;
+  --input: 165 5% 15.7%;
+
+  --chart-1: 156 41% 59%;
+  --chart-2: 219 77% 80%;
+  --chart-3: 33 77% 70%;
+  --chart-4: 280 60% 80%;
+  --chart-5: 4 74% 78%;
+
+  --sidebar-background: 180 4.3% 4.5%;
+  --sidebar-foreground: 90 5.6% 92.9%;
+  --sidebar-primary: 156 41.3% 59.2%;
+  --sidebar-primary-foreground: 150 50% 4.7%;
+  --sidebar-accent: 160 5.1% 11.6%;
+  --sidebar-accent-foreground: 90 5.6% 92.9%;
+  --sidebar-border: 165 5% 15.7%;
+
+  --ar-control: 160 5.1% 11.6%;
+  --ar-control-hover: 165 5% 15.7%;
+  --ar-selected: 165 5% 21%;
+  --ar-control-text: 90 5.6% 92.9%;
+  --ar-placeholder: 144 2.5% 58%;
+  --ar-focus: 90 5.6% 92.9%;
+  --ar-check: 150 3% 36%;
+  --ar-surface-edge: 165 5% 15.7%;
+
+  color-scheme: dark;
+}
+
+/* ─── Surface levels ───
+   A control takes the opposite step of the surface it sits on: soft fill on
+   the white panel, white on a soft fill (Cards, kit Groups, popovers keep the
+   panel value). Never inside the widget preview, which has its own tokens. */
+/* Portals (sheets, dialogs) too: SurfacePortal copies the theme and tokens onto them. */
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.ar-ui-card, .bg-card, .ark-on-fill):not(.ar-chat-shell, .ar-chat-shell *) {
+  --ar-control: 0 0% 100%;
+  --ar-control-hover: 60 7% 93%;
+  --ar-selected: 60 6.7% 91.2%;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]):not([data-theme="light"]) :is(.ar-ui-card, .bg-card, .ark-on-fill):not(.ar-chat-shell, .ar-chat-shell *) {
+  --ar-control: 150 4.5% 8.6%;
+  --ar-control-hover: 160 4% 13%;
+  --ar-selected: 165 5% 18.5%;
+}
+/* Dialogs and sheets are drawn as the white panel (styles/components.css)
+   although shadcn gives them bg-card, which the rule above reads as a fill:
+   their fields came out white on white. They are the panel level again, so
+   fields directly on them take the soft fill (same values as the root);
+   a Group or Card inside them still flips its fields to white. Same weight
+   as the rules above and later, so it wins on the dialog element itself. */
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.ar-ui-dialog, .ar-ui-menu):not(.ar-chat-shell, .ar-chat-shell *) {
+  --ar-control: 60 8.3% 95.3%;
+  --ar-control-hover: 60 6.7% 91.2%;
+  --ar-selected: 60 5% 86%;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]):not([data-theme="light"]) :is(.ar-ui-dialog, .ar-ui-menu):not(.ar-chat-shell, .ar-chat-shell *) {
+  --ar-control: 160 5.1% 11.6%;
+  --ar-control-hover: 165 5% 15.7%;
+  --ar-selected: 165 5% 21%;
+}
+
+/* ─── Destructive and primary TEXT ───
+   --destructive / --primary are fills. As text they use the tone inks, which
+   are tuned to read on both the panel and the fills in each theme. */
+#alpharecall-admin-app :is(.text-destructive, .hover\:text-destructive:hover) {
+  color: var(--ar-red);
+}
+#alpharecall-admin-app :is(.text-primary, .hover\:text-primary:hover) {
+  color: var(--ar-accent);
+}
+
+/* ─── Trend delta text (theme-aware, AA-compliant on both surfaces) ───
+   Replaces hardcoded text-emerald-500 / text-rose-500 which fail AA on the
+   light background. */
+/* ─── Hardcoded semantic text colors that fail AA on the light background ───
+   These bright Tailwind shades read fine on dark surfaces but not on white,
+   and several components pair them with non-functional `dark:` variants
+   (this app themes via [data-theme], not Tailwind's dark class). Darken the
+   TEXT usages in light mode only; backgrounds/borders are untouched. */
+#alpharecall-admin-app[data-theme="light"] .text-emerald-500,
+#alpharecall-admin-app[data-theme="light"] .text-emerald-400,
+#alpharecall-admin-app[data-theme="light"] .text-green-400 { color: hsl(160 84% 28%); }
+#alpharecall-admin-app[data-theme="light"] .text-red-400,
+#alpharecall-admin-app[data-theme="light"] .text-red-300 { color: hsl(0 72% 42%); }
+#alpharecall-admin-app[data-theme="light"] .text-rose-500,
+#alpharecall-admin-app[data-theme="light"] .text-rose-400 { color: hsl(347 77% 42%); }
+
+#alpharecall-admin-app[data-theme="light"] .ar-delta-up { color: hsl(160 84% 28%); }
+#alpharecall-admin-app[data-theme="light"] .ar-delta-down { color: hsl(347 77% 42%); }
+#alpharecall-admin-app[data-theme="dark"] .ar-delta-up { color: hsl(160 65% 55%); }
+#alpharecall-admin-app[data-theme="dark"] .ar-delta-down { color: hsl(347 90% 70%); }
+
+/* ═══════════════════════════════════════════════════
+   Reset
+   ═══════════════════════════════════════════════════ */
+
+#alpharecall-admin-app,
+#alpharecall-admin-app * {
+  box-sizing: border-box;
+}
+
+#alpharecall-admin-app :where(h1, h2, h3, h4, h5, h6, p) {
+  margin: 0;
+}
+/* wp-admin colors h1-h3 directly (#1d2327), which is unreadable on a dark
+   panel. Same weight as that rule and loaded after it, so any class a page
+   sets on a heading still wins. */
+:where(#alpharecall-admin-app, [data-ar-portal]) :is(h1, h2, h3, h4, h5, h6):where(:not(.ar-chat-shell *)) {
+  color: inherit;
+}
+
+/* ═══════════════════════════════════════════════════
+   WP Admin Integration
+   ═══════════════════════════════════════════════════ */
+
+.wrap.alpharecall-admin {
+  margin: 0;
+  padding: 0;
+}
+
+#alpharecall-admin-app {
+  min-height: var(--ar-app-height, calc(100dvh - var(--wp-admin--admin-bar--height, 32px)));
+  overflow-x: hidden;
+}
+
+/* Cancel #wpcontent's gutter: the frame brings its own canvas edge. Only
+   inside wp-admin, so the standalone dev harness is not clipped by 20px. */
+.wp-admin #alpharecall-admin-app {
+  margin-left: -20px;
+  margin-right: 0;
+  margin-top: -6px;
+}
+
+/* The measured height also accounts for WordPress notices above the app.
+   Toolbar-only fallbacks cover the initial render before the layout effect. */
+#alpharecall-admin-app .ar-shell-height {
+  height: var(--ar-app-height, calc(100dvh - var(--wp-admin--admin-bar--height, 32px)));
+}
+@media (max-width: 782px) {
+  #alpharecall-admin-app {
+    min-height: var(--ar-app-height, calc(100dvh - var(--wp-admin--admin-bar--height, 46px)));
+  }
+  #alpharecall-admin-app .ar-shell-height {
+    height: var(--ar-app-height, calc(100dvh - var(--wp-admin--admin-bar--height, 46px)));
+  }
+}
+
+/* ─── Current subscription selection ─── */
+#alpharecall-admin-app .ar-upgrade-plan[data-current-plan="true"] {
+  /* The current plan is told apart by its tint, not by a frame. */
+  background: var(--ar-accent-soft) !important;
+}
+
+/* ─── Input placeholder contrast ─── */
+#alpharecall-admin-app input::placeholder,
+#alpharecall-admin-app textarea::placeholder {
+  color: hsl(var(--ar-placeholder));
+  opacity: 1;
+}
+#alpharecall-admin-app[data-theme="light"] input::placeholder,
+#alpharecall-admin-app[data-theme="light"] textarea::placeholder {
+  color: hsl(var(--ar-placeholder));
+  opacity: 1;
+}
+
+/* ─── Calendar appointment dot indicator ─── */
+.ar-cal-has-appointment {
+  position: relative;
+}
+.ar-cal-has-appointment::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: hsl(var(--primary));
+}
+
+@media (max-width: 782px) {
+  /* WordPress pads #wpcontent by 10px here; the frame brings its own gutter. */
+  .wp-admin #alpharecall-admin-app {
+    margin-left: -10px;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    overflow-x: hidden;
+  }
+}
+
+/* Body/WP wrapper styles are injected via PHP admin_head hook
+   (inject_early_styles) to prevent white flash on page load.
+   Do NOT set body background in this file — it loads too late
+   and causes a flash from #fafafa before React sets data-theme. */
+
+/* ═══════════════════════════════════════════════════
+   Borderless surfaces
+   ═══════════════════════════════════════════════════
+
+   Cards are soft fills on the panel; nothing draws a hairline. The few
+   structural divider utilities left in pages take the fill-2 step, which
+   reads as a seam rather than a line. */
+#alpharecall-admin-app :is(.border-b, .border-t, .border-l, .border-r) {
+  border-color: hsl(var(--border));
+}
+#alpharecall-admin-app :is(.ar-ui-card, .rounded-lg.border, .rounded-xl.border, .rounded-2xl.border) {
+  border-width: 0;
+}
+#alpharecall-admin-app :is(div, section, article).border:is(.rounded-lg, .rounded-xl, .rounded-2xl):not([class*="bg-"]) {
+  background: hsl(var(--card));
+}
+#alpharecall-admin-app :is(.ar-ui-card, .bg-card:is(.rounded-lg, .rounded-xl, .rounded-2xl)):not([class*="shadow-lg"], [class*="shadow-xl"], [class*="shadow-2xl"], [role="dialog"]):not(.ar-chat-shell, .ar-chat-shell *) {
+  box-shadow: none;
+}
+
+/* Swatches must show the actual color, including white/black. A neutral inset
+   shadow separates those samples; a black/white check marks the selection. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-color-swatch {
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgb(127 127 127 / 45%);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-color-swatch[aria-pressed="true"]::after {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 50%;
+  background: #171717;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 0 0 1px #fff;
+}
+
+/* Color picker (shared/color-picker.tsx): saturation left to right, brightness
+   bottom to top over the hue, then a rainbow hue slider. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-color-panel { display: grid; gap: 10px; }
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-color-area {
+  position: relative;
+  height: 150px;
+  border-radius: 8px;
+  background-image: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent);
+  cursor: crosshair;
+  touch-action: none;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-color-area-thumb {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgb(0 0 0 / 35%);
+  pointer-events: none;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-color-area:focus-visible .ar-color-area-thumb {
+  box-shadow: 0 0 0 3px #fff, 0 0 0 5px rgb(0 0 0 / 55%);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) input[type="range"].ar-color-hue {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 12px;
+  margin: 0;
+  border-radius: 999px;
+  background: linear-gradient(to right, #f00, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00) !important;
+  cursor: pointer;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) input[type="range"].ar-color-hue::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgb(0 0 0 / 35%);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) input[type="range"].ar-color-hue::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgb(0 0 0 / 35%);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) input[type="range"].ar-color-hue:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px #fff, 0 0 0 5px rgb(0 0 0 / 55%);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-color-sample {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+/* A field the form refused: no rings in this design, so a red-soft fill and
+   the reason in red under it. !important: rows paint their fields white with
+   a `background` shorthand (widget-editor.css), the hover and focus fills too. */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-input[aria-invalid="true"] {
+  background-color: var(--ar-red-soft) !important;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-field-error {
+  margin: 0;
+  color: var(--ar-red);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Dialog/popover primitives copy this root's theme to an owned portal. */
+
+/* ═══════════════════════════════════════════════════
+   Scrollbar
+   ═══════════════════════════════════════════════════ */
+
+/* Scroll containers cut the last visible row in half with no visible cue that
+   more content follows; a thumb that actually contrasts with the track is that
+   cue, so it uses muted-foreground rather than the near-invisible border token. */
+#alpharecall-admin-app ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+#alpharecall-admin-app ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#alpharecall-admin-app ::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.35);
+  border-radius: 4px;
+}
+
+#alpharecall-admin-app ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.55);
+}
+
+/* Firefox */
+#alpharecall-admin-app main,
+#alpharecall-admin-app .overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.35) transparent;
+}
+
+/* ═══════════════════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  #alpharecall-admin-app * {
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   Micro-animations
+   ═══════════════════════════════════════════════════ */
+
+/* Button press effect */
+#alpharecall-admin-app button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Smooth tab transitions */
+#alpharecall-admin-app [role="tabpanel"] {
+  animation: ar-fadeSlideIn 200ms ease-out;
+}
+
+@keyframes ar-fadeSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Badge pulse for status indicators */
+#alpharecall-admin-app .animate-pulse-subtle {
+  animation: ar-pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;
+}
+
+@keyframes ar-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Smooth input focus */
+#alpharecall-admin-app input,
+#alpharecall-admin-app textarea,
+#alpharecall-admin-app select {
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+/* Switch toggle animation */
+#alpharecall-admin-app [role="switch"] {
+  transition: background-color 200ms ease;
+}
+
+/* Conversation item hover */
+#alpharecall-admin-app button[class*="rounded-md"][class*="text-left"] {
+  transition: background-color 120ms ease;
+}
+
+/* Skeleton shimmer */
+@keyframes ar-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+#alpharecall-admin-app .animate-pulse {
+  animation: none;
+  background: linear-gradient(90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted-foreground) / 0.08) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: ar-shimmer 1.5s ease-in-out infinite;
+}
+
+/* Page entrance */
+#alpharecall-admin-app [data-admin-ready] > * {
+  animation: ar-fadeSlideIn 250ms ease-out;
+}
+
+/* Toast/banner slide in */
+#alpharecall-admin-app [class*="bg-destructive"],
+#alpharecall-admin-app [class*="bg-primary/10"] {
+  animation: ar-slideDown 250ms ease-out;
+}
+
+@keyframes ar-slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sync progress shimmer */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* Notification deep-link: a highlight fill that fades out */
+@keyframes ar-highlight-fade {
+  0%, 70% { background-color: hsl(var(--ar-selected)); }
+}
+
+/* ═══════════════════════════════════════════════════
+   Keyboard focus — always visible
+   ═══════════════════════════════════════════════════ */
+
+/* A 2px accent ring on the control the keyboard is on, so the stop never
+   reads as the selected item (selection is a fill: nav, tabs, chips).
+   ui-surfaces.css strips every outline with !important at up to (1,2,1); this rule
+   weighs more, so it wins wherever it sits. Not drawn on:
+   - text fields, which match :focus-visible on a mouse click too and show
+     focus with the caret and their tinted fill;
+   - menu and listbox options, whose highlight fill already follows the keys;
+   - widget surfaces (the preview .lp-root, the support chat .ar-chat-shell and
+     the layers they open, [data-ar-portal-owner="widget"]), which keep the
+     visitor widget's look.
+   Inside scrolling rows and lists the ring is drawn inset (below), because
+   the scroll box would clip a ring drawn outside the control. */
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(button, a, summary, [role="button"], [role="tab"], [role="switch"], [role="checkbox"], [role="radio"], [role="link"], [tabindex]:not([tabindex^="-"], input, textarea, select, [role="option"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]), input:is([type="checkbox"], [type="radio"], [type="range"])):focus-visible:not(:is(.ar-chat-shell, .lp-root, [data-ar-portal-owner="widget"]) *, [role="option"], [role^="menuitem"]) {
+  outline: 2px solid var(--ar-accent) !important;
+  outline-offset: 2px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.ar-sub-list, .ar-top-tabs, .ar-inbox-scroll, .ark-tbl, .ark-chips, .ark-seg) :is(button, a, [role="tab"], [tabindex]):focus-visible {
+  outline-offset: -2px !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   Dialogs: a panel floating over a scrim
+   ═══════════════════════════════════════════════════ */
+
+:is(#alpharecall-admin-app, [data-ar-portal]) [role="dialog"]:not(.ar-chat-shell *, .ar-support-popup) {
+  border: 0;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.bg-black\/80, .bg-black\/60, .bg-black\/50):not(.ar-chat-shell *) {
+  background: var(--ar-scrim);
+}
+
+/* Hide the scrollbar of a row that scrolls sideways (tab strips, chip rows)
+   but keep it scrollable. The widget stylesheet defines this too; the admin
+   bundle never included it, so the utility was a no-op here. Rows that use
+   it are wrapped in <ScrollRow>, which draws edge fades as the cue instead. */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

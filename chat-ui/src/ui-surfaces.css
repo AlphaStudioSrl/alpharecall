@@ -1,0 +1,206 @@
+/* Owned surfaces only: never reset body or unrelated WordPress/site controls.
+   Portals copy their originating surface's tokens in SurfacePortal. */
+:where(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal], [data-ar-console] .app-shell, [data-ar-console] .auth-layout) {
+  --ar-control: 0 0% 93%;
+  --ar-control-hover: 0 0% 88%;
+  --ar-selected: 0 0% 83%;
+  --ar-control-text: 0 0% 9%;
+  --ar-placeholder: 0 0% 36%;
+  --ar-focus: 0 0% 28%;
+  --ar-check: 0 0% 45%;
+  color-scheme: light;
+}
+:where(#alpharecall-admin-app:not([data-theme="light"]), .ar-chat-shell[data-theme="dark"], .lp-root[data-theme="dark"], [data-ar-portal][data-theme="dark"]) {
+  --ar-control: 0 0% 16%;
+  --ar-control-hover: 0 0% 21%;
+  --ar-selected: 0 0% 27%;
+  --ar-control-text: 0 0% 96%;
+  --ar-placeholder: 0 0% 74%;
+  --ar-focus: 0 0% 80%;
+  --ar-check: 0 0% 58%;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :where([data-ar-console] .app-shell, [data-ar-console] .auth-layout) {
+    --ar-control: 0 0% 16%;
+    --ar-control-hover: 0 0% 21%;
+    --ar-selected: 0 0% 27%;
+    --ar-control-text: 0 0% 96%;
+    --ar-placeholder: 0 0% 74%;
+    --ar-focus: 0 0% 80%;
+    --ar-check: 0 0% 58%;
+    color-scheme: dark;
+  }
+}
+[data-ar-portal] { position: relative; z-index: 100000; }
+
+/* !important is intentional for the stroke contract only. WP focus rules,
+   inline tenant borderColor and ID-prefixed Tailwind state/has variants used
+   to beat these rules. Fills remain configurable, including active tabs. */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(
+  button, input, textarea, select, fieldset,
+  .ar-ui-button, .ar-ui-input, .ar-ui-select, .ar-ui-check, .ar-ui-tab,
+  .ar-ui-card, .ar-ui-menu, .ar-ui-dialog, .ar-ui-input-group,
+  [role="button"], [role="tab"], [role="checkbox"], [role="radio"],
+  a[class*="border"], label[class*="border"]
+) { border-width: 0 !important; }
+
+/* :where keeps this at (1,0,0): with :is the six :not()s weighed (1,6,1) and
+   beat the hover and focus fills below, so a focused field never changed. */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :where(
+  .ar-ui-input, .ar-ui-select,
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="hidden"]),
+  textarea, select
+) {
+  background-color: hsl(var(--ar-control));
+  color: hsl(var(--ar-control-text));
+  box-shadow: none !important;
+  transition: background-color 150ms ease;
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(input, textarea)::placeholder {
+  color: hsl(var(--ar-placeholder));
+  opacity: 1;
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-ui-select[data-placeholder] { color: hsl(var(--ar-placeholder)); }
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(.ar-ui-input, .ar-ui-select):hover:not(:disabled) { background-color: hsl(var(--ar-control-hover)); }
+
+/* Native checks/radios/ranges otherwise keep the browser's blue accent (or a
+   generated accent-accent class). The filled check remains clearly visible. */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(input[type="checkbox"], input[type="radio"], input[type="range"]) {
+  accent-color: hsl(var(--ar-focus)) !important;
+  box-shadow: none !important;
+}
+/* WP replaces the native check with a blue pseudo-element. */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(input[type="checkbox"], input[type="radio"]) {
+  appearance: auto;
+  background: hsl(var(--ar-check));
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(input[type="checkbox"], input[type="radio"])::before { content: none; }
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) input[type="color"]::-webkit-color-swatch { border: 0; }
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) input[type="color"]::-moz-color-swatch { border: 0; }
+
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-ui-input-group {
+  background: hsl(var(--ar-control));
+  color: hsl(var(--ar-control-text));
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-ui-input-group [data-slot="input-group-control"] {
+  background: transparent;
+  outline: none !important;
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-ui-input-group:has([data-slot="input-group-control"]:focus) {
+  background: hsl(var(--ar-control-hover));
+}
+
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(button, .ar-ui-button) {
+  box-shadow: none !important;
+  /* A transition outranks even !important. Never interpolate a host/tenant
+     outline or stroke on the way to the neutral interaction state. */
+  transition-property: background-color, color, opacity, transform !important;
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-ui-button.ar-ui-surface {
+  background: hsl(var(--ar-control));
+  color: hsl(var(--ar-control-text));
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-ui-button.ar-ui-surface:hover:not(:disabled, [aria-pressed="true"]) { background: hsl(var(--ar-control-hover)); }
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-ui-tab[role="tab"][data-state="active"] {
+  background: hsl(var(--ar-selected));
+  color: hsl(var(--ar-control-text));
+  font-weight: 650;
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-ui-check[data-state="unchecked"] { background: hsl(var(--ar-check)); }
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-ui-menu .ar-ui-option[data-highlighted] {
+  background: hsl(var(--ar-control-hover));
+  color: hsl(var(--ar-control-text));
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) .ar-ui-menu .ar-ui-option[data-state="checked"] {
+  background: hsl(var(--ar-selected));
+  color: hsl(var(--ar-control-text));
+  font-weight: 650;
+}
+
+/* Cover focus-within/has on containers, not only :focus on the field. Clear
+   rings at rest too: selected/invalid/expanded states can also paint them. */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(
+  [class*="ring-"], .ar-ui-input-group, .ar-chat-composer,
+  [class*="focus-within:"], [class*="has-"]
+) {
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  box-shadow: none !important;
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(button, a, input, textarea, select, [tabindex], [contenteditable="true"]):focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+/* No component draws a border, ring or outline when active: focused, pressed,
+   selected or dragged. That includes the ones wp-admin and host themes add.
+   Keyboard focus shows as a neutral fill laid over the element's own
+   background (a gradient layer, so filled buttons keep their colour). */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(:focus, :focus-visible, :focus-within, :active) {
+  outline: none !important;
+}
+/* Controls and keyboard stops only: a tabindex="-1" target (a heading focused
+   so screen readers announce a new step) is not a control and is not tinted;
+   roving radios and menu items still match by role. :where keeps the weight at
+   (1,1,0) so a page can restyle its own focus; !important stays because a
+   `background` shorthand in component CSS would otherwise reset the layer. */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :where(button, a, summary, [role="button"], [role="tab"], [role="switch"], [role="checkbox"], [role="radio"], [role="option"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="link"], [tabindex]:not([tabindex^="-"], input, textarea, select)):focus-visible {
+  background-image: linear-gradient(color-mix(in srgb, currentColor 10%, transparent), color-mix(in srgb, currentColor 10%, transparent)) !important;
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(input[type="checkbox"], input[type="radio"]):is(:focus, :focus-visible) {
+  border-color: hsl(var(--border)) !important;
+}
+/* Text entry fields: the caret and a tinted fill show focus. */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="button"], [type="submit"], [type="reset"], [type="file"]),
+  textarea, select, .ar-ui-select, [role="combobox"], [contenteditable="true"]
+):is(:focus, :focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: hsl(var(--border)) !important;
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(.ar-ui-input, .ar-ui-select, select):focus {
+  background-color: hsl(var(--ar-control-hover));
+}
+/* A native range has no field fill of its own: tint its box like a control. */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) input[type="range"]:focus-visible {
+  background-color: hsl(var(--ar-control-hover));
+  border-radius: 6px;
+}
+
+/* Generated cards and legacy structural utilities used weak borders instead
+   of surfaces. Keep semantic/chart content out of this compatibility rule. */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(div, section, article, form, aside, header, footer, nav, hr, td, th):is([class*="border"], [style*="border"]) {
+  border-width: 0 !important;
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(div, section, article, form).border:is([class*="rounded"]):not([class*="bg-"]):not([style*="background"]) { background-color: hsl(var(--muted)); }
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(button, a, label, [role="button"]):is(.border, .border-2, .border-input):not(.bg-primary):not(.bg-destructive):not([style*="background"]):not([aria-pressed="true"]) {
+  background-color: hsl(var(--ar-control));
+  color: hsl(var(--ar-control-text));
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(button, a, label, [role="button"]):is(.border, .border-2, .border-input):hover:not(:disabled):not(.bg-primary):not(.bg-destructive):not([style*="background"]):not([aria-pressed="true"]) { background-color: hsl(var(--ar-control-hover)); }
+/* Generic "selected" look for pressed toggles, legacy selected classes and
+   checked option cards. Deliberately light, (1,2,0): it beats the shared
+   utilities (1,1,0) and the surface rule above (same weight, earlier), and any
+   page rule such as `#alpharecall-admin-app .x button[aria-pressed="true"]`
+   beats it without !important. The :has() branch and the exclusions sit in
+   :where() because :is() would lend every branch the weight of the heaviest. */
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(button, label, [role="button"]):is(.border-primary, .ring-primary, .ring-primary\/20, [aria-pressed="true"], label:where(:has(input:is([type="radio"], [type="checkbox"]):checked))):where(:not(.bg-primary):not([style*="background"])) {
+  border-color: hsl(var(--border)) !important;
+  background-color: hsl(var(--ar-selected));
+  color: hsl(var(--ar-control-text));
+  font-weight: 650;
+}
+:is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal], [data-ar-console]) :is(.ar-ui-button, .ar-ui-input, .ar-ui-select, button, input, textarea, select):disabled {
+  opacity: 1 !important;
+  cursor: not-allowed;
+  background-color: hsl(var(--ar-control));
+  color: hsl(var(--ar-placeholder));
+  box-shadow: none !important;
+}
+@media (forced-colors: active) {
+  :is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(input, textarea, select, button, .ar-ui-card) { outline: 1px solid CanvasText !important; outline-offset: -1px; }
+  :is(#alpharecall-admin-app, .ar-chat-shell, .lp-root, [data-ar-portal]) :is(button, a, input, textarea, select, [tabindex]):focus-visible { outline: 3px solid CanvasText !important; outline-offset: 3px; }
+}

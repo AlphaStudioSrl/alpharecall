@@ -1,0 +1,143 @@
+/* ═══════════════════════════════════════════════════
+   Widget preview stage (live-widget-preview.tsx)
+   The stage is admin chrome on admin tokens: a soft fill with a sketch of the
+   tenant's site. Inside it, .lp-root is the widget itself, styled by the real
+   widget-design.css (injected and prefixed by the component). The rules for
+   .lp-root below only stand in for what index.css does for the live widget
+   (fixed positioning, open/close), never for its look.
+   ═══════════════════════════════════════════════════ */
+
+#alpharecall-admin-app .we-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--ar-fill);
+  border-radius: 12px;
+}
+#alpharecall-admin-app .we-stage-tools {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 14px 0;
+}
+#alpharecall-admin-app .we-stage-tools .ark-seg {
+  background: var(--ar-panel);
+  box-shadow: var(--ar-sh-panel);
+}
+#alpharecall-admin-app .we-stage-tools .ark-seg > button[data-on] {
+  background: var(--ar-fill);
+  box-shadow: none !important;
+}
+#alpharecall-admin-app .we-stage-area {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The page the widget sits on. Desktop: the whole area, 1:1 (or scaled down
+   on a narrow stage). Phone: a handset, scaled to fit. */
+#alpharecall-admin-app .we-viewport {
+  position: absolute;
+  overflow: hidden;
+  transform-origin: top left;
+}
+#alpharecall-admin-app .we-stage[data-device="mobile"] .we-viewport {
+  border-radius: 40px;
+  background: var(--ar-panel);
+  box-shadow: var(--ar-sh-float);
+}
+#alpharecall-admin-app .we-stage[data-device="mobile"] .we-viewport:not([data-measured]) {
+  inset: 0;
+  margin: auto;
+  width: min(390px, 100%);
+}
+#alpharecall-admin-app .we-site {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px 32px;
+  transition: padding var(--ar-page-duration, 260ms) cubic-bezier(0.22, 1, 0.36, 1);
+}
+#alpharecall-admin-app .we-site > span,
+#alpharecall-admin-app .we-site-nav > span:not(.we-site-sp) {
+  display: block;
+  background: var(--ar-fill-2);
+  flex: none;
+}
+#alpharecall-admin-app .we-site-nav { display: flex; align-items: center; gap: 12px; }
+#alpharecall-admin-app .we-site-nav > span:not(.we-site-sp) { width: 40px; height: 8px; border-radius: 4px; }
+#alpharecall-admin-app .we-site-nav > .we-site-logo { width: 90px; height: 12px; border-radius: 6px; }
+#alpharecall-admin-app .we-site-sp { flex: 1 1 auto; }
+#alpharecall-admin-app .we-site-title { width: 58%; height: 26px; border-radius: 8px; margin-top: 30px; }
+#alpharecall-admin-app .we-site-sub { width: 42%; height: 12px; border-radius: 6px; }
+#alpharecall-admin-app .we-site-hero { width: 100%; height: 170px; border-radius: 16px; margin-top: 14px; }
+#alpharecall-admin-app .we-site-line { width: 74%; height: 10px; border-radius: 5px; margin-top: 10px; }
+#alpharecall-admin-app .we-site-line-short { width: 46%; margin-top: 0; }
+#alpharecall-admin-app .we-stage[data-device="mobile"] .we-site { padding: 54px 22px 22px; }
+#alpharecall-admin-app .we-stage[data-device="mobile"] .we-site-nav > span:not(.we-site-logo):not(.we-site-sp) { width: 18px; }
+#alpharecall-admin-app .we-stage[data-device="mobile"] .we-site-title { width: 82%; }
+#alpharecall-admin-app .we-stage[data-device="mobile"] .we-site-sub { width: 64%; }
+
+/* ─── The widget inside the page ─── */
+#alpharecall-admin-app .we-viewport .lp-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+#alpharecall-admin-app .we-viewport .lp-root > * { pointer-events: auto; }
+#alpharecall-admin-app .lp-root .ar-chat-panel {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  overflow: hidden;
+}
+#alpharecall-admin-app .lp-root .ar-chat-panel[data-open="false"] { opacity: 0; pointer-events: none; }
+#alpharecall-admin-app .lp-root .ar-chat-panel[data-widget-style="sidepanel"][data-open="false"] { transform: translate3d(105%, 0, 0); }
+#alpharecall-admin-app .lp-root .ar-chat-panel[data-widget-style="sidepanel"][data-position="left"][data-open="false"] { transform: translate3d(-105%, 0, 0); }
+#alpharecall-admin-app .lp-root .ar-chat-panel[data-widget-style="popup"] { transform-origin: bottom right; }
+#alpharecall-admin-app .lp-root .ar-chat-panel[data-widget-style="popup"][data-position="left"] { transform-origin: bottom left; }
+#alpharecall-admin-app .lp-root .ar-chat-panel[data-widget-style="popup"][data-open="false"] { transform: translateY(12px) scale(0.97); }
+#alpharecall-admin-app .lp-root .ar-chat-panel[data-open="true"] { opacity: 1; transform: none; }
+#alpharecall-admin-app .lp-root .ar-chat-body { position: relative; }
+/* The live widget hides the Chat | Domande switch while chatting (the FAQ is
+   in the menu); that rule is scoped to .ar-chat-shell, so repeat it here. */
+#alpharecall-admin-app .lp-root .ar-chat-header[data-view="chat"] .ar-chat-tabs { display: none; }
+#alpharecall-admin-app .lp-root .no-scrollbar { scrollbar-width: none; }
+#alpharecall-admin-app .lp-root .no-scrollbar::-webkit-scrollbar { width: 0; height: 0; }
+#alpharecall-admin-app .lp-root .ar-launcher-dock {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+#alpharecall-admin-app .lp-root .ar-launcher-dock:has(.ar-teaser[data-position="left"]) { align-items: flex-start; }
+
+/* ─── Footnote ─── */
+#alpharecall-admin-app .we-stage-note {
+  position: absolute;
+  z-index: 4;
+  bottom: 12px;
+  left: 18px;
+  max-width: min(360px, 42%);
+  margin: 0;
+  color: var(--ar-ink-3);
+  font-size: 11.5px;
+  line-height: 1.4;
+  pointer-events: none;
+}
+#alpharecall-admin-app .we-stage[data-side="left"] .we-stage-note { left: auto; right: 18px; text-align: right; }
+@container ar-page (max-width: 760px) {
+  #alpharecall-admin-app .we-stage-note { display: none; }
+}

@@ -1,0 +1,181 @@
+/* ═══════════════════════════════════════════════════
+   Shared shadcn primitives, restyled for the admin
+   ═══════════════════════════════════════════════════
+
+   src/components/ui/* is shared with the visitor widget, so the admin look is
+   applied here, scoped to the admin root and its portals and never to the
+   widget preview (.ar-chat-shell) that the Widget page renders inside it.
+   Values come from the tokens in admin.css. ui-surfaces.css (loaded first)
+   already removes every border, ring and outline and drives field fills
+   through --ar-control; this file only adds the mockup's shapes and fills.
+
+   Specificity note: rules start with the #id scope so they beat the
+   Tailwind utilities a component ships with ((1,1,0)), and the few that must
+   beat ui-surfaces' `button { box-shadow: none !important }` carry
+   !important themselves. */
+
+/* ─── Button ───
+   default  = ink (the mockup's primary action: "Apri chat", "Invita")
+   outline / secondary = soft control (fill on the panel, white on a fill)
+   ghost    = clear until hovered
+   destructive = red ink on its soft red */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-button:not(.ar-chat-shell *) {
+  border-radius: var(--ar-r-control);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-button.bg-primary:not(.ar-chat-shell *) {
+  background: var(--ar-ink);
+  color: var(--ar-on-ink);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-button.bg-primary:hover:not(:disabled, .ar-chat-shell *) {
+  background: color-mix(in srgb, var(--ar-ink) 86%, var(--ar-panel));
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-button.bg-destructive:not(.ar-chat-shell *) {
+  background: var(--ar-red-soft);
+  color: var(--ar-red);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-button.bg-destructive:hover:not(:disabled, .ar-chat-shell *) {
+  background: color-mix(in srgb, var(--ar-red) 16%, var(--ar-red-soft));
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-button:is(.hover\:bg-accent):not(.ar-ui-surface, .bg-primary, .bg-destructive, .ar-chat-shell *):hover:not(:disabled) {
+  background: hsl(var(--ar-control));
+  color: var(--ar-ink);
+}
+
+/* ─── Badge ─── soft pairs, pill shaped */
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.inline-flex.rounded-md.border.px-2\.5.py-0\.5.text-xs.font-semibold):not(.ar-chat-shell *) {
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 11.5px;
+  padding: 2px 9px;
+  box-shadow: none;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.inline-flex.rounded-md.border.px-2\.5.py-0\.5.text-xs.font-semibold).bg-primary:not(.ar-chat-shell *) {
+  background: var(--ar-accent-soft);
+  color: var(--ar-accent);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.inline-flex.rounded-md.border.px-2\.5.py-0\.5.text-xs.font-semibold).bg-secondary:not(.ar-chat-shell *) {
+  background: var(--ar-fill-2);
+  color: var(--ar-ink-2);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.inline-flex.rounded-md.border.px-2\.5.py-0\.5.text-xs.font-semibold).bg-destructive:not(.ar-chat-shell *) {
+  background: var(--ar-red-soft);
+  color: var(--ar-red);
+}
+
+/* ─── Card ─── a soft group on the panel */
+#alpharecall-admin-app .ar-ui-card:not(.ar-chat-shell *) {
+  background: var(--ar-fill);
+  border-radius: 16px;
+  box-shadow: none;
+}
+
+/* ─── Fields ─── fills come from --ar-control (ui-surfaces); shape here */
+:is(#alpharecall-admin-app, [data-ar-portal]) :is(.ar-ui-input, .ar-ui-select, .ar-ui-input-group):not(.ar-chat-shell *) {
+  border-radius: var(--ar-r-control);
+}
+
+/* ─── Tabs ─── the mockup's segmented control: a soft track, the active
+   segment lifted onto the surface colour */
+#alpharecall-admin-app [role="tablist"].bg-muted:not(.ar-chat-shell *) {
+  background: hsl(var(--ar-control));
+  border-radius: var(--ar-r-control);
+  padding: 3px;
+}
+#alpharecall-admin-app .ar-ui-tab[role="tab"]:not(.ar-chat-shell *) {
+  border-radius: 8px;
+  color: var(--ar-ink-2);
+  font-weight: 450;
+}
+#alpharecall-admin-app .ar-ui-tab[role="tab"]:hover:not(.ar-chat-shell *) {
+  color: var(--ar-ink);
+}
+#alpharecall-admin-app .ar-ui-tab[role="tab"][data-state="active"]:not(.ar-chat-shell *) {
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  font-weight: 500;
+  box-shadow: var(--ar-sh-selected) !important;
+}
+/* Inside a fill the track is white, so the active segment takes the fill. */
+#alpharecall-admin-app :is(.ar-ui-card, .bg-card, .ark-on-fill) .ar-ui-tab[role="tab"][data-state="active"]:not(.ar-chat-shell *) {
+  background: var(--ar-fill-2);
+  box-shadow: none !important;
+}
+
+/* ─── Switch ─── accent when on, a quiet gray track when off */
+:is(#alpharecall-admin-app, [data-ar-portal]) button[role="switch"]:not(.ar-chat-shell *) {
+  box-shadow: none !important;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) button[role="switch"][data-state="checked"]:not(.ar-chat-shell *) {
+  background: var(--ar-accent);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) button[role="switch"][data-state="unchecked"]:not(.ar-chat-shell *) {
+  background: color-mix(in srgb, var(--ar-ink) 22%, var(--ar-fill));
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) button[role="switch"] > span:not(.ar-chat-shell *) {
+  background: var(--ar-panel);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) button[role="switch"][data-state="checked"] > span:not(.ar-chat-shell *) {
+  background: #fff;
+}
+
+/* ─── Checkbox ─── ink when checked (x-chk) */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-check:not(.ar-chat-shell *) {
+  border-radius: 5px;
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-check[data-state="checked"]:not(.ar-chat-shell *) {
+  background: var(--ar-ink);
+  color: var(--ar-on-ink);
+}
+
+/* ─── Menus, popovers, select lists ─── a panel floating on a soft shadow */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-menu:not(.ar-chat-shell *) {
+  border-radius: 12px;
+  box-shadow: var(--ar-sh-float);
+}
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-menu [role="menuitem"]:not(.ar-chat-shell *),
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-menu [role="option"]:not(.ar-chat-shell *) {
+  border-radius: 8px;
+}
+
+/* ─── Dialog ─── */
+:is(#alpharecall-admin-app, [data-ar-portal]) .ar-ui-dialog:not(.ar-chat-shell *) {
+  background: var(--ar-panel);
+  border-radius: var(--ar-r-modal);
+  box-shadow: var(--ar-sh-float);
+}
+
+/* ─── Table ─── no rules between rows: a soft zebra and a fill on hover,
+   headers in the faint ink (x-tbl) */
+#alpharecall-admin-app table:not(.ar-chat-shell *) :is(thead, tbody, tfoot) tr {
+  border-bottom-width: 0;
+}
+#alpharecall-admin-app table:not(.ar-chat-shell *) th {
+  color: var(--ar-ink-3);
+  font-weight: 450;
+  font-size: 12px;
+}
+#alpharecall-admin-app table:not(.ar-chat-shell *) tbody tr:nth-child(odd) {
+  background: color-mix(in srgb, var(--ar-fill) 55%, transparent);
+}
+#alpharecall-admin-app :is(.ar-ui-card, .bg-card, .ark-on-fill) table:not(.ar-chat-shell *) tbody tr:nth-child(odd) {
+  background: color-mix(in srgb, var(--ar-panel) 55%, transparent);
+}
+#alpharecall-admin-app table:not(.ar-chat-shell *) tbody tr:hover {
+  background: var(--ar-fill-2);
+}
+#alpharecall-admin-app table:not(.ar-chat-shell *) tbody td:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+#alpharecall-admin-app table:not(.ar-chat-shell *) tbody td:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* ─── Skeleton ─── */
+#alpharecall-admin-app .animate-pulse.bg-muted:not(.ar-chat-shell *) {
+  border-radius: var(--ar-r-control);
+}

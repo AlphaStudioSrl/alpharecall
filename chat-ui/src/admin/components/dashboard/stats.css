@@ -1,0 +1,401 @@
+/* Statistiche (stats-page.tsx, stats-data.tsx). Mockup: stats B "Weekly report". */
+
+#alpharecall-admin-app .ar-stats {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 6px 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ─── Toolbar: Report | Dati ... period ─── */
+#alpharecall-admin-app .ar-stats-bar-top {
+  display: flex;
+  align-items: center;
+  gap: 10px 12px;
+  flex-wrap: wrap;
+}
+#alpharecall-admin-app .ar-stats-sp { flex: 1; }
+#alpharecall-admin-app .ar-stats-range {
+  color: var(--ar-ink-2);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ─── Report ─── */
+#alpharecall-admin-app .ar-stats-report {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+#alpharecall-admin-app .ar-stats-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#alpharecall-admin-app .ar-stats-intro .ark-lbl { font-weight: 400; }
+#alpharecall-admin-app .ar-stats-headline {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  color: var(--ar-ink);
+  text-wrap: balance;
+}
+#alpharecall-admin-app .ar-stats-headline b {
+  font-weight: inherit;
+  color: var(--ar-accent);
+}
+
+#alpharecall-admin-app .ar-stats-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+#alpharecall-admin-app .ar-stats-tiles.is-three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+#alpharecall-admin-app .ar-stats-tile {
+  background: var(--ar-fill);
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  min-width: 0;
+}
+#alpharecall-admin-app .ar-stats-tile dd {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--ar-ink);
+  white-space: nowrap;
+}
+#alpharecall-admin-app .ar-stats-tile dt {
+  font-size: 12px;
+  color: var(--ar-ink-3);
+}
+#alpharecall-admin-app .ar-stats-delta {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+/* Dati tiles read label first, then value and a hint. */
+#alpharecall-admin-app .ar-stats-kpis .ar-stats-tile { flex-direction: column; gap: 6px; padding: 14px; }
+#alpharecall-admin-app .ar-stats-kpis .ar-stats-tile dt { color: var(--ar-ink-2); }
+#alpharecall-admin-app .ar-stats-kpis .ar-stats-tile dd:not(.ar-stats-tile-hint) { font-size: 24px; }
+#alpharecall-admin-app .ar-stats-kpis .ar-stats-tile-hint {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ar-ink-3);
+  white-space: normal;
+}
+
+#alpharecall-admin-app .ar-stats-insights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+#alpharecall-admin-app .ar-stats-insights li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 0;
+}
+#alpharecall-admin-app .ar-stats-insight-icon {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  margin: 4px 5px 0;
+}
+#alpharecall-admin-app .ar-stats-insight-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+#alpharecall-admin-app .ar-stats-insight-body b { font-weight: 600; color: var(--ar-ink); }
+#alpharecall-admin-app .ar-stats-insight-body span { color: var(--ar-ink-2); }
+#alpharecall-admin-app .ar-stats-act {
+  height: 32px;
+  padding: 0 13px;
+  font-size: 12.5px;
+}
+#alpharecall-admin-app .ar-stats-quiet { font-size: 13px; color: var(--ar-ink-3); }
+#alpharecall-admin-app .ar-stats-note { font-size: 12px; color: var(--ar-ink-3); }
+
+/* ─── Supporting boxes ─── */
+#alpharecall-admin-app .ar-stats-box {
+  background: var(--ar-fill);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+#alpharecall-admin-app .ar-stats-box-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px 12px;
+  flex-wrap: wrap;
+}
+#alpharecall-admin-app .ar-stats-box-head h3 {
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ar-ink);
+}
+#alpharecall-admin-app .ar-stats-hint { font-size: 12px; color: var(--ar-ink-3); }
+#alpharecall-admin-app .ar-stats-box > .ar-stats-hint { margin-top: -8px; }
+#alpharecall-admin-app .ar-stats-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ar-ink-2);
+  text-decoration: none;
+}
+#alpharecall-admin-app .ar-stats-link svg { width: 14px; height: 14px; }
+#alpharecall-admin-app .ar-stats-link:hover { color: var(--ar-ink); }
+
+#alpharecall-admin-app .ar-stats-legend {
+  display: inline-flex;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--ar-ink-2);
+}
+#alpharecall-admin-app .ar-stats-legend span::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+#alpharecall-admin-app .ar-stats-legend .is-conv::before { background: var(--ar-accent); }
+#alpharecall-admin-app .ar-stats-legend .is-res::before { background: var(--ar-warn); }
+#alpharecall-admin-app .ar-stats-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 96px;
+}
+#alpharecall-admin-app .ar-stats-bar {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+#alpharecall-admin-app .ar-stats-bar i {
+  flex: 1;
+  min-height: 2px;
+  border-radius: 4px 4px 2px 2px;
+}
+#alpharecall-admin-app .ar-stats-bar i.is-conv { background: var(--ar-accent); }
+#alpharecall-admin-app .ar-stats-bar i.is-res { background: var(--ar-warn); opacity: 0.55; }
+#alpharecall-admin-app .ar-stats-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--ar-ink-3);
+  margin-top: -4px;
+}
+
+#alpharecall-admin-app .ar-stats-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+#alpharecall-admin-app .ar-stats-pair > :only-child { grid-column: 1 / -1; }
+
+#alpharecall-admin-app .ar-stats-breakdown {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#alpharecall-admin-app .ar-stats-breakdown li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  font-size: 13px;
+  color: var(--ar-ink);
+  margin: 0;
+}
+#alpharecall-admin-app .ar-stats-breakdown b { font-weight: 500; font-variant-numeric: tabular-nums; }
+#alpharecall-admin-app .ar-stats-breakdown li > i {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ar-panel);
+  overflow: hidden;
+}
+#alpharecall-admin-app .ar-stats-breakdown li > i > i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ar-accent);
+}
+
+#alpharecall-admin-app .ar-stats-topics {
+  list-style: none;
+  margin: 0 -8px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+#alpharecall-admin-app .ar-stats-topics li { margin: 0; }
+#alpharecall-admin-app .ar-stats-topics a {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  color: var(--ar-ink);
+  font-size: 13px;
+  text-decoration: none;
+}
+#alpharecall-admin-app .ar-stats-topics a:hover { background: var(--ar-fill-2); }
+#alpharecall-admin-app .ar-stats-topics .ar-stats-topic {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 6px 8px;
+  color: var(--ar-ink);
+  font-size: 13px;
+}
+#alpharecall-admin-app .ar-stats-topics .ar-stats-topic span,
+#alpharecall-admin-app .ar-stats-topics a span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#alpharecall-admin-app .ar-stats-topics small {
+  flex: none;
+  color: var(--ar-ink-3);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+#alpharecall-admin-app .ar-stats-gaps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#alpharecall-admin-app .ar-stats-gaps li {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+#alpharecall-admin-app .ar-stats-gap-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+#alpharecall-admin-app .ar-stats-gap-text span { font-size: 13.5px; color: var(--ar-ink); overflow-wrap: anywhere; }
+#alpharecall-admin-app .ar-stats-gap-text small { font-size: 12px; color: var(--ar-ink-3); }
+#alpharecall-admin-app .ar-stats-gap-text small a { color: var(--ar-ink-2); text-decoration: underline; text-underline-offset: 2px; }
+#alpharecall-admin-app .ar-stats-gaps .ar-stats-act { flex: none; margin-top: 0; }
+
+#alpharecall-admin-app .ar-stats-email {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  color: var(--ar-ink-3);
+}
+#alpharecall-admin-app .ar-stats-email > svg { width: 14px; height: 14px; flex: none; }
+#alpharecall-admin-app .ar-stats-email label { cursor: pointer; }
+#alpharecall-admin-app .ar-stats-email .ar-stats-link { margin-left: 6px; font-size: 12px; color: var(--ar-ink-3); }
+
+/* ─── Dati ─── */
+#alpharecall-admin-app .ar-stats-data {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+#alpharecall-admin-app .ar-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+#alpharecall-admin-app .ar-stats-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+#alpharecall-admin-app .ar-stats-metric-big {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+#alpharecall-admin-app .ar-stats-metric-big span {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ar-ink);
+}
+#alpharecall-admin-app .ar-stats-metric-big em { font-style: normal; font-size: 13px; font-weight: 500; }
+#alpharecall-admin-app .ar-stats-chart-empty {
+  height: 220px;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  color: var(--ar-ink-3);
+}
+#alpharecall-admin-app .ar-stats-box .ark-bar { background: var(--ar-panel); }
+
+/* ─── Narrow ─── */
+@container ar-page (max-width: 820px) {
+  #alpharecall-admin-app .ar-stats-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@container ar-page (max-width: 620px) {
+  #alpharecall-admin-app .ar-stats { padding-top: 0; gap: 18px; }
+  #alpharecall-admin-app .ar-stats-headline { font-size: 24px; }
+  #alpharecall-admin-app .ar-stats-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #alpharecall-admin-app .ar-stats-pair { grid-template-columns: minmax(0, 1fr); }
+  #alpharecall-admin-app .ar-stats-gaps li { flex-wrap: wrap; gap: 8px; }
+  #alpharecall-admin-app .ar-stats-gap-text { flex-basis: 100%; }
+  #alpharecall-admin-app .ar-stats-sp { display: none; }
+  #alpharecall-admin-app .ar-stats-range { order: 3; flex-basis: 100%; }
+  #alpharecall-admin-app .ar-stats-insights li { gap: 10px; }
+  #alpharecall-admin-app .ar-stats-insight-icon { margin-left: 0; margin-right: 0; }
+  #alpharecall-admin-app .ar-stats-box-head h3 { flex-basis: 100%; }
+}

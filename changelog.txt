@@ -1,0 +1,202 @@
+AlphaRecall changelog
+=====================
+
+The latest releases are also listed in readme.txt.
+
+= 0.1.90 =
+* Piano: "Disdici l'abbonamento" and "Riattiva" are now buttons on the current plan, where they used to be a small link under its features.
+
+= 0.1.89 =
+* Widget: a visitor waiting for a person can leave an email and optional details instead of waiting; the request reaches Richieste and the card confirms it was sent. The button now reads "Ricontattatemi".
+* Messaggi: a chat waiting for a person shows when the visitor closed it or started another one.
+
+= 0.1.88 =
+* Widget: a theme can reserve a place in the page (data-alpharecall-dock) where the open chat sits, inside the page, while it is in view. The launcher takes over when the visitor scrolls away. Same conversation in both places.
+
+= 0.1.87 =
+* Widget: a notice that is always visible in the chat footer says visitors are talking to an AI-based virtual assistant, also while a person of the team replies.
+* Privacy: chat messages and attachments are kept 90 days at most; the retention settings show the limit.
+* Privacy: "Export all data" downloads one ZIP with conversations, requests, contacts, appointments, FAQ, settings and Terms acceptances, without access keys.
+* Connection screen: two separate, unticked confirmations (Terms and acting as a business with a VAT number; specific approval of the listed clauses), recorded with date, time and IP address.
+
+= 0.1.86 =
+* Widget: an attachment preview closes with the X button, Esc, or a click or tap outside the image, and the page stays usable afterwards.
+* Widget: optional second avatar for the dark theme. It is used in Scuro and when Automatico resolves to dark; left empty, the same avatar is used for both.
+* Widget and Prova: messages are limited to 2000 characters, with a counter near the limit and a notice when pasted text is shortened.
+* Messaggi: when more than 3 files are selected, the first 3 are attached and the message names the files left out. Expired attachments are shown as unavailable and cannot be opened.
+* Messaggi: new "Operatore" filter under "Altri filtri", and the search also finds chats by the name of the team member who replied.
+* Accessibility: "Allega file" is announced once, and the copy button and switches have a larger click area.
+* Personalizzazione: "Nome dell'attività" is limited to 60 characters and "Testo del pulsante chat" to 40, with a counter. The colour row always shows 5 colours, recent ones first.
+* Personalizzazione: a switch to show or hide the "Powered by AlphaRecall" link, on every plan and every site. The plan no longer hides the link; a site connected before the consent screen shows it only after the owner turns it on.
+* Addestramento: FAQ and category errors are shown in Italian.
+* Top bar: the plan chip shows "Piano <name>" with messages used and links to Impostazioni > Piano.
+* Piano: after a failed payment the plan stays active for 7 days, with a notice and a button to update the payment method.
+* Prova: a logged-in administrator is no longer asked to solve the bot check.
+* Team di supporto: the plan check now runs on the AlphaRecall service instead of in the plugin. A member on a plan without the team sees a short notice in the dashboard once the service refuses a request; no notice is shown on other wp-admin screens.
+* Privacy: the readme and the Connect screen list all data sent to the service, including the visitor IP address and the WordPress user who makes a dashboard request. Logged-in WordPress users are registered as visitors only when "Recognize WordPress users" is on.
+* Stored option, transient, user meta and cookie names now start with alpharecall_. The old names are read once and removed on uninstall.
+* Removed unused development code and files. THIRD-PARTY-LICENSES.md now includes the full licence texts of bundled packages.
+* Custom CSS for the widget is available on every plan.
+* The number of operator profiles is checked by the AlphaRecall service, which also reports the limit shown in Team e accessi; the plugin keeps no plan table of its own.
+* The readme lists what each plan includes.
+* A request the service refuses with 403 (a plan without the Team di supporto, the operator profile limit) reaches the dashboard as a 403 with its message, not as a connection error.
+* The chat widget bundle no longer contains the unused default API addresses of the Tambo SDK, and the unused admin-charts.js script is no longer shipped.
+
+= 0.1.85 =
+* Widget: the "Automatico" theme follows the light or dark mode of the site it runs on, including a toggle on the page, not only the browser's system setting. The editor preview shows what Automatico resolves to.
+* Security: the /chat fallback returns only what the widget shows (text, ids, follow-ups, sources with http links, cards). Usage, model, citations and retrieval output stay for Prova Luca with a logged-in admin.
+* Personalizzazione > Colore: the custom picker comes first, then the recently used colours (newest on the left), or the default colours when there is no history yet.
+* Addestramento: the "Correggi questa risposta" link opens the FAQ dialog on a direct open and on reload; closing it clears the link.
+* Prova Luca: a rate limit says how long to wait.
+* Privacy: new "Allegati" setting (30 days by default, up to "Senza limiti"); each attachment shows "Disponibile fino al ...".
+
+= 0.1.84 =
+* Messaggi: the "Da Luca" filter is now "Gestite"; search runs on the server across visitor name and number, messages and contacts, and the Ctrl+K palette finds them too.
+* Messaggi: links in team replies are clickable, "Gestita" appears only after the first reply, "Riapri" explains what it does, small attachments show their size in byte.
+* Widget and Prova Luca: Stop and "Ricomincia" stop the answer on the server, so it is not saved, not marked unread and not counted.
+* Attachments: errors are in Italian and say what is wrong (type, damaged PDF, size with the real limit).
+* Personalizzazione: "Distanza dai bordi" and the other number fields stay within their range, also on the server.
+* Addestramento and Statistiche: questions stopped by the safety filter are listed as unanswered.
+* Prova Luca solves the bot shield check when opening a test chat.
+
+= 0.1.83 =
+* Statistiche: the headline reads "Luca ha gestito X conversazioni, rispetto alle Y gestite nella settimana precedente" (or the previous 30/90 days).
+* Widget: while the assistant works the visitor sees "Sto analizzando le informazioni...".
+
+= 0.1.82 =
+* Team di supporto is part of the Business plan. On other plans the section shows the upgrade option, and support members keep their role but have no dashboard access until the plan includes it.
+* "Accesso completo" is removed: only WordPress administrators manage AlphaRecall. Access it granted to other users is revoked on update.
+* Product cards show the price in the store currency ("89,00 €") and open the product page.
+* The visitor number is the same in Messaggi, Oggi and notifications.
+* The plugin description on the Plugins page is in Italian on Italian sites.
+
+Older entries are in `changelog.txt`.
+
+= 0.1.81 =
+* Colours: a colour choice also updates the header text and the active tab, so the widget no longer keeps an old colour; "Riprendi dal sito" finds the site's brand colour and no longer applies a neutral grey.
+* Messaggi: the "Rispondi come" choice matches the name the reply is signed with.
+* Support members no longer trigger admin-only requests when the dashboard loads.
+* Richieste: delete a single feedback or escalation, with confirmation (administrators only).
+
+= 0.1.80 =
+* Support team: one "Supporto AlphaRecall" role that administrators assign from Team e accessi (add an existing user or invite a new one). Support members handle Messaggi and Richieste only. Users who had support access through a WordPress role keep it.
+* Replies from the team are signed with the name of the person who wrote them.
+* Messaggi: status buttons wait for the server and keep the visitor's name after a change.
+* Business data: phone and link validation, and cleared hours or social links really clear.
+* FAQ: a warning for duplicate questions and a confirmation before deleting.
+* Prova: clear messages for a chat handed to the team, an expired session and an unreadable answer.
+* Customization: welcome message limit with a counter, invalid titles are not published, colours taken from the site apply to every widget colour.
+* Statistiche: export and frequent questions follow the selected period; Richieste can delete and export feedback and escalations.
+* Chat widget: an empty answer from the server falls back to the standard request or shows a retry, and the anti-bot check no longer logs a console error.
+* Free trial: 15 days.
+
+= 0.1.79 =
+* WordPress.org release: an administrator now connects the site explicitly from a connection screen that lists what is sent to the service; nothing is contacted before that, and the chat widget stays hidden until then.
+* Connecting no longer needs a shared enrolment secret: the service confirms the site with a one-time call back to it.
+* The "Powered by Alpha Recall" link is opt-in on WordPress.org installs.
+* Chat streaming uses the WordPress HTTP API.
+* Uninstalling removes the plugin's options, caches, scheduled events and user preferences.
+* Google Calendar: connect from Agenda, only free slots are offered, bookings create and update the calendar event, internal slots keep bookings working if Google is unreachable, and disconnecting revokes access.
+* Bookings with an exact time no longer fail.
+* Settings: escalation e-mail and webhook, custom CSS and privacy fields are shown as saved only after the server confirms; switches go back to the saved value when a save fails.
+* The header shows the current plan and message usage; Contatti counts only people who wrote; clearer message when a sync cannot start.
+* The dashboard loads each section's code on first use (about a third of the previous download on Oggi), with one request less on Oggi.
+* Billing: the plan refreshes right after a checkout or plan change, an expired paid license no longer unlocks paid screens, and checkout works for sites registered with www.
+* Copy: plan details match the pricing page, the assistant's name is used throughout, singular forms for counts of one.
+
+= 0.1.78 =
+* Navigation: sections renamed Messaggi, Addestramento and Personalizzazione, Statistiche next to Richieste, phone navigation keeps every section reachable, one H1 per page, accessibility fixes, and a confirmation before leaving unsaved changes.
+* Prova and chat: answers up to 90 seconds no longer end in a 502, a timeout, an empty answer, a 429 or a server error each get a clear Italian message with Riprova, the table the visitor sees is shown, and markup or an intellectual-property verdict alone no longer makes the assistant refuse.
+* Settings: a color picker with a code field, validation of privacy URL, emails and webhook (public addresses only, checked again at send time), notification recipients that stay unsaved on failure, clearer Team counts, and suggested questions edited in one place.
+* Data: Statistiche and Oggi use the period and the server totals, Italian exports for Excel, FAQ generation skips repeats, page edits re-sync the site content on their own, business details take precedence over page text, and fewer duplicate requests with a lighter admin bundle.
+
+= 0.1.77 =
+* Richieste: search runs on the server over every request, counters and the Oggi totals count the whole collection, one status vocabulary (Nuova / In corso / Fatta), focus returns to the card when the panel closes, readable contact chips, toasts at the top, specific Italian error messages, and no 404 from an unconnected Google Calendar.
+* Inbox and chat: the thread scrolls on phones and tablets, a failed reply shows a real Riprova button and the Inbox marks visitor messages left unanswered, Ctrl+K / Cmd+K opens only the Alpha Recall palette, and keyboard focus is clearly visible.
+* Assistente, Widget and Statistiche: admins can test the assistant in Test mode with no roles selected, component names are in Italian, Report and Dati share one definition of conversations and handoffs, the widget title is limited to 80 characters, category rows wrap or fade, and plurals, numbers and shortcuts are localized.
+
+= 0.1.76 =
+* Redesigned dashboard in seven sections (Oggi, Inbox, Richieste, Assistente, Widget, Statistiche, Impostazioni) and a new chat widget; contact, quote and callback requests are saved only after the visitor confirms them.
+* No more request loops: clicking notifications, opening large lists and returning to a hidden tab no longer repeat requests, and a rate limit is waited out (Retry-After) instead of retried at once. "Segna tutte come lette" is one request and the Inbox count covers every conversation.
+
+= 0.1.75 =
+* No component in the dashboard or the chat widget draws a border, ring or outline when it is focused, pressed, selected or dragged over, including the ones wp-admin and host themes add. Keyboard focus shows as a neutral tinted fill, and selected options use a fill instead of a colored border.
+
+= 0.1.74 =
+* Picking an appointment slot in the chat shows a readable date and time instead of a raw timestamp; the server matches it to the exact slot it offered.
+* Strumenti > Appuntamenti and Escalation tables show their data again, escalation statuses are translated, and lead consent reads the same on every page.
+
+= 0.1.73 =
+* Text fields, search and the chat composer no longer draw a colored border or ring when active; a tinted fill shows focus instead, and buttons, links and switches keep their keyboard outline.
+* Connecting Google Calendar on a server without a Google OAuth client now explains that the integration isn't available yet instead of showing a raw error.
+
+= 0.1.72 =
+* Connect Google Calendar in one click from Integrations or the Appointments tool; the chat offers real free slots and suggests alternatives when a time is taken.
+* Group Team members by role and WordPress users by WordPress role in Settings > Team e accessi.
+* Slightly more contrast between dashboard sections in light and dark themes.
+* Rewrite dashboard, tutorial, widget and email copy in natural Italian and English; clearer names for the Send button and chat button colors and a clearer theme tooltip.
+
+= 0.1.71 =
+* Simplify Avatar settings to one Change avatar button with preset, photo upload and URL choices, for both the chat and independent launcher image.
+* Keep URL changes as drafts until confirmed, validate image URLs, and handle upload errors/cancellation without applying stale results.
+
+= 0.1.70 =
+* Fill the entire launcher shape with the selected avatar or uploaded image, using a centered cover crop in both the public widget and editor preview.
+* Keep pill labels readable over images and preserve keyboard focus, launcher animations, icon-only and text-only styles.
+
+= 0.1.69 =
+* Keep HelpDesk inside the viewport with independently scrolling FAQ/category lists and a compact mobile category selector.
+* Add a visible 16-portrait avatar picker to the chat logo and launcher image fields.
+* Let the closed launcher follow the chat logo, keep its own image, or use the chat icon without an avatar; preserve choices across saves and reloads.
+
+= 0.1.68 =
+* Organize HelpDesk with a category sidebar, counts and category management; reorder Import and Generate with AI actions.
+* Generate FAQs from published pages only, excluding blog posts and password-protected pages.
+* Bundle 16 realistic AI-generated assistant portraits (8 women and 8 men), assigned once per tenant with independent custom-image overrides.
+* Add an accessible host-page event to open the assistant from website calls to action.
+
+= 0.1.66 =
+* Reorder visitor identification and bot protection options, and restore visible enabled colors on switches in both themes.
+* Add personal dashboard notification categories, persisted per WordPress user/site/tenant without marking muted conversations as read.
+* Expand long synchronization errors, use file-storage wording, and size the dashboard beneath WordPress notices to prevent bottom overflow.
+* Rename Results to Registro Attività / Activity Log, highlight the current plan with a border, and clarify redeemed trials and paid downgrades.
+
+= 0.1.65 =
+* Use a single Production/Demo switch in widget customization, with accessible help tooltips for both modes.
+
+= 0.1.64 =
+* Add Production and Demo modes to widget customization, with selectable standard and custom WordPress roles.
+* Enforce demo access on rendering, shortcodes, public REST requests, attachments and chat streaming; prevent demo pages from being cached publicly.
+* Existing sites keep Production mode. Demo tests use the real assistant and normal plan usage.
+
+= 0.1.63 =
+* Add private JPG, PNG, WebP, TXT and PDF attachments to visitor chat, support chat and operator replies.
+* Validate type, size and content at the WordPress bridge and API; re-encode images and parse PDFs locally with offline LiteParse OCR.
+* Add upload/validation states, removal, protected previews and downloads, paste/drop support in the chat composer and attachment history.
+* Bind files to their authenticated owner and conversation; keep normalized content encrypted, expire pending uploads and prevent attachment answers from entering the shared cache.
+* Requires the attachment-capable backend (database revision 0055_chat_attachments).
+
+= 0.1.62 =
+* Align support and customer chat with shared welcome, suggestions, identity and composer components; add support history, lifecycle actions and responsive light/dark layouts.
+* Keep dialogs, menus, selects and help in their originating theme, preserve nested React context and isolate plugin controls from WordPress host styles.
+* Remove remaining colored interaction borders and shadows while preserving neutral keyboard focus and readable fields.
+* Add a configurable active Chat/FAQ background with automatic text contrast, live preview and reset to the neutral theme default.
+* Pause AI during human takeover, discard interrupted AI text and follow-ups, reconcile human replies and expose explicit operator resume controls.
+* Rebuild widget, admin and admin-charts release assets.
+
+= 0.1.61 =
+* Simplify Upgrade: show the current plan on its button and keep subscription actions within its card.
+* Separate Knowledge base and Business Info into accessible Content tabs with persistent drafts.
+* Always display message avatars and remove client white-label controls; attribution follows plan entitlement.
+* Use borderless neutral controls with readable light/dark text, placeholders and disabled states.
+* Add useful Results empty, filtered, loading and error states with retry and tool-configuration links.
+* Improve launcher thumbnail contrast and rebuild widget, admin and admin-charts assets.
+
+= 0.1.60 =
+* Improve widget preview, typography, accessibility, business content and message rendering.
+* Persist operator inbox read/favorite state and improve support replies and polling.
+* Preserve entitlement-based widget attribution and clarify plan allowances.
+* Rebuild widget, admin and admin-charts release assets.
+
+= 0.1.0 =
+* Initial scaffold with settings and REST endpoints.

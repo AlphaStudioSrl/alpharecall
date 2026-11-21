@@ -1,0 +1,1290 @@
+/* Concierge widget design. Shared by the public widget (.ar-chat-shell) and the
+   dashboard preview (.lp-root, which prefixes these rules with the admin root).
+
+   Borderless: surfaces separate by soft fills (panel, fill, fill-2), never by
+   strokes. Icons sit bare on their surface; only initials/photo avatars and
+   real buttons carry a fill. One tenant color (--ar-brand) for user bubbles,
+   primary buttons and the assistant's initial. */
+
+/* ── Tokens ─────────────────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) {
+  --ar-panel: #ffffff;
+  --ar-canvas: #eeeeeb;
+  --ar-fill: #f4f4f2;
+  --ar-fill-2: #eaeae7;
+  --ar-ink: #111312;
+  --ar-ink-2: #5b605d;
+  /* Tertiary text: darker than the mockup so 12px lines keep 4.5:1, even
+     on fill-2 (the focused composer). */
+  --ar-ink-3: #656a67;
+  --ar-live: #2fa36b;
+  --ar-ok: #2f6b55;
+  --ar-red: #a3322b;
+  --ar-red-soft: #fbeae8;
+  --ar-sh-float: 0 12px 32px -10px rgb(17 19 18 / 22%), 0 2px 6px rgb(17 19 18 / 5%);
+  --ar-scrim: rgb(17 19 18 / 28%);
+  --ar-brand: var(--ar-tenant, hsl(var(--primary)));
+  --ar-brand-ink: var(--ar-on-tenant, hsl(var(--primary-foreground)));
+  --ar-brand-soft: color-mix(in srgb, var(--ar-brand) 11%, var(--ar-panel));
+  --ar-send: var(--accent-color, var(--ar-brand));
+  --ar-send-ink: var(--ar-on-accent, var(--ar-brand-ink));
+
+  /* shadcn/tool-ui compatibility: the same palette in HSL channels. */
+  --background: 0 0% 100%;
+  --foreground: 150 6% 7%;
+  --card: 0 0% 100%;
+  --card-foreground: 150 6% 7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 150 6% 7%;
+  --muted: 60 8% 95%;
+  --secondary: 60 8% 95%;
+  --secondary-foreground: 150 6% 7%;
+  --border: 60 7% 91%;
+  --input: 60 7% 91%;
+  --destructive: 4 58% 40%;
+  --ar-control: 60 8% 95%;
+  --ar-control-hover: 60 7% 91%;
+  --ar-selected: 0 0% 100%;
+  --ar-control-text: 150 6% 7%;
+  --ar-placeholder: 140 3% 40%; /* 4.5:1 on the focused field fill */
+  --ar-focus: 0 0% 37%;
+  --ar-check: 140 3% 43%;
+  --color-background: var(--ar-panel);
+  --color-muted-foreground: var(--ar-ink-3);
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] {
+  --ar-panel: #151716;
+  --ar-canvas: #0b0c0c;
+  --ar-fill: #1c1f1e;
+  --ar-fill-2: #262a29;
+  --ar-ink: #edeeec;
+  --ar-ink-2: #a2a7a4;
+  --ar-ink-3: #939895;
+  --ar-ok: #6cc2a0;
+  --ar-red: #f0a29c;
+  --ar-red-soft: #2c1917;
+  --ar-sh-float: 0 16px 40px -12px rgb(0 0 0 / 70%), 0 2px 6px rgb(0 0 0 / 40%);
+  --ar-scrim: rgb(0 0 0 / 55%);
+  --background: 150 5% 9%;
+  --foreground: 90 6% 93%;
+  --card: 150 5% 9%;
+  --card-foreground: 90 6% 93%;
+  --popover: 150 5% 9%;
+  --popover-foreground: 90 6% 93%;
+  --muted: 160 5% 12%;
+  --secondary: 160 5% 12%;
+  --secondary-foreground: 90 6% 93%;
+  --border: 165 5% 16%;
+  --input: 165 5% 16%;
+  --destructive: 4 75% 78%;
+  --ar-control: 160 5% 12%;
+  --ar-control-hover: 165 5% 16%;
+  --ar-selected: 165 5% 20%;
+  --ar-control-text: 90 6% 93%;
+  --ar-placeholder: 144 3% 62%;
+  --ar-focus: 0 0% 75%;
+  --ar-check: 144 2% 55%;
+}
+:is(.ar-chat-shell, .lp-root)[data-theme] {
+  --ring: var(--ar-focus);
+  --muted-foreground: 144 3% 37%;
+  font-family: "Geist Variable", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: calc(16px * var(--ar-font-scale, 1));
+  color: var(--ar-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] { --muted-foreground: 144 3% 65%; }
+
+/* ── Panel ──────────────────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-chat-panel {
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  line-height: 1.5;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-panel[data-widget-style] {
+  border: 0;
+  box-shadow: var(--ar-sh-float);
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-panel[data-widget-style="sidepanel"] {
+  box-shadow: 0 0 48px -12px rgb(17 19 18 / 22%);
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-chat-panel[data-widget-style="sidepanel"] {
+  box-shadow: 0 0 48px -8px rgb(0 0 0 / 70%);
+}
+/* Not positioned: sheets (consent, W2's booking/flow) resolve against the
+   panel, so their scrim covers the header and footer too. */
+:is(.ar-chat-shell, .lp-root) .ar-chat-body {
+  position: static;
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-views { display: flex; flex: 1 1 auto; min-width: 0; min-height: 0; overflow: hidden; }
+:is(.ar-chat-shell, .lp-root) .ar-view { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; min-height: 0; overflow: hidden; }
+:is(.ar-chat-shell, .lp-root) .ar-view[hidden] { display: none !important; }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-host { position: absolute; inset: 0; pointer-events: none; z-index: 30; }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-host > * { pointer-events: auto; }
+
+/* ── Avatars (initials or photo keep their fill; icons never get one) ──── */
+:is(.ar-chat-shell, .lp-root) .ar-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  border-radius: 50%;
+  font-weight: 600;
+  line-height: 1;
+  object-fit: cover;
+  overflow: hidden;
+}
+:is(.ar-chat-shell, .lp-root) .ar-avatar--initial { background: var(--ar-brand); color: var(--ar-brand-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-avatar--image { background: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root) .ar-avatar--sm { width: 26px; height: 26px; font-size: 10.5px; }
+:is(.ar-chat-shell, .lp-root) .ar-avatar--md { width: 36px; height: 36px; font-size: 13px; }
+:is(.ar-chat-shell, .lp-root) .ar-avatar--lg { width: 52px; height: 52px; font-size: 18px; }
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-chat-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 11px;
+  min-height: 0;
+  padding: calc(16px + env(safe-area-inset-top)) 14px 10px 16px;
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  border: 0;
+  flex-shrink: 0;
+  backdrop-filter: none;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-identity { display: flex; align-items: center; gap: 11px; flex: 1 1 0; min-width: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  flex: none;
+  object-fit: cover;
+}
+:is(.ar-chat-shell, .lp-root) img.ar-chat-avatar { background: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root) .ar-chat-avatar--mark,
+:is(.ar-chat-shell, .lp-root) .ar-chat-avatar--initial {
+  display: grid;
+  place-items: center;
+  background: var(--ar-brand);
+  color: var(--ar-brand-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-header-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-header-name {
+  font-size: calc(15px * var(--ar-font-scale, 1));
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ar-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-header-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  min-width: 0;
+  font-size: calc(12.5px * var(--ar-font-scale, 1));
+  line-height: 1.35;
+  color: var(--ar-ink-3);
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-header-status-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:is(.ar-chat-shell, .lp-root) .ar-status-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ar-live);
+  box-shadow: none;
+  animation: none;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-header-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; flex-shrink: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-header-btn {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ar-fill);
+  color: var(--ar-ink-2);
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-header-btn:hover { background: var(--ar-fill-2); color: var(--ar-ink); transform: none; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-header-btn svg { width: 18px; height: 18px; stroke-width: 1.8; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-header-btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+
+/* "brand" header style: the header carries the tenant color. */
+:is(.ar-chat-shell, .lp-root)[data-header-style="brand"] .ar-chat-header {
+  background: linear-gradient(135deg, var(--ar-grad-start, var(--ar-brand)) 0%, var(--ar-grad-end, var(--ar-brand)) 100%);
+  color: var(--ar-on-brand, var(--ar-brand-ink));
+  padding-bottom: 14px;
+}
+:is(.ar-chat-shell, .lp-root)[data-header-style="brand"] :is(.ar-chat-header-name, .ar-chat-header-status) { color: var(--ar-on-brand, var(--ar-brand-ink)); }
+:is(.ar-chat-shell, .lp-root)[data-header-style="brand"] .ar-chat-header-btn {
+  background: color-mix(in srgb, var(--ar-on-brand, #fff) 14%, transparent);
+  color: var(--ar-on-brand, #fff);
+}
+:is(.ar-chat-shell, .lp-root)[data-header-style="brand"] .ar-chat-header-btn:hover { background: color-mix(in srgb, var(--ar-on-brand, #fff) 24%, transparent); }
+:is(.ar-chat-shell, .lp-root)[data-header-style="brand"] .ar-chat-avatar--initial {
+  background: color-mix(in srgb, var(--ar-on-brand, #fff) 18%, transparent);
+  color: var(--ar-on-brand, #fff);
+}
+
+/* Header menu */
+:is(.ar-chat-shell, .lp-root) .ar-header-menu { position: relative; }
+:is(.ar-chat-shell, .lp-root) .ar-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  min-width: 220px;
+  padding: 6px;
+  border-radius: 16px;
+  background: var(--ar-panel);
+  box-shadow: var(--ar-sh-float);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-menu { background: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root) .ar-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ar-ink);
+  font: inherit;
+  font-size: calc(14px * var(--ar-font-scale, 1));
+  text-align: left;
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-menu-item svg { width: 16px; height: 16px; color: var(--ar-ink-3); flex: none; }
+:is(.ar-chat-shell, .lp-root) .ar-menu-item span { flex: 1 1 auto; }
+:is(.ar-chat-shell, .lp-root) .ar-menu-item svg.ar-menu-check { color: var(--ar-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-menu-item:hover:not(:disabled),
+:is(.ar-chat-shell, .lp-root) .ar-menu-item:focus-visible { background: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-menu-item:hover:not(:disabled) { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) button.ar-menu-item:disabled { background: transparent; color: var(--ar-ink-3); opacity: 0.6; }
+
+/* Chat | Domande: a quiet segmented control */
+:is(.ar-chat-shell, .lp-root) .ar-chat-tabs {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--ar-fill);
+  --ar-selected: 0 0% 100%;
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-chat-tabs { --ar-selected: 165 5% 20%; }
+/* The chat view shows who answers; the FAQ sits in the menu. The FAQ view
+   swaps the identity for the centered Chat | Domande switch. */
+.ar-chat-shell .ar-chat-header[data-view="chat"] .ar-chat-tabs { display: none; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-header[data-view="faq"] { flex-wrap: nowrap; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-header[data-view="faq"]::before { content: ""; flex: 1 1 0; min-width: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-header[data-view="faq"] .ar-chat-tabs { flex: none; margin: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-header[data-view="faq"] .ar-chat-header-actions { flex: 1 1 0; justify-content: flex-end; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 5px 14px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ar-ink-2);
+  font: inherit;
+  font-size: calc(13.5px * var(--ar-font-scale, 1));
+  font-weight: 450;
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-tabs button:hover:not([aria-pressed="true"]) { color: var(--ar-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-chat-tabs button[aria-pressed="true"] {
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 8%) !important;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-tab-icon,
+:is(.ar-chat-shell, .lp-root) .ar-chat-tabs button svg { width: 14px; height: 14px; flex: none; opacity: 0.8; }
+
+/* ── Thread ─────────────────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-thread { background: var(--ar-panel); }
+:is(.ar-chat-shell, .lp-root) .ar-thread-viewport {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 6px 18px 10px;
+  gap: 14px;
+}
+:is(.ar-chat-shell, .lp-root) .ar-thread-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 44rem;
+  margin: auto auto 0;
+  padding-top: 8px;
+}
+:is(.ar-chat-shell, .lp-root) .ar-thread-viewport[data-empty] .ar-thread-stack { gap: 22px; }
+:is(.ar-chat-shell, .lp-root) .ar-turn { display: flex; flex-direction: column; gap: 10px; width: 100%; min-width: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-turn--user { align-items: flex-end; }
+:is(.ar-chat-shell, .lp-root) .ar-turn-user-body { display: flex; flex-direction: column; align-items: flex-end; max-width: 82%; min-width: 0; }
+:is(.ar-chat-shell, .lp-root) :is(.ar-bubble-user, .ar-msg-user-bubble) {
+  display: block;
+  max-width: 100%;
+  padding: 10px 14px;
+  border-radius: 20px 20px 6px 20px;
+  background: var(--ar-brand);
+  color: var(--ar-brand-ink);
+  font-size: calc(14.5px * var(--ar-font-scale, 1));
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+:is(.ar-chat-shell, .lp-root) .ar-bubble-user :is(p, a) { color: inherit; margin: 0; padding: 0; }
+
+/* The assistant speaks in plain text, no bubble. */
+:is(.ar-chat-shell, .lp-root) .ar-answer { display: flex; flex-direction: column; gap: 10px; min-width: 0; max-width: 100%; }
+:is(.ar-chat-shell, .lp-root) .ar-answer-text {
+  display: block;
+  padding: 0;
+  border-radius: 0;
+  color: var(--ar-ink);
+  font-size: calc(14.5px * var(--ar-font-scale, 1));
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+:is(.ar-chat-shell, .lp-root) .ar-answer-narrative { white-space: pre-wrap; }
+:is(.ar-chat-shell, .lp-root) .ar-answer-text :is(p, li) { margin: 0; padding: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-answer-text [data-slot="message-content-text"] > * > * + *,
+:is(.ar-chat-shell, .lp-root) .ar-answer-text [data-slot="message-content-text"] > * + * { margin-top: 10px; }
+:is(.ar-chat-shell, .lp-root) .ar-answer-text :is(strong, b) { font-weight: 600; }
+:is(.ar-chat-shell, .lp-root) .ar-answer-text :is(ul, ol) { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 2px; }
+:is(.ar-chat-shell, .lp-root) .ar-answer-text a { color: var(--ar-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--ar-ink) 35%, transparent); }
+:is(.ar-chat-shell, .lp-root) .ar-cancelled { display: block; margin-top: 4px; font-size: 12px; color: var(--ar-ink-3); }
+
+/* A person from the team: their name, then a soft bubble. */
+:is(.ar-chat-shell, .lp-root) .ar-turn--human { align-items: flex-start; gap: 4px; }
+:is(.ar-chat-shell, .lp-root) .ar-bubble-human {
+  max-width: 88%;
+  padding: 10px 14px;
+  border-radius: 20px 20px 20px 6px;
+  background: var(--ar-fill);
+}
+:is(.ar-chat-shell, .lp-root) .ar-message-identity {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: var(--ar-ink-3);
+  font-size: calc(12px * var(--ar-font-scale, 1));
+  font-weight: 500;
+}
+:is(.ar-chat-shell, .lp-root) .ar-message-identity > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+:is(.ar-chat-shell, .lp-root) .ar-message-avatar {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: auto;
+  min-width: 16px;
+  height: 16px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--ar-ink-3);
+}
+:is(.ar-chat-shell, .lp-root) .ar-message-avatar svg { width: 15px; height: 15px; }
+:is(.ar-chat-shell, .lp-root) .ar-msg-group { display: block; }
+
+/* While the turn runs: a bare AI mark and what it is doing. */
+:is(.ar-chat-shell, .lp-root) .ar-working { display: flex; align-items: center; gap: 10px; min-height: 26px; font-size: calc(14px * var(--ar-font-scale, 1)); }
+:is(.ar-chat-shell, .lp-root) .ar-ai-mark { width: 26px; min-width: 26px; height: 26px; color: var(--ar-brand); }
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-ai-mark { color: color-mix(in srgb, var(--ar-brand) 55%, #fff); }
+:is(.ar-chat-shell, .lp-root) .ar-ai-mark svg { width: 14px; height: 14px; }
+:is(.ar-chat-shell, .lp-root) .ar-working-text { --color-muted-foreground: var(--ar-ink-2); --color-background: var(--ar-panel); }
+
+/* Sources, actions and follow-ups under an answer */
+:is(.ar-chat-shell, .lp-root) .ar-sources { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+:is(.ar-chat-shell, .lp-root) .ar-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border-radius: 9px;
+  background: var(--ar-fill);
+  color: var(--ar-ink-2);
+  font-size: calc(12.5px * var(--ar-font-scale, 1));
+  line-height: 1.3;
+  text-decoration: none;
+}
+:is(.ar-chat-shell, .lp-root) a.ar-source:hover { background: var(--ar-fill-2); color: var(--ar-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-source svg { width: 14px; height: 14px; flex: none; }
+:is(.ar-chat-shell, .lp-root) .ar-msg-actions { display: flex; gap: 2px; margin: -4px 0 0 -6px; color: var(--ar-ink-3); }
+:is(.ar-chat-shell, .lp-root) .ar-chat-action-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ar-ink-3);
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-action-icon:hover:not(:disabled) { background: var(--ar-fill); color: var(--ar-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-chat-action-icon svg { width: 16px; height: 16px; stroke-width: 1.7; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-chat-action-icon:disabled { background: transparent; color: var(--ar-ink-3); opacity: 0.45; }
+
+:is(.ar-chat-shell, .lp-root) .ar-followups,
+:is(.ar-chat-shell, .lp-root) .ar-starter-chips { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 0; margin: 0; }
+:is(.ar-chat-shell, .lp-root) :is(.ar-followup, .ar-starter-chip) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--ar-fill);
+  color: var(--ar-ink);
+  font: inherit;
+  font-size: calc(13.5px * var(--ar-font-scale, 1));
+  line-height: 1.35;
+  text-align: left;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background-color 150ms ease;
+}
+:is(.ar-chat-shell, .lp-root) .ar-starter-chip { min-height: 40px; padding: 10px 14px; font-size: calc(14px * var(--ar-font-scale, 1)); animation: none; }
+:is(.ar-chat-shell, .lp-root) :is(.ar-followup, .ar-starter-chip):hover:not(:disabled) { background: var(--ar-fill-2); color: var(--ar-ink); text-decoration: none; transform: none; }
+:is(.ar-chat-shell, .lp-root) :is(.ar-followup, .ar-starter-chip) svg { width: 15px; height: 15px; flex: none; color: var(--ar-ink-3); transform: none; }
+:is(.ar-chat-shell, .lp-root) .ar-starter-chip svg { width: 16px; height: 16px; }
+:is(#alpharecall-chat-root, .lp-root) button:is(.ar-followup, .ar-starter-chip):disabled { background: var(--ar-fill); color: var(--ar-ink-3); }
+:is(.ar-chat-shell, .lp-root)[data-starter-layout="chips"] .ar-starter-chips { flex-direction: row; flex-wrap: wrap; }
+:is(.ar-chat-shell, .lp-root)[data-starter-layout="chips"] .ar-starter-chip { border-radius: 999px; }
+
+/* System lines (handoff, joins) sit centered as a quiet pill. */
+:is(.ar-chat-shell, .lp-root) .ar-sys {
+  align-self: center;
+  margin: 8px auto 0;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--ar-fill);
+  color: var(--ar-ink-2);
+  font-size: calc(12.5px * var(--ar-font-scale, 1));
+  text-align: center;
+}
+
+/* ── Welcome ────────────────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-welcome { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-welcome-title {
+  margin: 0;
+  color: var(--ar-ink);
+  font-size: calc(27px * var(--ar-font-scale, 1));
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+:is(.ar-chat-shell, .lp-root) .ar-welcome-title span { color: var(--ar-ink-3); }
+:is(.ar-chat-shell, .lp-root) .ar-welcome-title .ar-welcome-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+:is(.ar-chat-shell, .lp-root) .ar-welcome-title .ar-welcome-clamp[data-plain] { color: inherit; }
+:is(.ar-chat-shell, .lp-root) .ar-welcome-text { margin: 0; color: var(--ar-ink-2); font-size: calc(14px * var(--ar-font-scale, 1)); line-height: 1.55; }
+
+/* ── Composer ───────────────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-composer-area {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 10px 12px 12px;
+  flex-shrink: 0;
+}
+:is(.ar-chat-shell, .lp-root) .ar-composer-shell { width: 100%; min-width: 0; }
+/* The counter near the message limit and the cut-paste notice (card fgcgu1tr9ee0): no height while empty. */
+:is(.ar-chat-shell, .lp-root) .ar-composer-limit { display: flex; align-items: baseline; justify-content: flex-end; gap: 10px; padding: 0 14px; color: var(--ar-ink-3); font-size: calc(12px * var(--ar-font-scale, 1)); line-height: 1.4; }
+:is(.ar-chat-shell, .lp-root) .ar-composer-limit:not(:empty) { padding-top: 6px; }
+:is(.ar-chat-shell, .lp-root) .ar-composer-limit > span { flex: 1; min-width: 0; color: var(--ar-ink-2); }
+:is(.ar-chat-shell, .lp-root) .ar-composer-limit > small { flex: none; font-size: inherit; font-variant-numeric: tabular-nums; }
+:is(.ar-chat-shell, .lp-root) .ar-composer-limit > small[data-full] { color: var(--ar-red, #c0392b); }
+:is(.ar-chat-shell, .lp-root)[data-motion] .ar-chat-composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 6px 6px 8px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--ar-fill);
+  box-shadow: none;
+}
+:is(.ar-chat-shell, .lp-root)[data-motion] .ar-chat-composer:has(textarea:focus) { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-chat-composer textarea {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 36px;
+  max-height: 160px;
+  padding: 8px 6px;
+  overflow-y: auto;
+  resize: none;
+  font-family: inherit;
+  font-size: calc(14.5px * var(--ar-font-scale, 1));
+  line-height: 1.4;
+}
+/* Host themes often paint a white rectangle on textarea:focus. The composer
+   owns the surface and focus indicator in both the widget and its preview. */
+:is(.ar-chat-shell, .lp-root) .ar-chat-composer textarea,
+:is(.ar-chat-shell, .lp-root) .ar-chat-composer textarea:focus {
+  background: transparent !important;
+  color: var(--ar-ink) !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-composer textarea::placeholder { color: hsl(var(--ar-placeholder)); opacity: 1; }
+:is(.ar-chat-shell, .lp-root) .ar-send {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ar-send);
+  color: var(--ar-send-ink);
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-send svg { width: 18px; height: 18px; stroke-width: 2; }
+:is(.ar-chat-shell, .lp-root) .ar-send[data-state="stop"] svg { width: 12px; height: 12px; fill: currentColor; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-send:disabled,
+:is(#alpharecall-chat-root, .lp-root) button.ar-send[data-state="idle"] {
+  background: var(--ar-fill-2);
+  color: var(--ar-ink-3);
+  cursor: default;
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] button.ar-send[data-state="idle"] { background: var(--ar-fill-2); }
+/* The preview keeps its own composer markup: give its buttons the same shape. */
+:is(.ar-chat-shell, .lp-root) .ar-chat-composer > button:not(.ar-send):not(.ar-attachment-add) { width: 36px; height: 36px; border-radius: 50%; }
+
+:is(.ar-chat-shell, .lp-root) .ar-jump-latest {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: center;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ar-panel);
+  color: var(--ar-ink-2);
+  font: inherit;
+  font-size: 12.5px;
+  box-shadow: var(--ar-sh-float);
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-jump-latest svg { width: 14px; height: 14px; }
+
+/* Connection problems: a calm inline line with a retry, never a modal. */
+:is(.ar-chat-shell, .lp-root) .ar-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--ar-red-soft);
+  color: var(--ar-red);
+  font-size: calc(13px * var(--ar-font-scale, 1));
+  line-height: 1.4;
+}
+:is(.ar-chat-shell, .lp-root) .ar-alert > svg { width: 15px; height: 15px; flex: none; }
+:is(.ar-chat-shell, .lp-root) .ar-alert-text { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+:is(.ar-chat-shell, .lp-root) .ar-alert-action {
+  flex: none;
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* ── Footer: AI disclosure, privacy, attribution ───────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-chat-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 6px;
+  padding: 0 16px calc(12px + env(safe-area-inset-bottom));
+  margin-top: -2px;
+  color: var(--ar-ink-3);
+  font-size: calc(11px * var(--ar-font-scale, 1));
+  line-height: 1.5;
+  text-align: center;
+  flex-shrink: 0;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-legal > * + *::before { content: "·"; margin-right: 6px; text-decoration: none; display: inline-block; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-legal a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+/* 24px to tap (WCAG 2.5.8) on the 16.5px line, which keeps its height. */
+:is(.ar-chat-shell, .lp-root) .ar-chat-legal > a { padding-block: 4px; margin-block: -4px; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-legal a:hover { color: var(--ar-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-chat-legal a.ar-chat-branding { text-decoration: none; }
+/* The preview's standalone attribution line */
+:is(.ar-chat-shell, .lp-root) div.ar-chat-branding { display: flex; justify-content: center; padding: 0 16px 12px; font-size: 11px; color: var(--ar-ink-3); }
+:is(.ar-chat-shell, .lp-root) div.ar-chat-branding a { color: inherit; text-decoration: none; opacity: 1; }
+
+/* ── Launcher and invite ───────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 54px;
+  height: 54px;
+  min-width: 54px;
+  max-width: calc(100vw - 32px);
+  padding: 0 20px 0 16px;
+  border: 0;
+  font-family: inherit;
+  font-size: calc(15px * var(--ar-font-scale, 1));
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  /* box-shadow is cleared on every button by the stroke contract; a filter
+     shadow keeps the launcher lifted off the page. */
+  filter: drop-shadow(0 10px 18px rgb(17 19 18 / 20%)) drop-shadow(0 2px 4px rgb(17 19 18 / 8%));
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher:is([data-style="circle"], [data-style="rounded-square"]) { padding: 0; gap: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-style="text-only"] { padding: 0 22px; }
+:is(.ar-chat-shell, .lp-root) .ar-launcher-icon,
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher > svg { width: 19px; height: 19px; flex: none; stroke-width: 1.8; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher:is([data-style="circle"], [data-style="rounded-square"]) > svg { width: 23px; height: 23px; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Images cover the actual button, not a small icon inside its brand fill.
+   Clip only the image layer so the outer focus ring and pulse stay visible. */
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-image="true"] { min-width: 54px; padding: 0; gap: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-image="true"]:not([data-image-label="true"]) { width: 54px; }
+:is(.ar-chat-shell, .lp-root) .ar-launcher-image { position: absolute; inset: 0; z-index: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
+:is(.ar-chat-shell, .lp-root) .ar-launcher-image > img { display: block; width: 100%; height: 100%; max-width: none; margin: 0; padding: 0; border-radius: 0; object-fit: cover; object-position: center; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-image-label="true"] .ar-launcher-image::after { content: ""; position: absolute; inset: 0; background: rgb(0 0 0 / 62%); }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-image-label="true"] .ar-launcher-label { position: relative; z-index: 1; padding: 0 20px; color: #fff; }
+:is(.ar-chat-shell, .lp-root) :is(.ar-chat-launcher img, .ar-chat-avatar) { border: 0; }
+
+:is(.ar-chat-shell, .lp-root) .ar-teaser {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  right: 0;
+  width: 300px;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 22px;
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  box-shadow: var(--ar-sh-float);
+  font-size: calc(14px * var(--ar-font-scale, 1));
+}
+:is(.ar-chat-shell, .lp-root) .ar-teaser[data-position="left"] { right: auto; left: 0; }
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-teaser { background: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root) .ar-teaser-row { display: flex; align-items: flex-start; gap: 10px; }
+:is(.ar-chat-shell, .lp-root) .ar-teaser-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-teaser-name { font-size: calc(13px * var(--ar-font-scale, 1)); font-weight: 500; line-height: 1.35; }
+:is(.ar-chat-shell, .lp-root) .ar-teaser-text { font-size: calc(14px * var(--ar-font-scale, 1)); line-height: 1.45; color: var(--ar-ink); overflow-wrap: anywhere; }
+:is(.ar-chat-shell, .lp-root) .ar-teaser-close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: -3px -3px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ar-ink-3);
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-teaser-close:hover { color: var(--ar-ink); background: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root) .ar-teaser-close svg { width: 16px; height: 16px; }
+:is(.ar-chat-shell, .lp-root) .ar-teaser-replies { display: flex; flex-wrap: wrap; gap: 6px; }
+:is(.ar-chat-shell, .lp-root) .ar-teaser-reply {
+  padding: 6px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ar-fill);
+  color: var(--ar-ink);
+  font: inherit;
+  font-size: calc(13px * var(--ar-font-scale, 1));
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-teaser-reply { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-teaser-reply:hover { background: var(--ar-fill-2); }
+
+/* ── Cards in the thread (tool results) ───────────────────────────────────
+   The card language for every tool: a soft fill, panel-colored controls
+   inside, one primary action in the tenant color. */
+:is(.ar-chat-shell, .lp-root) .ar-tool-slot { display: flex; flex-direction: column; gap: 10px; width: 100%; min-width: 0; font-size: calc(14px * var(--ar-font-scale, 1)); }
+:is(.ar-chat-shell, .lp-root) .ar-tool-slot:empty { display: none; }
+:is(.ar-chat-shell, .lp-root) .ar-tool-fallback { margin: 0; color: var(--ar-ink-3); font-size: calc(13px * var(--ar-font-scale, 1)); line-height: 1.45; }
+:is(.ar-chat-shell, .lp-root) .ar-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 14px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--ar-fill);
+  color: var(--ar-ink);
+  box-shadow: none;
+  font-size: calc(14px * var(--ar-font-scale, 1));
+  line-height: 1.45;
+}
+:is(.ar-chat-shell, .lp-root) .ar-card-head { display: flex; align-items: center; gap: 11px; min-width: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-card-icon { width: 20px; height: 20px; flex: none; color: var(--ar-brand); stroke-width: 1.7; }
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-card-icon { color: color-mix(in srgb, var(--ar-brand) 55%, #fff); }
+:is(.ar-chat-shell, .lp-root) .ar-card-heading { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; line-height: 1.3; }
+:is(.ar-chat-shell, .lp-root) .ar-card-title { margin: 0; font-size: calc(14.5px * var(--ar-font-scale, 1)); font-weight: 600; color: var(--ar-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-card-sub { margin: 2px 0 0; font-size: calc(12.5px * var(--ar-font-scale, 1)); color: var(--ar-ink-2); line-height: 1.4; }
+:is(.ar-chat-shell, .lp-root) .ar-card-link { align-self: flex-start; color: var(--ar-ink-2); font-size: calc(12.5px * var(--ar-font-scale, 1)); text-decoration: underline; text-underline-offset: 3px; }
+:is(.ar-chat-shell, .lp-root) .ar-card-link:hover { color: var(--ar-ink); }
+
+:is(.ar-chat-shell, .lp-root) .ar-btn-row { display: flex; gap: 8px; }
+:is(.ar-chat-shell, .lp-root) .ar-btn-row > * { flex: 1 1 0; min-width: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 15px;
+  font: inherit;
+  font-size: calc(14.5px * var(--ar-font-scale, 1));
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: filter 150ms ease, background-color 150ms ease;
+}
+:is(.ar-chat-shell, .lp-root) .ar-btn svg { width: 16px; height: 16px; flex: none; }
+:is(.ar-chat-shell, .lp-root) .ar-btn--primary { background: var(--ar-brand); color: var(--ar-brand-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-btn--primary:hover:not(:disabled) { filter: brightness(1.06); }
+:is(.ar-chat-shell, .lp-root) .ar-btn--secondary { background: var(--ar-panel); color: var(--ar-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-btn--secondary:hover:not(:disabled) { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-btn--secondary { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-btn--lg { min-height: 48px; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-btn--primary:disabled { background: var(--ar-brand); color: var(--ar-brand-ink); opacity: 0.6; cursor: wait; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-btn--secondary:disabled { background: var(--ar-panel); color: var(--ar-ink-3); }
+
+/* Fields: the label sits inside the soft box, the value below it. */
+:is(.ar-chat-shell, .lp-root) .ar-fields { display: grid; grid-template-columns: 1fr; gap: 6px; margin: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-field {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: var(--ar-panel);
+  color: var(--ar-ink-3);
+  font-size: calc(12px * var(--ar-font-scale, 1));
+  line-height: 1.35;
+  cursor: text;
+}
+:is(.ar-chat-shell, .lp-root) .ar-field--static { cursor: default; }
+:is(.ar-chat-shell, .lp-root) .ar-field-label { color: var(--ar-ink-3); font-size: calc(12px * var(--ar-font-scale, 1)); }
+:is(.ar-chat-shell, .lp-root) .ar-field-value { margin: 0; color: var(--ar-ink); font-size: calc(14px * var(--ar-font-scale, 1)); overflow-wrap: anywhere; }
+:is(.ar-chat-shell, .lp-root) .ar-field:has(:focus) { background: var(--ar-fill-2); }
+:is(#alpharecall-chat-root, .lp-root) .ar-field :is(input, textarea, select) {
+  width: 100%;
+  min-height: 24px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent !important;
+  color: var(--ar-ink);
+  font: inherit;
+  font-size: max(16px, calc(14px * var(--ar-font-scale, 1)));
+  line-height: 1.4;
+}
+@media (min-width: 769px) {
+  :is(#alpharecall-chat-root, .lp-root) .ar-field :is(input, textarea, select) { font-size: calc(14px * var(--ar-font-scale, 1)); }
+}
+:is(.ar-chat-shell, .lp-root) .ar-field :is(input, textarea)::placeholder { color: hsl(var(--ar-placeholder)); }
+
+:is(.ar-chat-shell, .lp-root) .ar-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--ar-fill);
+  color: var(--ar-ink-2);
+  font-size: calc(13px * var(--ar-font-scale, 1));
+  line-height: 1.45;
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-check input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--ar-brand) !important; }
+:is(.ar-chat-shell, .lp-root) .ar-check a { color: var(--ar-ink); text-decoration: underline; text-underline-offset: 2px; }
+:is(.ar-chat-shell, .lp-root) .ar-form-error { margin: 0; color: var(--ar-red); font-size: calc(13px * var(--ar-font-scale, 1)); line-height: 1.4; }
+
+/* Consent card */
+:is(.ar-chat-shell, .lp-root) .ar-consent-summary { display: flex; flex-direction: column; gap: 6px; }
+:is(.ar-chat-shell, .lp-root) .ar-consent-summary-title { margin: 0; font-size: calc(12.5px * var(--ar-font-scale, 1)); font-weight: 500; color: var(--ar-ink-2); }
+:is(.ar-chat-shell, .lp-root) .ar-consent-status { display: flex; flex-direction: column; gap: 10px; }
+:is(.ar-chat-shell, .lp-root) .ar-consent-status-text { margin: 0; font-weight: 500; outline: none; }
+:is(.ar-chat-shell, .lp-root) .ar-consent-status[data-state="error"] .ar-consent-status-text { color: var(--ar-red); }
+
+/* ── Sheets over the conversation ──────────────────────────────────────── */
+@keyframes ar-sheet-up { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes ar-scrim-in { from { opacity: 0; } to { opacity: 1; } }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: flex-end;
+  padding: 8px;
+  overflow: hidden;
+}
+:is(.ar-chat-shell, .lp-root) .ar-sheet-scrim { position: absolute; inset: 0; background: var(--ar-scrim); animation: ar-scrim-in var(--ar-duration) ease both; }
+:is(.ar-chat-shell, .lp-root) .ar-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px 20px 20px;
+  border-radius: 24px;
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  box-shadow: var(--ar-sh-float);
+  outline: none;
+  animation: ar-sheet-up var(--ar-duration) var(--ar-ease) both;
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-sheet { background: var(--ar-fill); }
+/* A sheet over the empty thread would leave the welcome avatar peeking above
+   its top edge; the welcome steps back while any sheet is open. */
+:is(.ar-chat-shell, .lp-root) .ar-chat-panel:has(.ar-sheet-layer) .ar-thread-viewport[data-empty] :is(.ar-welcome, .ar-starter-chips),
+:is(.ar-chat-shell, .lp-root) .ar-chat-views[inert] .ar-thread-viewport[data-empty] :is(.ar-welcome, .ar-starter-chips) {
+  visibility: hidden;
+}
+:is(.ar-chat-shell, .lp-root) .ar-sheet-handle { width: 36px; height: 4px; flex: none; align-self: center; border-radius: 4px; background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ar-fill);
+  color: var(--ar-ink-2);
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-sheet-close { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-close:hover { color: var(--ar-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-close svg { width: 18px; height: 18px; }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-icon { width: 22px; height: 22px; color: var(--ar-brand); stroke-width: 1.7; }
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-sheet-icon { color: color-mix(in srgb, var(--ar-brand) 55%, #fff); }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-head { display: flex; flex-direction: column; gap: 6px; padding-right: 36px; }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-title { margin: 0; font-size: calc(18px * var(--ar-font-scale, 1)); font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-text { margin: 0; color: var(--ar-ink-2); font-size: calc(13.5px * var(--ar-font-scale, 1)); line-height: 1.5; }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-form { display: flex; flex-direction: column; gap: 8px; }
+:is(.ar-chat-shell, .lp-root) .ar-sheet-form .ar-btn { margin-top: 6px; }
+/* Inside a sheet the fields sit on the fill, not the panel. */
+:is(.ar-chat-shell, .lp-root) .ar-sheet .ar-field { background: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-sheet :is(.ar-field, .ar-check) { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-sheet .ar-field:has(:focus) { background: var(--ar-fill-2); }
+
+/* ── FAQ tab ────────────────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-faq { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; overflow: hidden; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding: 8px 18px 12px; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 8px 0 14px;
+  border-radius: 14px;
+  background: var(--ar-fill);
+  color: var(--ar-ink-3);
+}
+:is(.ar-chat-shell, .lp-root) .ar-faq-search:has(input:focus) { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-faq-search > svg { width: 16px; height: 16px; flex: none; }
+:is(#alpharecall-chat-root, .lp-root) .ar-faq-search input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  background: transparent !important;
+  color: var(--ar-ink);
+  font: inherit;
+  font-size: max(16px, calc(14.5px * var(--ar-font-scale, 1)));
+  appearance: none;
+}
+@media (min-width: 769px) {
+  :is(#alpharecall-chat-root, .lp-root) .ar-faq-search input { font-size: calc(14.5px * var(--ar-font-scale, 1)); }
+}
+:is(.ar-chat-shell, .lp-root) .ar-faq-search input::-webkit-search-cancel-button { display: none; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-clear { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--ar-ink-3); cursor: pointer; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-clear svg { width: 14px; height: 14px; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-count { margin: -4px 4px 0; color: var(--ar-ink-3); font-size: calc(12.5px * var(--ar-font-scale, 1)); }
+:is(.ar-chat-shell, .lp-root) .ar-faq-group { display: flex; flex-direction: column; gap: 4px; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-group-title { margin: 0; padding: 0 4px; color: var(--ar-ink-3); font-size: calc(12px * var(--ar-font-scale, 1)); font-weight: 400; line-height: 1.5; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-list { display: flex; flex-direction: column; margin: 0; padding: 2px; list-style: none; border-radius: 16px; background: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root) .ar-faq-item { border-radius: 12px; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-item[data-open] { background: var(--ar-panel); }
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-faq-item[data-open] { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ar-ink);
+  font: inherit;
+  font-size: calc(14px * var(--ar-font-scale, 1));
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-faq-question:hover { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-faq-item[data-open] .ar-faq-question { font-weight: 500; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-item[data-open] .ar-faq-question:hover { background: transparent; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-question svg { width: 16px; height: 16px; flex: none; color: var(--ar-ink-3); transition: transform 180ms ease; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-question[aria-expanded="true"] svg { transform: rotate(180deg); }
+:is(.ar-chat-shell, .lp-root) .ar-faq-answer { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 0 12px 12px; animation: ar-message-enter var(--ar-duration) var(--ar-ease) both; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-answer p { margin: 0; color: var(--ar-ink-2); font-size: calc(13.5px * var(--ar-font-scale, 1)); line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-ask {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ar-fill);
+  color: var(--ar-ink);
+  font: inherit;
+  font-size: calc(13px * var(--ar-font-scale, 1));
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-faq-ask { background: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root) .ar-faq-ask svg { width: 14px; height: 14px; color: var(--ar-ink-3); }
+:is(.ar-chat-shell, .lp-root) .ar-faq-footer { padding: 10px 14px calc(14px + env(safe-area-inset-bottom)); flex-shrink: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 15px;
+  background: var(--ar-fill);
+  color: var(--ar-ink);
+  font: inherit;
+  font-size: calc(14.5px * var(--ar-font-scale, 1));
+  font-weight: 500;
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-faq-cta:hover { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-faq-cta svg { width: 16px; height: 16px; }
+:is(.ar-chat-shell, .lp-root) .ar-faq--empty { align-items: center; justify-content: center; gap: 6px; padding: 24px; text-align: center; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-empty-icon { width: 26px; height: 26px; margin-bottom: 6px; color: var(--ar-ink-3); }
+:is(.ar-chat-shell, .lp-root) .ar-faq-empty-title { margin: 0; font-size: 15px; font-weight: 500; }
+:is(.ar-chat-shell, .lp-root) .ar-faq-empty-text { margin: 0; color: var(--ar-ink-2); font-size: 13.5px; }
+/* When the panel is in FAQ mode the AI footer has nothing to disclose. */
+:is(.ar-chat-shell, .lp-root) .ar-chat-panel[data-view="faq"] .ar-chat-legal { display: none; }
+.ar-faq-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, currentColor 25%, transparent) transparent;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Map and hours card ────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-map-card { padding: 8px; gap: 10px; }
+:is(.ar-chat-shell, .lp-root) .ar-map {
+  position: relative;
+  height: 150px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--ar-fill-2);
+  isolation: isolate;
+}
+:is(.ar-chat-shell, .lp-root) .ar-map .leaflet-container { width: 100%; height: 100%; border-radius: inherit; font: inherit; }
+:is(.ar-chat-shell, .lp-root) .ar-map-empty,
+:is(.ar-chat-shell, .lp-root) .ar-map-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--ar-ink-3);
+  font-size: 13px;
+  pointer-events: none;
+  background: var(--ar-fill-2);
+}
+:is(.ar-chat-shell, .lp-root) .ar-map-empty p { margin: 0; }
+:is(.ar-chat-shell, .lp-root) .ar-map-address,
+:is(.ar-chat-shell, .lp-root) .ar-map-status { margin: 0; padding: 0 6px; font-size: calc(13.5px * var(--ar-font-scale, 1)); line-height: 1.4; }
+:is(.ar-chat-shell, .lp-root) .ar-map-address { color: var(--ar-ink-2); }
+:is(.ar-chat-shell, .lp-root) .ar-map-status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+:is(.ar-chat-shell, .lp-root) .ar-map-status b { font-weight: 500; }
+:is(.ar-chat-shell, .lp-root) .ar-map-status span:last-child { color: var(--ar-ink-3); font-size: calc(13px * var(--ar-font-scale, 1)); }
+:is(.ar-chat-shell, .lp-root) .ar-map-status[data-open="false"] .ar-status-dot { background: var(--ar-ink-3); }
+:is(.ar-chat-shell, .lp-root) .ar-map-hours { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; margin: 0; padding: 0 6px; font-size: calc(13px * var(--ar-font-scale, 1)); }
+:is(.ar-chat-shell, .lp-root) .ar-map-hours > div { display: contents; }
+:is(.ar-chat-shell, .lp-root) .ar-map-hours dt { color: var(--ar-ink-3); }
+:is(.ar-chat-shell, .lp-root) .ar-map-hours dd { margin: 0; font-variant-numeric: tabular-nums; }
+:is(.ar-chat-shell, .lp-root) .ar-map-hours .is-today dd { color: var(--ar-ok); font-weight: 500; }
+:is(.ar-chat-shell, .lp-root) .ar-map-card .ar-btn--secondary { background: var(--ar-panel); }
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-map-card .ar-btn--secondary { background: var(--ar-fill-2); }
+/* Leaflet writes marker colors as SVG attributes, which cannot read CSS
+   variables; a CSS fill can, and wins over the attribute. */
+:is(.ar-chat-shell, .lp-root) .ar-map path.leaflet-interactive { fill: var(--ar-brand); fill-opacity: 1; stroke: var(--ar-panel); stroke-width: 3; }
+:is(.ar-chat-shell, .lp-root) .ar-map-card .leaflet-tooltip { border: 0; font-weight: 500; }
+:is(.ar-chat-shell, .lp-root) .ar-map .leaflet-control-attribution {
+  padding: 1px 6px;
+  border-radius: 8px 0 0 0;
+  background: color-mix(in srgb, var(--ar-panel) 75%, transparent);
+  color: var(--ar-ink-3);
+  font-size: 9px;
+  line-height: 1.4;
+}
+:is(.ar-chat-shell, .lp-root) .ar-map .leaflet-control-attribution a { color: inherit; }
+:is(.ar-chat-shell, .lp-root) .ar-map .leaflet-control-attribution svg { display: none !important; }
+:is(.ar-chat-shell, .lp-root) .ar-map-card .leaflet-tooltip::before { display: none; }
+
+/* ── Attachments in the composer and the thread ────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-attachment-add {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 1px;
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ar-ink-2);
+  cursor: pointer;
+}
+:is(.ar-chat-shell, .lp-root) .ar-attachment-add:hover:not(:disabled) { background: var(--ar-fill-2); color: var(--ar-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-attachment-add svg { width: 18px; height: 18px; }
+:is(#alpharecall-chat-root, .lp-root) button.ar-attachment-add:disabled { background: transparent; color: var(--ar-ink-3); opacity: 0.5; }
+:is(.ar-chat-shell, .lp-root) :is(.ar-attachment-list li, .ar-message-attachments button) { background: var(--ar-fill); color: var(--ar-ink); border-radius: 12px; }
+:is(.ar-chat-shell, .lp-root) .ar-turn--user .ar-message-attachments { justify-items: end; }
+
+/* ── Phones ─────────────────────────────────────────────────────────────── */
+.ar-chat-panel[inert] { visibility: hidden; }
+@media (max-width: 768px) {
+  /* Anchored to both screen edges instead of a dvh height: while a mobile
+     browser resizes its toolbars the panel keeps covering the backdrop. */
+  .ar-chat-shell .ar-chat-panel:not([data-docked]) { inset: 0; height: auto !important; border: 0; border-radius: 0 !important; }
+  .ar-chat-shell .ar-chat-header { padding-top: max(14px, env(safe-area-inset-top)); }
+  .ar-chat-shell .ar-thread-viewport { padding: 6px 16px 10px; }
+  .ar-chat-shell .ar-chat-composer textarea { font-size: max(16px, calc(14.5px * var(--ar-font-scale, 1))); }
+  .ar-chat-shell .ar-chat-header-btn { width: 38px; height: 38px; }
+  .ar-chat-shell .ar-chat-action-icon { width: 36px; height: 36px; }
+  body.admin-bar #alpharecall-chat-root .ar-chat-shell .ar-chat-panel:not([data-docked]) { top: 46px !important; height: auto !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.ar-chat-shell, .lp-root) *, :is(.ar-chat-shell, .lp-root) *::before, :is(.ar-chat-shell, .lp-root) *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.lp-root[data-preview-device="mobile"] .ar-thread-viewport { padding: 6px 16px 10px; }
+.lp-root[data-preview-device="mobile"] .ar-chat-header { padding-top: 14px; }
+.lp-root[data-preview-device="mobile"] .ar-chat-composer textarea { font-size: max(16px, calc(14.5px * var(--ar-font-scale, 1))); }
+
+/* Selected generated choices communicate with surface and weight, never an
+   accent stroke. Tab fills stay configurable (activeTabBackgroundColor). */
+:is(.ar-chat-shell, .lp-root) :is(button[aria-pressed="true"], button[aria-selected="true"]) {
+  border: 0;
+  background-color: hsl(var(--ar-selected));
+  color: hsl(var(--ar-control-text));
+  font-weight: 600;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-tabs button[aria-pressed="true"] {
+  background-color: var(--ar-active-tab-bg, hsl(var(--ar-selected)));
+  color: var(--ar-active-tab-fg, hsl(var(--ar-control-text)));
+  font-weight: 500;
+}
+/* Scrolling inside the widget never reaches the host page. Without this the
+   page behind scrolled once the thread hit its end, mobile browsers resized
+   their toolbars and the dark backdrop showed through under the panel
+   (card cka59w1n7q18). The panel is a scroll container (overflow hidden), so
+   containment there also covers the header and the composer. */
+:is(.ar-chat-shell, .lp-root) .ar-chat-panel,
+:is(.ar-chat-shell, .lp-root) .ar-thread-viewport {
+  overscroll-behavior: contain;
+}
+
+/* In a page slot (lib/dock-slot.ts) the panel is part of the page: it does not
+   animate, and the wheel goes on scrolling the page once the thread has no more
+   to show, otherwise a visitor scrolling past the hero gets stuck on it. */
+.ar-chat-shell .ar-chat-panel[data-docked] { transition: none !important; transform: none !important; opacity: 1; pointer-events: auto; visibility: visible; }
+.ar-chat-shell .ar-chat-panel[data-docked],
+.ar-chat-shell .ar-chat-panel[data-docked] .ar-thread-viewport { overscroll-behavior: auto; }
+
+/* ── Motion: one language for the live widget and its interactive preview ── */
+:is(.ar-chat-shell, .lp-root) {
+  --ar-duration: 260ms;
+  --ar-travel: 6px;
+  --ar-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+:is(.ar-chat-shell, .lp-root)[data-motion="expressive"] { --ar-travel: 14px; --ar-ease: cubic-bezier(0.16, 1, 0.3, 1); }
+:is(.ar-chat-shell, .lp-root) .ar-chat-panel[data-widget-style] {
+  transition: transform var(--ar-duration) var(--ar-ease), opacity var(--ar-duration) ease,
+    visibility 0s linear var(--ar-duration);
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-panel[data-open="true"] { transition-delay: 0s; visibility: visible; }
+:is(.ar-chat-shell, .lp-root)[data-motion="subtle"] .ar-chat-panel[data-widget-style="popup"][data-open="false"] { transform: translateY(8px) scale(0.985); }
+:is(.ar-chat-shell, .lp-root) .ar-chat-panel[data-open="true"] .ar-chat-animate { animation: none; }
+@keyframes ar-message-enter {
+  from { opacity: 0; transform: translateY(var(--ar-travel)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+:is(.ar-chat-shell, .lp-root) .ar-message-enter,
+:is(.ar-chat-shell, .lp-root) :is(.ar-faq-slide-in, .ar-faq-slide-back, .ar-faq-fade-in) {
+  animation: ar-message-enter var(--ar-duration) var(--ar-ease) both;
+}
+:is(.ar-chat-shell, .lp-root)[data-animate-messages="false"] .ar-message-enter { animation: none; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher {
+  isolation: isolate;
+  transition: filter 160ms ease, transform 160ms ease;
+  animation-iteration-count: 1;
+  animation-duration: calc(var(--ar-duration) * 4);
+  animation-timing-function: var(--ar-ease);
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher:hover {
+  filter: drop-shadow(0 12px 22px rgb(17 19 18 / 24%)) drop-shadow(0 2px 4px rgb(17 19 18 / 8%)) brightness(1.04);
+  animation-play-state: paused;
+}
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 2px solid var(--ar-brand);
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes ar-launcher-pulse {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  25% { opacity: 0.25; }
+  85% { opacity: 0; transform: scale(1.18); }
+}
+@keyframes ar-launcher-bounce { 0%, 100% { transform: translateY(0); } 28% { transform: translateY(-6px); } 52% { transform: translateY(0); } 68% { transform: translateY(-2px); } }
+@keyframes ar-launcher-wiggle { 0%, 100% { transform: rotate(0); } 24% { transform: rotate(-6deg); } 42% { transform: rotate(5deg); } 58% { transform: rotate(-2deg); } }
+@keyframes ar-launcher-breathe { 0%, 100% { transform: scale(1); } 45% { transform: scale(1.045); } }
+@keyframes ar-launcher-rubber { 0%, 100% { transform: scale(1); } 25% { transform: scale(1.06, 0.95); } 46% { transform: scale(0.98, 1.025); } }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-animation="pulse"] { animation: none; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-animation="pulse"]::before { animation: ar-launcher-pulse calc(var(--ar-duration) * 4) ease-out; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-animation="bounce"] { animation-name: ar-launcher-bounce; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-animation="wiggle"] { animation-name: ar-launcher-wiggle; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-animation="breathe"] { animation-name: ar-launcher-breathe; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-animation="rubberBand"] { animation-name: ar-launcher-rubber; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher[data-animation="none"] { animation: none; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-launcher:hover::before { animation-play-state: paused; }
+:is(.ar-chat-shell, .lp-root) .ar-teaser-bubble { animation: ar-message-enter var(--ar-duration) var(--ar-ease) both; }
+:is(.ar-chat-shell, .lp-root) .ar-chat-overlay { transition-duration: var(--ar-duration); }
+:is(.ar-chat-shell, .lp-root)[data-motion="none"] *,
+:is(.ar-chat-shell, .lp-root)[data-motion="none"] *::before,
+:is(.ar-chat-shell, .lp-root)[data-motion="none"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  body.ar-chat-host { transition: none !important; }
+}
+
+:is(.ar-chat-shell, .lp-root)[data-motion="none"] .ar-aicon * {
+  transform: none !important;
+  opacity: 1 !important;
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.ar-chat-shell, .lp-root) .ar-aicon * {
+    transform: none !important;
+    opacity: 1 !important;
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}

@@ -1,0 +1,134 @@
+/* Chart, stats and order summary cards in the widget thread. They sit on the
+   card kit (.ar-card in widget-design.css): soft fill, no strokes, inner
+   surfaces on the panel, numbers in tabular figures. */
+
+/* ── Chart ─────────────────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-chart-card .ar-chart-plot {
+  padding: 10px 8px 4px 0;
+  border-radius: 16px;
+  background: var(--ar-panel);
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-chart-card .ar-chart-plot { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-chart-card .ar-chart { min-height: 180px; aspect-ratio: 16 / 10; font-size: 11px; }
+:is(.ar-chat-shell, .lp-root) .ar-chart-card .ar-chart .recharts-cartesian-axis-tick text { fill: var(--ar-ink-3); font-size: 11px; font-variant-numeric: tabular-nums; }
+:is(.ar-chat-shell, .lp-root) .ar-chart-card .ar-chart .recharts-cartesian-grid line { stroke: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-chart-card .ar-chart .recharts-cartesian-grid line { stroke: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root) .ar-chart-card .ar-chart .recharts-rectangle.recharts-tooltip-cursor { fill: var(--ar-fill); }
+:is(.ar-chat-shell, .lp-root) .ar-chart-card .ar-chart .recharts-curve.recharts-tooltip-cursor { stroke: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-chart-card .ar-chart .recharts-dot { stroke: var(--ar-panel); }
+:is(#alpharecall-chat-root, .lp-root) .ar-chart-card .ar-chart-tip {
+  border: 0 !important;
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: var(--ar-panel);
+  color: var(--ar-ink);
+  box-shadow: var(--ar-sh-float);
+  font-variant-numeric: tabular-nums;
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-chart-card .ar-chart-tip { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-chart-card .ar-chart-tip .text-muted-foreground { color: var(--ar-ink-3); }
+:is(.ar-chat-shell, .lp-root) .ar-chart-card .ar-chart-tip .text-foreground { color: var(--ar-ink); }
+:is(.ar-chat-shell, .lp-root) .ar-chart-card .recharts-legend-item-text { color: var(--ar-ink-2) !important; }
+
+/* ── Stats ─────────────────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 6px;
+}
+:is(.ar-chat-shell, .lp-root) .ar-stats-grid[data-single] { grid-template-columns: 1fr; }
+:is(.ar-chat-shell, .lp-root) .ar-stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--ar-panel);
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-stat { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-stat-spark {
+  position: absolute;
+  inset: auto 0 0 0;
+  width: 100%;
+  height: 42%;
+  pointer-events: none;
+  opacity: 0.9;
+}
+:is(.ar-chat-shell, .lp-root) .ar-stat-label {
+  position: relative;
+  color: var(--ar-ink-3);
+  font-size: calc(12px * var(--ar-font-scale, 1));
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+:is(.ar-chat-shell, .lp-root) .ar-stat-value {
+  position: relative;
+  color: var(--ar-ink);
+  font-size: calc(20px * var(--ar-font-scale, 1));
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+:is(.ar-chat-shell, .lp-root) .ar-stats-grid[data-single] .ar-stat-value { font-size: calc(26px * var(--ar-font-scale, 1)); }
+:is(.ar-chat-shell, .lp-root) .ar-stat .ar-num { font-variant-numeric: tabular-nums; }
+:is(.ar-chat-shell, .lp-root) .ar-stat-unit { margin-left: 2px; font-size: 0.65em; opacity: 0.8; }
+:is(.ar-chat-shell, .lp-root) .ar-stat-delta {
+  position: relative;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--ar-ink-2);
+  font-size: calc(12.5px * var(--ar-font-scale, 1));
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+:is(.ar-chat-shell, .lp-root) .ar-stat-delta[data-tone="good"] { color: var(--ar-ok); }
+:is(.ar-chat-shell, .lp-root) .ar-stat-delta[data-tone="bad"] { color: var(--ar-red); }
+:is(.ar-chat-shell, .lp-root) .ar-stat-delta-label { color: var(--ar-ink-3); font-weight: 400; }
+
+/* ── Order summary ─────────────────────────────────────────────────────── */
+:is(.ar-chat-shell, .lp-root) .ar-order-card .ar-order-ok { color: var(--ar-ok); }
+:is(.ar-chat-shell, .lp-root) .ar-order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  border-radius: 16px;
+  background: var(--ar-panel);
+}
+:is(.ar-chat-shell, .lp-root)[data-theme="dark"] .ar-order-items { background: var(--ar-fill-2); }
+:is(.ar-chat-shell, .lp-root) .ar-order-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px;
+}
+:is(.ar-chat-shell, .lp-root) .ar-order-thumb {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  margin: 0;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--ar-fill);
+}
+:is(.ar-chat-shell, .lp-root) .ar-order-icon { width: 18px; height: 18px; flex: none; margin: 0 4px; color: var(--ar-ink-3); stroke-width: 1.7; }
+:is(.ar-chat-shell, .lp-root) .ar-order-item-text { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; line-height: 1.35; }
+:is(.ar-chat-shell, .lp-root) .ar-order-item-name { overflow: hidden; color: var(--ar-ink); font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+:is(.ar-chat-shell, .lp-root) .ar-order-item-sub { overflow: hidden; color: var(--ar-ink-3); font-size: calc(12.5px * var(--ar-font-scale, 1)); text-overflow: ellipsis; white-space: nowrap; }
+:is(.ar-chat-shell, .lp-root) .ar-order-item-price { flex: none; color: var(--ar-ink); font-variant-numeric: tabular-nums; }
+:is(.ar-chat-shell, .lp-root) .ar-order-totals { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0 6px; }
+:is(.ar-chat-shell, .lp-root) .ar-order-totals > div { display: flex; justify-content: space-between; gap: 16px; font-size: calc(13.5px * var(--ar-font-scale, 1)); }
+:is(.ar-chat-shell, .lp-root) .ar-order-totals dt { color: var(--ar-ink-2); }
+:is(.ar-chat-shell, .lp-root) .ar-order-totals dd { margin: 0; color: var(--ar-ink); font-variant-numeric: tabular-nums; }
+:is(.ar-chat-shell, .lp-root) .ar-order-totals > div[data-tone="good"] :is(dt, dd) { color: var(--ar-ok); }
+:is(.ar-chat-shell, .lp-root) .ar-order-totals > .ar-order-total { padding-top: 4px; font-size: calc(14.5px * var(--ar-font-scale, 1)); }
+:is(.ar-chat-shell, .lp-root) .ar-order-totals > .ar-order-total :is(dt, dd) { color: var(--ar-ink); font-weight: 600; }
