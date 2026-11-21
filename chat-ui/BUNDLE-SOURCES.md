@@ -556,6 +556,7 @@ npm packages: @ungap/structured-clone@1.3.0, bail@2.0.2, ccount@2.0.1, comma-sep
 
 ## assets/js/admin-chunks/mermaid-4DMBBIKO-C9YSrna_.js
 
+No code of its own: it only passes on what another script of this folder exports.
 
 ## assets/js/admin-chunks/pencil-CHezSetv.js
 
